@@ -1,0 +1,6 @@
+export {default as ActiveTabsContainer } from './ActiveTabsContainer'
+export {default as Tab } from './Tab'
+export {default as TabsBtn } from './TabsBtn'
+export {default as TabsContainer } from './TabsContainer'
+export {default as TabsContent } from './TabsContent'
+export {default as TabsCard } from './TabsCard'

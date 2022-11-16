@@ -1,0 +1,5 @@
+export {default as costumerReducer} from './Costomer/costumerSlice'
+export {default as serviceReducer} from './All/serviceSlice' 
+export {default as storeReducer} from './All/storeSlice' 
+export {default as invoiceItemsReducer} from './All/invoiceItemsSlice' 
+export {default as allCetegurytypesReducer} from './types/allCetegurytypesSlice' 
