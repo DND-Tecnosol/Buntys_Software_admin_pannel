@@ -5,15 +5,16 @@
 // http://localhost:8000/api/Servicetype
 // http://localhost:8000/api/Service
 // http://localhost:8000/api/appointment
+const apiDomain="http://192.168.29.208:8000"
 export default {
-    "costomer":"http://localhost:8000/api/costomer",
-    "costomerType":"http://localhost:8000/api/costumertype",
-    "store":"http://localhost:8000/api/store",
-    "stufftype":"http://localhost:8000/api/stufftype",
-    "stuff":"http://localhost:8000/api/stuff",
-    "Servicetype":"http://localhost:8000/api/Servicetype",
-    "Service":"http://localhost:8000/api/Service",
-    "appointment":"http://localhost:8000/api/appointment",
+    "costomer":`${apiDomain}/api/costomer`,
+    "costomerType":`${apiDomain}/api/costumertype`,
+    "store":`${apiDomain}/api/store`,
+    "stufftype":`${apiDomain}/api/stufftype`,
+    "stuff":`${apiDomain}/api/stuff`,
+    "Servicetype":`${apiDomain}/api/Servicetype`,
+    "Service":`${apiDomain}/api/Service`,
+    "appointment":`${apiDomain}/api/appointment`,
 }
 
 

@@ -29,6 +29,7 @@ const Costomer = ({id}) => {
     var [prosms, setProsms] = useState(true);
     var [trasms, setTrasms] = useState(true);
     var [whatnot, setWhatnot] = useState(true);
+    var [emailnot, setemailnot] = useState(true);
     // var [apponot, setname] = useState('');
     const dispatch = useDispatch();
   
@@ -50,6 +51,7 @@ const Costomer = ({id}) => {
         address: address,
         promo_sms: prosms,
         gender: gender,
+        email_notyfication_status:emailnot
       };
       console.log(data);
       axios.post(apiRoutes.costomer, data).then((e) => {
