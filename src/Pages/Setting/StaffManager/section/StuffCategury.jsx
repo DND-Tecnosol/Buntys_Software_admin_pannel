@@ -16,7 +16,7 @@ export default function StuffCategury() {
       </div>
       <Button variant='contained' data-toggle="modal"
             data-target="#addCatestaff" className='my-3' color='warning'>
-        Add Service
+        Add Stuff Categury
       </Button>
     </div>
       <div className="table-card bg-white rounded-lg m-3">
