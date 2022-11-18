@@ -2,16 +2,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import routesconst from '../Constants/routesconst'
 import { HiOutlineClipboardDocumentList } from 'react-icons/hi2';
+import { Logo } from '../assets';
 export default function Sidebar() {
-    // const abc=xyz[0]
-    // console.log(abc);
   return (
     <>
     
        <aside class="main-sidebar sidebar-light-primary">
     {/* <!-- Brand Logo --> */}
-    <Link to="index3.html" class="brand-link">
-      <img src="assets/brand/logo.svg" alt="AdminLTE Logo" height={'50px'} width="150px" style={{opacity: 0.8}} />
+    <Link to="/" class="brand-link">
+      <img src={Logo} height={'50px'} width="150px" style={{opacity: 0.8}} />
     </Link>
 
     {/* <!-- Sidebar --> */}

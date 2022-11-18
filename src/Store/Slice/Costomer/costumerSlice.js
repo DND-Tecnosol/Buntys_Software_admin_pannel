@@ -6,7 +6,7 @@ export const fetchCostomer = createAsyncThunk(
     'costomer/',
     async () => {
       const response = await axios(apiRoutes.costomer).then((e)=>e.data.costumer)
-      console.log(response);
+      // console.log(response);
       return response
     }
   )
@@ -20,7 +20,7 @@ const costumerSlice = createSlice({
   initialState,
   reducers: {
     addCostomer:(state, action)=> {
-        console.log('m run');
+        // console.log('m run');
         state.costomer.push(action.payload)
     }
   },

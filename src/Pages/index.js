@@ -16,4 +16,7 @@ export {default as StoreManager} from './Setting/StoreManager'
 export {default as UserManger} from './Setting/UserManger'
 export {default as Invoicemanager} from './Setting/invoicemanager'
 export {default as productManager} from './Setting/productManager'
+
+export {default as CostomerProfile} from './costomer/costomerProfile'
+export {default as StuffProfile} from './Setting/StaffManager/stuffProfile'
 // export {default as ServiceManager} from './Setting/'

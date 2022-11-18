@@ -6,7 +6,7 @@ export const fetchserviceCetegury = createAsyncThunk(
     'serviceCetegury/',
     async () => {
       const response = await axios(apiRoutes.Servicetype).then((e)=>e.data.servicetype)
-      console.log(response);
+      // console.log(response);
       return response
     }
   )
@@ -15,7 +15,7 @@ export const fetchserviceCetegury = createAsyncThunk(
     'costomerCetegury/',
     async () => {
       const response = await axios(apiRoutes.costomerType).then((e)=>e.data.costumertype)
-      console.log(response);
+      // console.log(response);
       return response
     }
   )
@@ -39,7 +39,7 @@ export const fetchserviceCetegury = createAsyncThunk(
     'stuffCetegury/',
     async () => {
       const response = await axios(apiRoutes.stufftype).then((e)=>e.data.stafftype)
-      console.log(response);
+      // console.log(response);
       return response
     }
   )

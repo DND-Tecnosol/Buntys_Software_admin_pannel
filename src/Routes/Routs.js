@@ -7,7 +7,7 @@ import {
     Route,
 } from "react-router-dom";
 import routesconst, { routes } from '../Constants/routesconst';
-import { SericeManager, StaffManager, StoreManager, UserManger, Invoicemanager, productManager} from "../Pages";
+import { SericeManager, StaffManager, StoreManager, UserManger, Invoicemanager, productManager, CostomerProfile} from "../Pages";
 // import { Dashbord,  } from '../Pages';
 import { fetchServices } from '../Store/Slice/All/serviceSlice';
 import { fetchStore } from '../Store/Slice/All/storeSlice';
@@ -30,6 +30,8 @@ export default function Routs() {
                     <Route path={routes.StoreManger} element={<StoreManager />} />
                     <Route path={routes.UserManger} element={<UserManger />} />
                     <Route path={routes.InvoiceManger} element={<Invoicemanager />} />
+                    <Route path={routes.ProductManger} element={<productManager />} />
+                    <Route path={'costomer/:id'} element={<CostomerProfile />} />
                     <Route path={routes.ProductManger} element={<productManager />} />
                 </Routes>
             </BrowserRouter>

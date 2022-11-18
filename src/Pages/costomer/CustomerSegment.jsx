@@ -117,7 +117,7 @@ const TabelData = ({ no, data }) => {
       <tr>
         <td>{++no}</td>
         <td>
-          <Link to={data.id}>
+          <Link to={`/costomer/${data.id}`}>
             {data.name} {data.last_name}
           </Link>
         </td>

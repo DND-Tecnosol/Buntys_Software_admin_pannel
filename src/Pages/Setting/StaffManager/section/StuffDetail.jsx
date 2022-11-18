@@ -82,7 +82,7 @@ const AddStuff = ({ id }) => {
   const [img, setImg] = useState("")
   const [marital, setmarital] = useState("")
   const [gender, setGender] = useState("")
-  
+
   const [birthday, setBirthday] = useState("")
   const [anny, setAnny] = useState("")
   // const [gender, setGender] = useState("")
@@ -111,46 +111,93 @@ const AddStuff = ({ id }) => {
   const [serviceSale, setserviceSale] = useState("")
   const [serviceExicute, setserviceExicute] = useState("")
   // Benifits
+  const [bank_account_no, setbank_account_no] = useState("")
+  const [bank_account_ifc, setbank_account_ifc] = useState("")
+  const [bank_name, setbank_name] = useState("")
+  const [bank_account_holder_name, setbank_account_holder_name] = useState("")
+  
+  
+  const [addhar_no, setaddhar_no] = useState("")
+  const [pan_no, setpan_no] = useState("")
+  const [drl_no, setdrl_no] = useState("")
+  
+  const [addhar_doc_url, setaddhar_doc_url] = useState("")
+  const [pan_doc_url, setpan_doc_url] = useState("")
+  const [drl_doc_url, setdrl_doc_url] = useState("")
+  const [bank_account_doc, setbank_account_doc] = useState("")
+  
   const [pf, setPf] = useState("")
   const [ins, setIns] = useState("")
   const [mediClaim, setMediclaim] = useState("")
 
   const [msg, setMsg] = useState("")
+
+  
   const dispatch = useDispatch()
   const submit = () => {
     const data = {
       firstname: firstname,
       lastname: lastname,
       middelname: middelname,
+
       mobaile: mobaile,
       whatmobaile: whatmobaile,
       email: email,
+
       city: city,
       state: state,
       pin: pin,
       permenentAddress: permenentAddress,
       ResidentAddresses: ResidentAddresses,
+
       jobstart: jobstart,
       jobhours: jobhours,
       Weekend: Weekend,
+
       sallery: sallery,
       ProductSale: ProductSale,
       PkgSale: PkgSale,
       serviceSale: serviceSale,
       serviceExicute: serviceExicute,
+
       pf: pf,
       ins: ins,
       mediClaim: mediClaim,
-      
-      img:img,
-      gender:gender ,
-      stufftype:stufftype,
-      StoreId:StoreId
 
+      birthday: ins,
+      marrige_anny: mediClaim,
+      marit_status: mediClaim,
+
+      img: img,
+      gender: gender,
+      stufftype: stufftype,
+      StoreId: StoreId,
+
+      addhar_no: addhar_no,
+      pan_no: pan_no,
+      drl_no: drl_no,
+      
+      
+      bank_account_no: bank_account_no,
+      bank_account_ifc: bank_account_ifc,
+      bank_name: bank_name,
+      bank_account_holder_name: bank_account_holder_name,
+
+      bank_account_doc: bank_account_doc,
+      addhar_doc_url: addhar_doc_url,
+      pan_doc_url: pan_doc_url,
+      drl_doc_url: drl_doc_url,
     }
-    axios.post(apiRoutes.stuff, data).then(e => {
-      setMsg(e.data.msg)
-      dispatch(fetchStaff())
+      const formData = new FormData();
+      formData.append('img', addhar_doc_url);
+    // const data2={
+    //   data:
+    // }
+    console.log(addhar_doc_url);
+    axios.post('http://127.0.0.1:8000/api/test', formData).then(e => {
+      // setMsg(e.data.msg)
+      console.log(e.data.msg);
+      // dispatch(fetchStaff())
     })
   }
 
@@ -227,19 +274,19 @@ const AddStuff = ({ id }) => {
                         title={"Staff Marrige Annyversury"}
                         type="date"
                       />
-                      
+
                     </div>
 
                     <div class="form-row">
-                    {/* <input */}
-                    <Input
+                      {/* <input */}
+                      <Input
                         onchange={(e) => setJobhours(e.target.value)}
                         plase={'9 hours'}
                         value={jobhours}
                         title={"Profile Img"}
                         type="file"
                       />
-                    <div className="col-4">
+                      <div className="col-4">
                         <div class="form-group">
                           <label for="inputGroupSelect01">Gender</label>
                           <select
@@ -269,7 +316,7 @@ const AddStuff = ({ id }) => {
                           </select>
                         </div>
                       </div>
-                      
+
                     </div>
                     {/* Contact Info */}
                     <div class="form-row">
@@ -476,42 +523,42 @@ const AddStuff = ({ id }) => {
                       <Input
                         onchange={(e) => setPf(e.target.value)}
                         plase={'in no.'}
-                        value={pf}
+                        value={addhar_no}
                         title={"Adhar Card No."}
                         type="number"
                       />
                       <Input
                         onchange={(e) => setIns(e.target.value)}
                         plase={'In No'}
-                        value={ins}
+                        value={pan_no}
                         title={"Pan Card No."}
                         type="text"
                       />
                       <Input
                         onchange={(e) => setMediclaim(e.target.value)}
                         plase={'Driving Lincence No.'}
-                        value={mediClaim}
+                        value={drl_no}
                         title={"Driving Lincence No."}
                         type="text"
                       />
                       <Input
-                        onchange={(e) => setPf(e.target.value)}
+                        onchange={(e) => setaddhar_doc_url(e.target.files[0])}
                         plase={'in no.'}
-                        value={pf}
+                        value={addhar_doc_url}
                         title={"Adhar Card Doc"}
                         type="file"
                       />
                       <Input
-                        onchange={(e) => setIns(e.target.value)}
+                        onchange={(e) => setpan_doc_url(e.target.value)}
                         plase={'In No'}
-                        value={ins}
+                        value={pan_doc_url}
                         title={"Pan Card Doc"}
                         type="file"
                       />
                       <Input
-                        onchange={(e) => setMediclaim(e.target.value)}
+                        onchange={(e) => setdrl_doc_url(e.target.value)}
                         plase={'Driving Lincence No.'}
-                        value={mediClaim}
+                        value={drl_doc_url}
                         title={"Driving Lincence Doc"}
                         type="file"
                       />
@@ -522,37 +569,37 @@ const AddStuff = ({ id }) => {
 
                     <div class="form-row">
                       <Input
-                        onchange={(e) => setPf(e.target.value)}
+                        onchange={(e) => setbank_account_no(e.target.value)}
                         plase={'in no.'}
-                        value={pf}
+                        value={bank_account_no}
                         title={"Bank Account No."}
                         type="number"
                       />
                       <Input
-                        onchange={(e) => setIns(e.target.value)}
+                        onchange={(e) => setbank_account_ifc(e.target.value)}
                         plase={'In No'}
-                        value={ins}
+                        value={bank_account_ifc}
                         title={"Bank Account IFC Code"}
                         type="text"
                       />
                       <Input
-                        onchange={(e) => setMediclaim(e.target.value)}
-                        plase={'Driving Lincence No.'}
-                        value={mediClaim}
+                        onchange={(e) => setbank_name(e.target.value)}
+                        plase={''}
+                        value={bank_name}
                         title={"Bank Name"}
                         type="text"
                       />
                       <Input
-                        onchange={(e) => setPf(e.target.value)}
+                        onchange={(e) => setbank_account_holder_name(e.target.value)}
                         plase={'in no.'}
-                        value={pf}
+                        value={bank_account_holder_name}
                         title={"Bank Holder Name"}
                         type="text"
                       />
                       <Input
-                        onchange={(e) => setIns(e.target.value)}
+                        onchange={(e) => setbank_account_doc(e.target.value)}
                         plase={'In No'}
-                        value={ins}
+                        value={bank_account_doc}
                         title={"Passbook Ya cheq Copy"}
                         type="file"
                       />
@@ -562,7 +609,7 @@ const AddStuff = ({ id }) => {
                     <center className="my-3"><h5>Center & Stuff Categury</h5></center>
 
                     <div class="form-row">
-                    <div className="col-6">
+                      <div className="col-6">
                         <div class="form-group">
                           <label for="inputGroupSelect01">Select store</label>
                           <select
