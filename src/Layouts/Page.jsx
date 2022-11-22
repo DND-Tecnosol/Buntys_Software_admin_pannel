@@ -11,13 +11,16 @@ import { useDispatch } from 'react-redux';
 import { fetchserviceCetegury,
 fetchcostomerCetegury,
 fetchstuffCetegury } from '../Store/Slice/types/allCetegurytypesSlice';
+import { fetchStaff } from '../Store/Slice/All/staffSlice';
 
 export default function Page({ children, header }) {
         document.title ="Bunty's studio || "+header;
         const dispatch = useDispatch();
         
         useEffect(()=>{
+            
             dispatch(fetchserviceCetegury())
+            dispatch(fetchStaff())
             dispatch(fetchcostomerCetegury())
             dispatch(fetchstuffCetegury())
             dispatch(fetchServices())

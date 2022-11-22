@@ -9,10 +9,10 @@ const CostomerProfile = () => {
     const cetEguryFilter=(id,arr)=>arr.filter((arry)=>arry.id==id)
     const user=cetEguryFilter(id,userData)
     // console.log()
-    
+    const {name}=user[0]
     return (
         <>
-            <Page header={`Costomer Profile : ${user[0].name}`} >
+            <Page header={`Costomer Profile : ${name}`} >
 
             </Page>
         </>

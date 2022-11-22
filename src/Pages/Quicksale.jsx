@@ -1,6 +1,7 @@
 import React from 'react'
 import { ActiveTabsContainer, Tab, TabsBtn, TabsCard, TabsContainer, TabsContent } from '../Components/Tabs'
 import Page from '../Layouts/Page'
+import { PkgInvoice, Proinvoice, RbsInvoice } from './Invoice'
 
 export default function Quicksale({ header }) {
 
@@ -19,13 +20,16 @@ export default function Quicksale({ header }) {
           </TabsCard>
           <TabsContent>
             <ActiveTabsContainer active="show active" id={'RBS-Invoices'} area_label={'RBS-Invoices-tab'}>
-              <h1>rbs Invoice</h1>
+              <h1>Rbs Invoice</h1>
+              <RbsInvoice/>
             </ActiveTabsContainer>
             <ActiveTabsContainer id={'PKG-Invoices'} area_label={'PKG-Invoices-tabs'}>
               <h1>pkg Invoice</h1>
+              <PkgInvoice/>
             </ActiveTabsContainer>
             <ActiveTabsContainer id={'PRO-Invoices'} area_label={'PRO-Invoices-tabs'}>
               <h1>product Invoice</h1>
+              <Proinvoice/>
             </ActiveTabsContainer>
           </TabsContent>
         </Tab>

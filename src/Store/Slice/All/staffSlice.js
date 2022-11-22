@@ -6,7 +6,7 @@ import axios from 'axios';
 export const fetchStaff = createAsyncThunk(
     'staff/',
     async () => {
-      const response = await axios(apiRoutes.stuff).then((e)=>e.data.service)
+      const response = await axios(apiRoutes.stuff).then((e)=>e.data.staff)
       // console.log(response);
       return response
     }

@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@mui/material'
+import { Button, IconButton, Switch } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { BsClipboard } from 'react-icons/bs'
@@ -9,17 +9,17 @@ import { fetchStaff } from '../../../../Store/Slice/All/staffSlice'
 
 export default function StuffDetail() {
   const { staff } = useSelector((state => state.stuff))
-  function addHours(date, hours) {
-    date.setHours(date.getHours() + hours);
+  const { stuffCetegury } = useSelector((state => state.categury))
+  const dispatch=useDispatch()
+  const cetEguryFilter=(id,arr)=>arr.filter((arry)=>arry.id===id)
+  // console.log()
+  const onDelate=(id)=>{
+    axios.delete(`${apiRoutes.stuff}/${id}`).then((e)=>{
 
-    return date;
+      dispatch(fetchStaff())
+    })
   }
-
-  const date = new Date();
-
-  const newDate = addHours(date, 1);
-
-  console.log(newDate);
+  // console.log(newDate);
   return (
     <>
       <div className="container d-flex justify-content-between">
@@ -34,7 +34,7 @@ export default function StuffDetail() {
         <table class="table border-0">
           <thead className='border-0'>
             <tr className='border-0'>
-              <th scope="col">#</th>
+              {/* <th scope="col">#</th> */}
               <th scope="col">Name</th>
               <th scope="col">Stuff Designation</th>
               <th scope="col">Time</th>
@@ -46,17 +46,19 @@ export default function StuffDetail() {
             {staff ?
 
               staff.map((staff, index) => {
-                const { name, status } = staff
+                const { firstname,lastname, status,id,stafftypesid } = staff
+                
                 return (<>
                   <tr>
                     {/* <th scope="row">{++index}</th> */}
-                    <td>{name}</td>
+                    <td>{firstname} {lastname}</td>
+                    <td>{cetEguryFilter(stafftypesid,stuffCetegury)[0].name}</td>
                     <td>{status ? <span className='text-success'>Active</span> : <span className='text-danger'>DeActive</span>}</td>
                     <td>
                       <IconButton>
                         <MdEdit color='orange' size={20} />
                       </IconButton>
-                      <IconButton>
+                      <IconButton onClick={()=>onDelate(id)}>
                         <MdDelete color='red' size={20} />
                       </IconButton>
                     </td>
@@ -80,16 +82,13 @@ const AddStuff = ({ id }) => {
   const [middelname, setmiddelname] = useState("")
 
   const [img, setImg] = useState("")
-  const [marital, setmarital] = useState("")
   const [gender, setGender] = useState("")
 
+  const [marital, setmarital] = useState("")
   const [birthday, setBirthday] = useState("")
   const [anny, setAnny] = useState("")
   // const [gender, setGender] = useState("")
 
-  // Store Categury & StffType
-  const [stufftype, setstufftype] = useState("")
-  const [StoreId, setStoreId] = useState("")
   // Contact Info
   const [mobaile, setmobaile] = useState("")
   const [whatmobaile, setwhatmobaile] = useState("")
@@ -116,25 +115,32 @@ const AddStuff = ({ id }) => {
   const [bank_name, setbank_name] = useState("")
   const [bank_account_holder_name, setbank_account_holder_name] = useState("")
   
+  // Store Categury & StffType
+  const [stufftype, setstufftype] = useState("")
+  
+  const { store } = useSelector((state => state.store))
+  const [StoreId, setStoreId] = useState('')
+
   
   const [addhar_no, setaddhar_no] = useState("")
   const [pan_no, setpan_no] = useState("")
   const [drl_no, setdrl_no] = useState("")
-  
+
   const [addhar_doc_url, setaddhar_doc_url] = useState("")
   const [pan_doc_url, setpan_doc_url] = useState("")
   const [drl_doc_url, setdrl_doc_url] = useState("")
   const [bank_account_doc, setbank_account_doc] = useState("")
-  
-  const [pf, setPf] = useState("")
-  const [ins, setIns] = useState("")
-  const [mediClaim, setMediclaim] = useState("")
+
+  const [pf, setPf] = useState(true)
+  const [ins, setIns] = useState(true)
+  const [mediClaim, setMediclaim] = useState(true)
 
   const [msg, setMsg] = useState("")
 
-  
+
   const dispatch = useDispatch()
   const submit = () => {
+    const formData = new FormData();
     const data = {
       firstname: firstname,
       lastname: lastname,
@@ -164,11 +170,11 @@ const AddStuff = ({ id }) => {
       ins: ins,
       mediClaim: mediClaim,
 
-      birthday: ins,
-      marrige_anny: mediClaim,
-      marit_status: mediClaim,
+      birthday: birthday,
+      marrige_anny: anny,
+      marit_status: marital,
 
-      img: img,
+      // img: img,
       gender: gender,
       stufftype: stufftype,
       StoreId: StoreId,
@@ -176,30 +182,32 @@ const AddStuff = ({ id }) => {
       addhar_no: addhar_no,
       pan_no: pan_no,
       drl_no: drl_no,
-      
-      
+
+
       bank_account_no: bank_account_no,
       bank_account_ifc: bank_account_ifc,
       bank_name: bank_name,
       bank_account_holder_name: bank_account_holder_name,
-
-      bank_account_doc: bank_account_doc,
-      addhar_doc_url: addhar_doc_url,
-      pan_doc_url: pan_doc_url,
-      drl_doc_url: drl_doc_url,
     }
-      const formData = new FormData();
-      formData.append('img', addhar_doc_url);
-    // const data2={
-    //   data:
-    // }
+    formData.append('profile_img', img);
+    formData.append('datas', JSON.stringify(data));
+    formData.append('adhar_card', addhar_doc_url);
+    formData.append('pancard', pan_doc_url);
+    formData.append('driving_liences', drl_doc_url);
+    formData.append('bankstatement', bank_account_doc);
+
+    const data2 = {
+      formData,
+      datas: data
+    }
     console.log(addhar_doc_url);
-    axios.post('http://127.0.0.1:8000/api/test', formData).then(e => {
-      // setMsg(e.data.msg)
+    axios.post(apiRoutes.stuff, formData).then(e => {
+      setMsg(e.data.msg)
       console.log(e.data.msg);
-      // dispatch(fetchStaff())
+      dispatch(fetchStaff())
     })
   }
+  const { stuffCetegury } = useSelector((state => state.categury))
 
   return (
     <>
@@ -261,16 +269,16 @@ const AddStuff = ({ id }) => {
 
                     <div class="form-row">
                       <Input
-                        onchange={(e) => setfirstname(e.target.value)}
+                        onchange={(e) => setBirthday(e.target.value)}
                         plase={'Birth Day'}
-                        value={firstname}
+                        value={birthday}
                         title={"Staff Birthday"}
                         type="date"
                       />
                       <Input
-                        onchange={(e) => setlastname(e.target.value)}
+                        onchange={(e) => setAnny(e.target.value)}
                         plase={'Staff Birthday'}
-                        value={lastname}
+                        value={anny}
                         title={"Staff Marrige Annyversury"}
                         type="date"
                       />
@@ -280,9 +288,10 @@ const AddStuff = ({ id }) => {
                     <div class="form-row">
                       {/* <input */}
                       <Input
-                        onchange={(e) => setJobhours(e.target.value)}
-                        plase={'9 hours'}
-                        value={jobhours}
+                        onchange={(e) => setImg(e.target.files[0])}
+                        // plase={'9 hours'}
+                        name="file"
+                        // value={img}
                         title={"Profile Img"}
                         type="file"
                       />
@@ -309,10 +318,10 @@ const AddStuff = ({ id }) => {
                             id="inputGroupSelect01"
                           >
                             <option selected>Select Weekend Day</option>
-                            <option value="Mon">Meride</option>
-                            <option value="Thu">none marride</option>
-                            <option value="Thu">Devorce</option>
-                            <option value="Thu">Angage</option>
+                            <option value="0">Meride</option>
+                            <option value="1">none marride</option>
+                            <option value="3">Devorce</option>
+                            <option value="4">Angage</option>
                           </select>
                         </div>
                       </div>
@@ -363,7 +372,6 @@ const AddStuff = ({ id }) => {
                     </div>
                     {/* Address */}
                     <center className="my-3"><h5>Staff Address</h5></center>
-
                     <div class="form-row">
                       <Input
                         onchange={(e) => setCity(e.target.value)}
@@ -457,85 +465,58 @@ const AddStuff = ({ id }) => {
                         plase={'in no.'}
                         value={sallery}
                         title={"Sallery"}
-                        type="number"
+                        type="text"
                       />
                       <Input
                         onchange={(e) => setProductSale(e.target.value)}
                         plase={'In No'}
                         value={ProductSale}
                         title={"Product Sell Payout"}
-                        type="number"
+                        type="text"
                       />
                       <Input
                         onchange={(e) => setPkgSale(e.target.value)}
                         plase={'In No'}
                         value={PkgSale}
                         title={"Package Sell Payout"}
-                        type="number"
+                        type="text"
                       />
                       <Input
                         onchange={(e) => setserviceSale(e.target.value)}
                         plase={'In No'}
                         value={serviceSale}
                         title={"Service Sell Payout"}
-                        type="number"
+                        type="text"
                       />
                       <Input
                         onchange={(e) => setserviceExicute(e.target.value)}
                         plase={'In No'}
                         value={serviceExicute}
                         title={"Service Exicute Payout"}
-                        type="number"
+                        type="text"
                       />
 
                     </div>
-                    {/* Benifits */}
-                    <center className="my-3"><h5>Stuff Benifits</h5></center>
-
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setPf(e.target.value)}
-                        plase={'in no.'}
-                        value={pf}
-                        title={"PF"}
-                        type="number"
-                      />
-                      <Input
-                        onchange={(e) => setIns(e.target.value)}
-                        plase={'In No'}
-                        value={ins}
-                        title={"Insaurence"}
-                        type="number"
-                      />
-                      <Input
-                        onchange={(e) => setMediclaim(e.target.value)}
-                        plase={'In No'}
-                        value={mediClaim}
-                        title={"Mediclaim"}
-                        type="number"
-                      />
-                    </div>
-
                     {/* Stufff Document */}
                     <center className="my-3"><h5>Stuff Document's</h5></center>
 
                     <div class="form-row">
                       <Input
-                        onchange={(e) => setPf(e.target.value)}
+                        onchange={(e) => setaddhar_no(e.target.value)}
                         plase={'in no.'}
                         value={addhar_no}
                         title={"Adhar Card No."}
                         type="number"
                       />
                       <Input
-                        onchange={(e) => setIns(e.target.value)}
+                        onchange={(e) => setpan_no(e.target.value)}
                         plase={'In No'}
                         value={pan_no}
                         title={"Pan Card No."}
                         type="text"
                       />
                       <Input
-                        onchange={(e) => setMediclaim(e.target.value)}
+                        onchange={(e) => setdrl_no(e.target.value)}
                         plase={'Driving Lincence No.'}
                         value={drl_no}
                         title={"Driving Lincence No."}
@@ -544,21 +525,21 @@ const AddStuff = ({ id }) => {
                       <Input
                         onchange={(e) => setaddhar_doc_url(e.target.files[0])}
                         plase={'in no.'}
-                        value={addhar_doc_url}
+                        // value={addhar_doc_url}
                         title={"Adhar Card Doc"}
                         type="file"
                       />
                       <Input
-                        onchange={(e) => setpan_doc_url(e.target.value)}
+                        onchange={(e) => setpan_doc_url(e.target.files[0])}
                         plase={'In No'}
-                        value={pan_doc_url}
+                        // value={pan_doc_url}
                         title={"Pan Card Doc"}
                         type="file"
                       />
                       <Input
-                        onchange={(e) => setdrl_doc_url(e.target.value)}
+                        onchange={(e) => setdrl_doc_url(e.target.files[0])}
                         plase={'Driving Lincence No.'}
-                        value={drl_doc_url}
+                        // value={drl_doc_url}
                         title={"Driving Lincence Doc"}
                         type="file"
                       />
@@ -597,9 +578,9 @@ const AddStuff = ({ id }) => {
                         type="text"
                       />
                       <Input
-                        onchange={(e) => setbank_account_doc(e.target.value)}
+                        onchange={(e) => setbank_account_doc(e.target.files[0])}
                         plase={'In No'}
-                        value={bank_account_doc}
+                        // value={bank_account_doc}
                         title={"Passbook Ya cheq Copy"}
                         type="file"
                       />
@@ -613,18 +594,14 @@ const AddStuff = ({ id }) => {
                         <div class="form-group">
                           <label for="inputGroupSelect01">Select store</label>
                           <select
-                            onChange={(e) => setWeekend(e.target.value)}
+
+                            onChange={(e) =>setStoreId(e.target.value)}
                             class="custom-select"
                             id="inputGroupSelect01"
                           >
                             <option selected>Select Weekend Day</option>
-                            <option value="Mon">Monday</option>
-                            <option value="Thu">Thusday</option>
-                            <option value="Wen">Wenusday</option>
-                            <option value="Thu">Thursday</option>
-                            <option value="Fri">Friday</option>
-                            <option value="Sat">Saturday</option>
-                            <option value="Sun">Sunday</option>
+                            {store.map((e)=><option key={e.id} value={e.id}>{e.name}</option>)}
+
                           </select>
                         </div>
                       </div>
@@ -632,20 +609,50 @@ const AddStuff = ({ id }) => {
                         <div class="form-group">
                           <label for="inputGroupSelect01">Select Stuff Type</label>
                           <select
-                            onChange={(e) => setWeekend(e.target.value)}
+                            onChange={(e) =>setstufftype(e.target.value)}
                             class="custom-select"
                             id="inputGroupSelect01"
                           >
-                            <option selected>Select Weekend Day</option>
-                            <option value="Mon">Monday</option>
-                            <option value="Thu">Thusday</option>
-                            <option value="Wen">Wenusday</option>
-                            <option value="Thu">Thursday</option>
-                            <option value="Fri">Friday</option>
-                            <option value="Sat">Saturday</option>
-                            <option value="Sun">Sunday</option>
+                            <option selected>Select Stuff Type</option>
+                            {stuffCetegury.map((e)=><option key={e.id} value={e.id}>{e.name}</option>)}
                           </select>
                         </div>
+                      </div>
+
+                    </div>
+                    <center className="my-3"><h5>Stuff Benifits</h5></center>
+                    {/* Benifits */}
+                    <div className="row">
+                      <div class="form-group my-0">
+                        <Switch
+                          onChange={(e) => setIns(!ins)}
+                          checked={ins}
+                        />
+
+                        {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                        <label class="form-check-label" for="invalidCheck">
+                          Insourense
+                        </label>
+                      </div>
+                      <div class="form-group my-0">
+                        <Switch
+                          onChange={(e) => setPf(!pf)}
+                          checked={pf}
+                        />
+                        {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                        <label class="form-check-label" for="invalidCheck">
+                          Pf
+                        </label>
+                      </div>
+                      <div class="form-group my-0">
+                        <Switch
+                          onChange={(e) => setMediclaim(!mediClaim)}
+                          checked={mediClaim}
+                        />
+                        {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                        <label class="form-check-label" for="invalidCheck">
+                          Mediclam
+                        </label>
                       </div>
                     </div>
                   </div>
