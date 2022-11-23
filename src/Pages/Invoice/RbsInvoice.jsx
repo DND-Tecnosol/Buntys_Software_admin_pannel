@@ -23,21 +23,21 @@ export default function RbsInvoice() {
     const staffData = useSelector((stae) => stae.stuff.staff)
     const serVicefind = (id) => serviceData.filter((data) => data.id === id)
     const stafffind = (id) => staffData.filter((data) => data.id === id)
-    // const totle=items.map((e)=>totles+=e.totale)
-    // function findTotal(){
-    //     var arr = items;
-    //     var tot=0;
-    //     for(var i=0;i<=arr.length;i++){
-    //         console.log(arr[i].totale)
-    //         tot += arr[i].totale;
-    //     }
-    //     console.log(`finel totel ${tot}`)
-    //     return tot
-    //     // document.getElementById('total').value = tot;
-    // }
 
     return (
         <>
+        <div className="container-fluide">
+        <div className="container">
+            <div className="card">
+                <div className="card-header">
+                    New Costomer
+                </div>
+                <div className="body">
+
+                </div>
+            </div>
+        </div>
+        </div>
             <Button onClick={() => dispatch(allItemsRem())}>Clear All Items</Button>
             <table class="table">
                 <thead>
@@ -82,6 +82,7 @@ export default function RbsInvoice() {
                 </tbody>
             </table>
             <InvoiceServiceSection />
+
         </>
     )
 }
@@ -131,15 +132,11 @@ const InvoiceServiceSection = ({ title, label, plase, onchange, ...props }) => {
         dispatch(addItems(state))
         console.log(state);
     }
-    //    function totalDiscount() {
-    //         return (Math.abs((((1-(discount1/100))*(1-(this.state.discount2/100)))-1)*100)).toFixed(2);
-    //       }
 
     return (
         <>
-            <div className="container-fluide">
                 <div className="row d-flex justify-content-around">
-                    <SearchSelect onChange={(event, id) => serVicefind(id.id)} options={service} label="Add Service" />
+                    <SearchSelect  onChange={(event, id) => serVicefind(id.id)} options={service} label="Add Service" />
                     <SearchSelect onChange={(event, id) => setstaffId(id.id)} options={staff} label="Add Staff" />
                     <div className="col-1">
                         <TextField id="outlined-basic" onChange={(e) => setqty(e.target.value)} value={qty} sx={{ width: '100%' }} label="Qty" variant="outlined" />
@@ -160,12 +157,11 @@ const InvoiceServiceSection = ({ title, label, plase, onchange, ...props }) => {
                         onClick={addService}
                     >Add Service</Button>
                 </div>
-            </div>
         </>
     );
 }
 
-const SearchSelect = ({ label, ...data }) => {
+const SearchSelect = ({ label,inputchange, ...data }) => {
     return (
         <>
             <div className="col-2">
@@ -174,7 +170,8 @@ const SearchSelect = ({ label, ...data }) => {
                     disablePortal
                     id="combo-box-demo"
                     // sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label={label} />}
+                    noOptionsText={'Nothing'}
+                    renderInput={(params) => <TextField {...params} onChange={inputchange} label={label} />}
                 />
             </div>
         </>
