@@ -1,14 +1,25 @@
-import React from "react";
+import React,{useEffect} from "react";
 import Page from "../Layouts/Page";
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart as chartJS } from "chart.js/auto";
 import { ChartCard } from "../Components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@mui/material";
+import { authLogout } from "../Store/Slice/Auth/authSlice";
+// import Echo from 'laravel-echo';
+// import Pusher from 'pusher-js';
+// import { fetchServices } from "../Store/Slice/All/serviceSlice";
+
+
+
 export default function Dashbord({ header }) {
-   const state= useSelector((state)=>state)
-   console.log(state);
-  return (
+   const state= useSelector((state)=>state.service)
+   const dispatch=useDispatch()
+return (
     <Page header={header}>
+      <Button
+      onClick={()=>dispatch(authLogout())}
+      >Logout</Button>
       <div class="alert alert-success" role="alert">
         One Appoitment Coming Soon
       </div>
@@ -17,7 +28,7 @@ export default function Dashbord({ header }) {
           {/* <!-- small box --> */}
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>1500</h3>
+              {/* <h3>{state.service.length || 0}</h3> */}
 
               <p>Bill Count</p>
             </div>

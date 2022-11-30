@@ -40,7 +40,7 @@ const AddService = ({ id }) => {
       setPrice('')
       setMinPrice('')
       setMsg('')
-      dispatch(fetchServices())
+      // dispatch(fetchServices())
       // setTimeout(()=>setMsg(false),10000)
     });
   };

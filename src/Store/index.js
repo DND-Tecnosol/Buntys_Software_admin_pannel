@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { costumerReducer,serviceReducer,storeReducer,invoiceItemsReducer,allCetegurytypesReducer,stuffReducer } from './Slice'
+import { themeReducer,authReducer,costumerReducer,serviceReducer,storeReducer,invoiceItemsReducer,allCetegurytypesReducer,stuffReducer } from './Slice'
 
 export const store = configureStore({
   reducer: {
@@ -9,5 +9,7 @@ export const store = configureStore({
     store:storeReducer,
     invoiceItems:invoiceItemsReducer,
     categury:allCetegurytypesReducer,
+    auth:authReducer,
+    theme:themeReducer
   },
 })

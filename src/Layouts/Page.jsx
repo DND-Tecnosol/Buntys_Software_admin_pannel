@@ -1,39 +1,46 @@
-import React, { useEffect } from 'react'
-import { CostomerModel, Footer, Navbar, Sidebar,AddService,
+import React, { useEffect, useState } from 'react'
+import {
+    CostomerModel, Footer, Navbar, Sidebar, AddService,
     AddProduct,
-    Appoitment,Addinvoice} from '../Components'
+    Appoitment, Addinvoice
+} from '../Components'
 import { Link, Outlet } from "react-router-dom";
 import routesconst from '../Constants/routesconst';
 import { addCostomer, fetchCostomer } from '../Store/Slice/Costomer/costumerSlice';
 import { addService, fetchServices } from '../Store/Slice/All/serviceSlice';
 import { fetchStore } from '../Store/Slice/All/storeSlice';
-import { useDispatch } from 'react-redux';
-import { fetchserviceCetegury,
-fetchcostomerCetegury,
-fetchstuffCetegury } from '../Store/Slice/types/allCetegurytypesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    fetchserviceCetegury,
+    fetchcostomerCetegury,
+    fetchstuffCetegury
+} from '../Store/Slice/types/allCetegurytypesSlice';
 import { fetchStaff } from '../Store/Slice/All/staffSlice';
 
+
+
 export default function Page({ children, header }) {
-        document.title ="Bunty's studio || "+header;
-        const dispatch = useDispatch();
-        
-        useEffect(()=>{
-            
-            dispatch(fetchserviceCetegury())
-            dispatch(fetchStaff())
-            dispatch(fetchcostomerCetegury())
-            dispatch(fetchstuffCetegury())
-            dispatch(fetchServices())
-            dispatch(fetchCostomer())
-            dispatch(fetchStore())
-            dispatch(addService())
-        },[])
+    document.title = "Bunty's studio || " + header;
+    const dispatch = useDispatch();
+    
+    // const [logoStatus, setLogoStatus] = useState(true)
+    useEffect(() => {
+        dispatch(fetchserviceCetegury())
+        dispatch(fetchStaff())
+        dispatch(fetchcostomerCetegury())
+        dispatch(fetchstuffCetegury())
+        dispatch(fetchServices())
+        dispatch(fetchCostomer())
+        dispatch(fetchStore())
+        dispatch(addService())
+    }, [])
+    console.log(window)
     return (
         <>
             <div class="wrapper">
                 <Navbar />
                 <Sidebar />
-                <div class="content-wrapper">
+                <div class="content-wrapper rounded-lg">
                     <div class="content-header">
                         <div class="container-fluid">
                             <div class="row mb-2">
@@ -55,17 +62,17 @@ export default function Page({ children, header }) {
                         </div>
                     </section>
                 </div>
-    {/* Models start Hear */}
-    <CostomerModel id={'exampleModal'}/>
-    <AddService id={'services'}/>
-    <AddProduct id={'products'}/>
-    <Appoitment id={'Appoitment'}/>
-    <Addinvoice id={'invoices'}/>
-    {/* Models end */}
+                {/* Models start Hear */}
+                <CostomerModel id={'exampleModal'} />
+                <AddService id={'services'} />
+                <AddProduct id={'products'} />
+                <Appoitment id={'Appoitment'} />
+                <Addinvoice id={'invoices'} />
+                {/* Models end */}
                 <Footer />
                 <aside class="control-sidebar control-sidebar-dark">
-    {/* <!-- Control sidebar content goes here --> */}
-  </aside>
+                    {/* <!-- Control sidebar content goes here --> */}
+                </aside>
             </div>
         </>
     )

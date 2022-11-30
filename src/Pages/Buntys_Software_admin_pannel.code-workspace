@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../AdminLTE"
+		}
+	],
+	"settings": {},
+	"extensions": {
+		"recommendations": [
+			"thekalinga.bootstrap4-vscode"
+		]
+	}
+}

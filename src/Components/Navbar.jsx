@@ -1,13 +1,17 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { logoChange } from '../Store/Slice/Theme/themeSlice'
 
 export default function Navbar() {
+  const dispatch=useDispatch()
+  
   return (
     <>
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav class="main-header navbar navbar-expand navbar-fixed navbar-white navbar-light border-0" style={{height:'79px'}}>
     {/* <!-- Left navbar links --> */}
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link" onClick={()=>dispatch(logoChange())} data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
