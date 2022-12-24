@@ -1,7 +1,6 @@
 import React from "react";
 import Page from "../Layouts/Page";
 import { Bar, Pie } from "react-chartjs-2";
-import { Chart as chartJS } from "chart.js/auto";
 import { ChartCard } from "../Components";
 import { useSelector } from "react-redux";
 export default function Dashbord({ header }) {
@@ -78,7 +77,7 @@ export default function Dashbord({ header }) {
       </div>
 
       <div className="row">
-        <ChartCard title={'Sale'} >
+        {/* <ChartCard title={'Sale'} >
           <Bar
             datasetIdKey="id"
             data={{
@@ -117,7 +116,7 @@ export default function Dashbord({ header }) {
               ],
             }}
           />
-        </ChartCard>
+        </ChartCard> */}
         <ChartCard title="Today's Appoitment">
           <table class="table table-striped table-valign-middle">
             <thead>

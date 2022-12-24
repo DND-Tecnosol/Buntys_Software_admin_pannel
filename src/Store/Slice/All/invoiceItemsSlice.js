@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     items:[],
-    totale:0
+    totale:0,
+    miNtotale:0
 
 }
 
@@ -21,6 +22,7 @@ const invoiceItemsSlice = createSlice({
     addItems:(state,action)=>{
       state.items.push(action.payload)
       state.totale=state.totale+=action.payload.totale
+      state.miNtotale=state.miNtotale+=action.payload.miNtotale
     },
     addItemsValue:(state,action)=>void(state.items[action.payload.id]=action.payload)
   }

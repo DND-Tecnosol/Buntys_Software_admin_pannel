@@ -1,13 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "../.."
-		},
-		{
 			"path": "../../../../buntys/buntys-api"
-		},
-		{
-			"path": "../../../../buntys/AdminLTE-master (1)/AdminLTE-master"
 		}
 	],
 	"settings": {}
