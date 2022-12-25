@@ -1,7 +1,6 @@
 import React,{useEffect} from "react";
 import Page from "../Layouts/Page";
 import { Bar, Pie } from "react-chartjs-2";
-import { Chart as chartJS } from "chart.js/auto";
 import { ChartCard } from "../Components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
@@ -89,7 +88,7 @@ return (
       </div>
 
       <div className="row">
-        <ChartCard title={'Sale'} >
+        {/* <ChartCard title={'Sale'} >
           <Bar
             datasetIdKey="id"
             data={{
@@ -128,7 +127,7 @@ return (
               ],
             }}
           />
-        </ChartCard>
+        </ChartCard> */}
         <ChartCard title="Today's Appoitment">
           <table class="table table-striped table-valign-middle">
             <thead>
