@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import apiRoutes from '../../Constants/apiRoutes';
 import axios from 'axios';
 import { fetchServices } from '../../Store/Slice/All/serviceSlice';
+import { refreshStore } from '../../Store/Slice/refresh';
+import { addmsg } from '../../Store/Slice/All/msgSlice';
 
 const Alertmsg = ({ msg }) => {
   return (<>
@@ -17,9 +19,12 @@ const AddService = ({ id }) => {
 
   const { serviceCetegury } = useSelector(state => state.categury)
   var [name, setName] = useState("");
+  var [progress, setProgrss] = useState(false);
   var [serviceCategury, setServiceCategury] = useState("");
   var [price, setPrice] = useState("");
   var [minPrice, setMinPrice] = useState("");
+  var [serviceDuration, setServiceDuration] = useState("");
+  var [serviceTime, setServiceTime] = useState("");
   var [msg, setMsg] = useState(false);
   // var [apponot, setname] = useState('');
   const dispatch = useDispatch();
@@ -33,14 +38,21 @@ const AddService = ({ id }) => {
       minprice: minPrice,
     };
     console.log(data);
-    axios.post(apiRoutes.Service, data).then((e) => {
-      setMsg(e.data.msg)
+    axios.post(apiRoutes.Service, data, {
+      onUploadProgress: (e) => {
+        setProgrss(true)
+      }
+    }).then((e) => {
+      // setMsg(e.data.msg)
+      console.log(e.data);
+      setProgrss(false)
+      dispatch(addmsg(e.data))
       setName('')
       setServiceCategury('')
       setPrice('')
       setMinPrice('')
       setMsg('')
-      // dispatch(fetchServices())
+      dispatch(fetchServices())
       // setTimeout(()=>setMsg(false),10000)
     });
   };
@@ -112,13 +124,34 @@ const AddService = ({ id }) => {
                       title={"Min Price"}
                     />
                   </div>
+                  <div className="form-row">
+                    <Input
+                      onchange={(e) => setPrice(e.target.value)}
+                      plase={'Service Duration'}
+                      value={price}
+                      title={"Service Duration"}
+                      type="text"
+                    />
+                    <Input
+                      onchange={(e) => setMinPrice(e.target.value)}
+                      type="text"
+                      value={minPrice}
+                      plase={'Service Time'}
+                      title={"Service Time"}
+                    />
+                  </div>
                 </div>
               </div>
               <div class="modal-footer border-0">
                 <input type="reset" class="btn btn-danger" />
 
-                <button type="button" onClick={submit} class="btn btn-primary">
-                  Create New Service
+                <button type="button" onClick={submit} class={`btn btn-${progress ? 'warning' : 'primary'}`}>
+                 {progress ? <><div class="spinner-grow mx-1" style={{marginTop:'3px',height:'1rem',width:'1rem'}} role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  Please Wait...
+                  </> : 'Create New Service'}
+                  
                 </button>
               </div>
             </form>

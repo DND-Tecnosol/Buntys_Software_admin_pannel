@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@mui/material";
 import { FiPlus } from "react-icons/fi";
-import {PhotoCamera} from '@mui/icons-material';
+// import {PhotoCamera} from '@mui/icons-material';
 import {
   addItems,
   remItems,

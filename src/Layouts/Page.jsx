@@ -22,7 +22,8 @@ import { fetchStaff } from '../Store/Slice/All/staffSlice';
 export default function Page({ children, header }) {
     document.title = "Bunty's studio || " + header;
     const dispatch = useDispatch();
-    
+    const refresh=useSelector(state=>state.refresh.refresh)
+
     // const [logoStatus, setLogoStatus] = useState(true)
     useEffect(() => {
         dispatch(fetchserviceCetegury())
@@ -33,7 +34,7 @@ export default function Page({ children, header }) {
         dispatch(fetchCostomer())
         dispatch(fetchStore())
         dispatch(addService())
-    }, [])
+    }, [refresh])
     console.log(window)
     return (
         <>
