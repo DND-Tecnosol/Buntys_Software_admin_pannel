@@ -1,4 +1,4 @@
-const apiDomain="http://127.0.0.1:8000"
+const apiDomain="http://192.168.29.208:8000"
 export default {
     "costomer":`${apiDomain}/api/costomer`,
     "costomerType":`${apiDomain}/api/costumertype`,
