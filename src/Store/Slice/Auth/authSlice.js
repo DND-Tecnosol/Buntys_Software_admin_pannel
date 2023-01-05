@@ -18,6 +18,9 @@ const authSlice = createSlice({
   reducers: {
         authLogin:(state,action)=>{
             localStorage.setItem('status', true)
+            localStorage.setItem('user', JSON.stringify(action.payload.user))
+            localStorage.setItem('store', action.payload.user.store)
+            localStorage.setItem('userRole', action.payload.user.roletype)
             state.authStatus=true
         },
         authLogout:(state,action)=>{

@@ -16,6 +16,10 @@ import {
     fetchstuffCetegury
 } from '../Store/Slice/types/allCetegurytypesSlice';
 import { fetchStaff } from '../Store/Slice/All/staffSlice';
+import { Button } from '@mui/material';
+import { refreshStore } from '../Store/Slice/refresh';
+import { fetchInvoice } from '../Store/Slice/All/invoiceSlice';
+import { fetchAppoitment } from '../Store/Slice/All/appointmentSlice';
 
 
 
@@ -23,7 +27,7 @@ export default function Page({ children, header }) {
     document.title = "Bunty's studio || " + header;
     const dispatch = useDispatch();
     const refresh=useSelector(state=>state.refresh.refresh)
-
+    
     // const [logoStatus, setLogoStatus] = useState(true)
     useEffect(() => {
         dispatch(fetchserviceCetegury())
@@ -33,9 +37,13 @@ export default function Page({ children, header }) {
         dispatch(fetchServices())
         dispatch(fetchCostomer())
         dispatch(fetchStore())
-        dispatch(addService())
+        dispatch(fetchInvoice())
+        dispatch(fetchAppoitment())
+        
+        // dispatch(addService())
+        // dispatch(addService())
     }, [refresh])
-    console.log(window)
+    
     return (
         <>
             <div class="wrapper">

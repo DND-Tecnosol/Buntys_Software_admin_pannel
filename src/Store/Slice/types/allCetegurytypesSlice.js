@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import apiRoutes from '../../../Constants/apiRoutes';
-import axios from 'axios';
+import apiRoutes,{appAxios as axios} from '../../../Constants/apiRoutes';
+
 
 export const fetchserviceCetegury = createAsyncThunk(
     'serviceCetegury/',

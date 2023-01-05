@@ -1,5 +1,19 @@
+import axios from "axios";
+
 const apiDomain="http://127.0.0.1:8000"
-export default {
+
+const store= localStorage.getItem('store');
+const userRole= localStorage.getItem('roletype');
+export const appAxios = axios.create({
+    headers: {
+      'Store': store,
+      'UserType':userRole
+    }
+  });
+
+  console.log(store);
+
+  const apiRoutes= {
     "costomer":`${apiDomain}/api/costomer`,
     "costomerType":`${apiDomain}/api/costumertype`,
     "store":`${apiDomain}/api/store`,
@@ -7,5 +21,14 @@ export default {
     "stuff":`${apiDomain}/api/stuff`,
     "Servicetype":`${apiDomain}/api/Servicetype`,
     "Service":`${apiDomain}/api/Service`,
-    "appointment":`${apiDomain}/api/appointment`,
+    "appointment":`${apiDomain}/api/appoitment`,
+    "bookAppoitment":`${apiDomain}/api/appoitment`,
+    "invoice":`${apiDomain}/api/createinvoice`,
+    "allinvoice":`${apiDomain}/api/invoice`,
+    "login":`${apiDomain}/api/login`,
 }
+
+
+
+
+export default apiRoutes;

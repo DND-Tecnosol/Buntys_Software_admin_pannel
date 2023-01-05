@@ -1,10 +1,9 @@
 import { Button, IconButton, Switch } from '@mui/material'
-import axios from 'axios'
 import React, { useState } from 'react'
 import { BsClipboard } from 'react-icons/bs'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import apiRoutes from '../../../../Constants/apiRoutes'
+import apiRoutes,{appAxios as axios} from '../../../../Constants/apiRoutes'
 import { fetchStaff } from '../../../../Store/Slice/All/staffSlice'
 
 export default function StuffDetail() {
