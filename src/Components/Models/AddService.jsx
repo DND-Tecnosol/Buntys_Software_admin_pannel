@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import apiRoutes from '../../Constants/apiRoutes';
-import axios from 'axios';
+import apiRoutes,{appAxios as axios} from '../../Constants/apiRoutes';
+// import {appAxios as axios} from '../../constants/apiRoutes.js'
 import { fetchServices } from '../../Store/Slice/All/serviceSlice';
 import { refreshStore } from '../../Store/Slice/refresh';
 import { addmsg } from '../../Store/Slice/All/msgSlice';

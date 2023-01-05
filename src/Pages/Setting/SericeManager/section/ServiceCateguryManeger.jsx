@@ -2,8 +2,8 @@ import React,{useState} from 'react'
 import { IconButton,Button } from '@mui/material';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios';
-import apiRoutes from '../../../../Constants/apiRoutes';
+// 
+import apiRoutes,{appAxios as axios} from '../../../../Constants/apiRoutes';
 import { fetchserviceCetegury } from '../../../../Store/Slice/types/allCetegurytypesSlice';
 
 export default function ServiceCateguryManeger() {

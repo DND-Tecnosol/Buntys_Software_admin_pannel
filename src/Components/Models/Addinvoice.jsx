@@ -9,8 +9,8 @@ import {
   BsWhatsapp,
 } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
-import apiRoutes from '../../Constants/apiRoutes';
-import axios from 'axios';
+import apiRoutes,{appAxios as axios} from '../../Constants/apiRoutes';
+// 
 import { addCostomer } from '../../Store/Slice/Costomer/costumerSlice';
 import { addItems,addItemsValue } from '../../Store/Slice/All/invoiceItemsSlice';
 const Addinvoice = ({ id }) => {

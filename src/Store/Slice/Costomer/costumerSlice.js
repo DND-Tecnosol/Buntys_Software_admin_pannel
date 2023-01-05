@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import apiRoutes from '../../../Constants/apiRoutes';
-import axios from 'axios';
+import apiRoutes,{appAxios as axios} from '../../../Constants/apiRoutes';
+
 
 export const fetchCostomer = createAsyncThunk(
     'costomer/',
@@ -21,7 +21,7 @@ const costumerSlice = createSlice({
   reducers: {
     addCostomer:(state, action)=> {
         // console.log('m run');
-        state.costomer.push(action.payload)
+        state.costomer=action.payload
     }
   },
   extraReducers:{

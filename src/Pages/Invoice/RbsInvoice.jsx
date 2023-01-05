@@ -3,11 +3,9 @@ import TextField from "@mui/material/TextField";
 import {
   Autocomplete,
   FormControl,
-  Input,
   InputLabel,
   MenuItem,
   Select,
-  ButtonGroup,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@mui/material";
@@ -19,8 +17,8 @@ import {
   allItemsRem,
 } from "../../Store/Slice/All/invoiceItemsSlice";
 import { MdRestoreFromTrash } from "react-icons/md";
-import { data } from "jquery";
 
+import apiRoutes,{appAxios as axios} from '../../Constants/apiRoutes';
 // var [totles,setTotale]=useState(0)
 export default function RbsInvoice() {
   const [costomerSelected, setCostomerSelected] = useState(false);
@@ -34,16 +32,16 @@ export default function RbsInvoice() {
 
   const costomerOption = costomerData.map((data) => ({
     id: data.id,
-    label: data.name,
+    label: `${data.name} ${data.mobaile}`,
   }));
-  const serVicefind = (id) => serviceData.filter((data) => data.id === id);
   const costomerfind = (id) => {
-    const data = costomerData.filter((data) => data.id === id)[0];
+    const data =costomerData ? costomerData.filter((data) => data.id === id)[0] : [];
     setCostomerSelected(data);
     console.log(data);
     return data;
   };
-  const stafffind = (id) => staffData.filter((data) => data.id === id);
+  const serVicefind = (id) =>serviceData ?  serviceData.filter((data) => data.id === id) : [];
+  const stafffind = (id) =>staffData ?  staffData.filter((data) => data.id === id) : [];
   const [benifits, setbenifits] = useState("");
   const date = () => {
     const d = new Date();
@@ -51,43 +49,33 @@ export default function RbsInvoice() {
     return ` ${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
   };
 
-  const [discontPrice, setDiscontPrice] = useState("");
+  const createInvoice=()=>{
 
 
-  const addDisacount = (e) => {
-    const checkDiscont = miNtotale >= totale * (e.target.value / 100) ? setDiscount(e.target.value) : setDiscount(0);
-    console.log({
-      dis: e.target.value,
-      checkDis: checkDiscont,
-      miNtotale: miNtotale,
-      discontValue: totale - totale * (e.target.value / 100),
-    });
-    var code = e.keyCode ? e.keyCode : e.which;
-    
-    if(code === 13){
-        if (!checkDiscont) {
-          setDiscount(0);
-          return 0;
-        } else {
-          setDiscount(e.target.value);
-          return 0;
-        }
-    }
-    // setDiscontPrice(totale * (discount / 100))
-  };
+ const invoiceData= {
+      store_id: 1,
+      costomer_id: costomerSelected.id,
+      invoicetypes_id: 1,
+      totale: totale - totale * (discount / 100),
+      discount_is:(discount===0) ? 0 : 1,
+      discounted_amount: totale * (discount / 100),
+      discount: discount,
+      reward_point_readeem: "0",
+      reward_point_amount: "0",
+      reward_point: "0",
+      vaocher: "0",
+      vaocher_code: "0",
+      vaocher_amount: "0",
+      gst: "0",
+      gst_amount: "0",
+      paid: true,
+      service:items
+  }
+  axios.post(apiRoutes.invoice,invoiceData).then((e)=>{
+    console.log(e)
+  })
+  }
 
-  const checkDiscont = (e) => {
-    var code = e.keyCode ? e.keyCode : e.which;
-    if (code == 13) {
-      //Enter keycode
-      const checkDiscont = miNtotale >= totale * (discount / 100);
-      if (!checkDiscont) {
-        setDiscount(0);
-        console.log(discount);
-      }
-      alert("enter press");
-    }
-  };
   return (
     <>
       <div className="container-fluide">
@@ -220,10 +208,7 @@ export default function RbsInvoice() {
                       </FormControl>
                       {benifits === 1 ? (
                         <>
-                            <Discount onChange={(e) => {
-                                (totale - totale * (e.target.value / 100)) >= miNtotale ? setDiscount(e.target.value) : setDiscount(0)
-                                console.log(`min value:${miNtotale} max:${(totale - totale * (e.target.value / 100))} , ans:${miNtotale >= (totale * (e.target.value / 100))}`)
-                                }} value={discount} />
+                            <Discount onChange={(e) => (totale - totale * (e.target.value / 100)) >= miNtotale ? setDiscount(e.target.value) : setDiscount(0)} value={discount} />
                         </>
                       ) : null || benifits === 2 ? (
                         "Vaoucher"
@@ -282,7 +267,7 @@ export default function RbsInvoice() {
             <div className="card-footer">
               <Button
                 variant="contained"
-                onClick={() => dispatch(allItemsRem())}
+                onClick={() => createInvoice()}
               >
                 Create Invoice
               </Button>
@@ -311,30 +296,20 @@ const InvoiceServiceSection = ({ title, label, plase, onchange, ...props }) => {
   const dispatch = useDispatch();
   const [serviceObj, setServiceObg] = useState({});
   const [staffId, setstaffId] = useState("");
-  const [disc, setdisc] = useState(0);
-  const [totale, settotale] = useState("");
   const [qty, setqty] = useState(1);
   const [price, setprice] = useState("");
 
   const serviceData = useSelector((stae) => stae.service.service);
   const staffData = useSelector((stae) => stae.stuff.staff);
 
-  const service = serviceData.map((data) => ({
+  const service =serviceData ? serviceData.map((data) => ({
     id: data.id,
     label: data.name,
-  }));
-  const staff = staffData.map((data) => ({ id: data.id, label: data.name }));
-  const serVicefind = (id) =>
-    setServiceObg(serviceData.filter((data) => data.id === id)[0]);
-  // const stafffind = (id) => setServiceObg(serviceData.filter((data) => data.id === id)[0])
-  const getDiscount = (e) => {
-    // setTotal(priceTotale)
-  };
-  function getFinalPrice(prices, discount1) {
-    console.log(discount1);
-    console.log(prices);
-    return;
-  }
+  })) : [];
+  const serVicefind = (id) =>setServiceObg(serviceData.filter((data) => data.id === id)[0]);
+
+  const staff = staffData ? staffData.map((data) => ({ id: data.id, label: data.name })):[];
+
   const addService = () => {
     // const discountCheck =serviceObj.price - serviceObj.price * (disc / 100) >= serviceObj.minprice;
     var state = {

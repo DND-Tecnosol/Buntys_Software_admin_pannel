@@ -9,8 +9,8 @@ import {
   BsWhatsapp,
 } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
-import apiRoutes from '../../Constants/apiRoutes';
-import axios  from 'axios';
+import apiRoutes,{appAxios as axios} from '../../Constants/apiRoutes';
+
 import { addCostomer } from '../../Store/Slice/Costomer/costumerSlice';
 const AddProduct = ({id}) => {
     var [mo, setmo] = useState("");
@@ -133,7 +133,6 @@ const AddProduct = ({id}) => {
                         onChange={(e) => setwmo(e.target.value)}
                         value={wmo}
                         type="text"
-                        value={wmo}
                         class="form-control"
                         id="validationCustomUsername"
                         placeholder="Whatsapp no."

@@ -13,8 +13,8 @@ import { FaEdit } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { MdSendToMobile } from "react-icons/md";
-import axios from "axios";
-import apiRoutes from "../../Constants/apiRoutes";
+
+import apiRoutes,{appAxios as axios} from "../../Constants/apiRoutes";
 import { useSelector, useDispatch } from "react-redux";
 import { addCostomer, fetchCostomer } from "../../Store/Slice/Costomer/costumerSlice";
 const tabelHeade = [
@@ -73,9 +73,12 @@ const CustomerSegment = () => {
       <div className="container-fluide col-sm-12">
         <div class="card">
           {/* <!-- /.card-header --> */}
+              <div className="card-header">
+
+              <h3 class="card-title">Costomer Database</h3>
+              </div>
           <div class="card-body">
             <div className="table-responsive">
-              <h3 class="card-title">Costomer Database</h3>
               <table class="table">
                 <thead>
                   <tr>
@@ -126,10 +129,13 @@ const TabelData = ({ no, data }) => {
             <IconButton href={`mailto:${data.email}`} variant="contained">
               <AiOutlineMail className="text-warning" size={20} />
             </IconButton>
-            <IconButton href={`tel:${data.mobaile}`}>
+            {/* <IconButton href={`tel:${data.mobaile}`}>
 
               <BsTelephone className="text-blue" size={20} />
-            </IconButton>
+            </IconButton> */}
+            <a href={`tel:${data.mobaile}`}>
+            {data.mobaile.replace(/.(?=.{4})/g, '*')}
+            </a>
             <IconButton  
               variant="contained"
               color="success"
