@@ -1,0 +1,187 @@
+appointment
+    service_id
+    store_id
+    costommer_id
+    staff_id
+    date
+    time
+    // status  cancell || pending || compelet
+    costmmer_msg
+
+service_categury
+    name
+    status
+
+service
+    name
+    price
+    min_price
+    min_discont
+    staffcommison
+
+product categury
+    id
+    name
+    status
+
+product_brand
+    id
+    name
+    status
+
+products;
+    id;
+    product_type;
+    product_categury_id;
+    product_brand;
+    name;
+    price;
+    qty;
+    unite;
+    totle_unite;
+    perunit_price;
+
+expense_type;
+    name;
+
+expense;
+    id;
+    expensetype;
+    name;
+    detail;
+    date;
+    expense_payment_mode;
+    expense_vocher_img;
+    expense_amount;
+
+expensetotale;
+    expense_type_id;
+    expense_amount;
+    date;
+    year;
+    day;
+    month;
+
+inquiry;
+    store_id;
+    service_id;
+    name;
+    contact_no;
+    email;
+    whatsapp_no;
+    address;
+
+invoice;
+    id;
+    invoice_uuid;
+    invoice_costomer_id;
+    invoice_store_id;
+    invoice_payment_mood; // case || online || card
+    invoice_categuy; // pkg || rbs || product || weg
+
+    invoice_totale;
+    invoice_gst;
+
+    invoic_benifits; // reward_point || voucher || discount || offers
+    benifits_id 
+    invoice_benifits_amount;
+
+    discount;
+    voucher_id;
+    reward_point;
+
+    invoice_is_gst; // boolean
+
+invoice_service;
+    invoice_id;
+    service_id;
+    store_id;
+    service_qty;
+    staff_id;
+    costomer_id;
+    appointment_id;
+    product_use;
+    product_use_price;
+
+invoice_product;
+    invoice_id;
+    product_id;
+    price;
+    staff_id;
+    product_qty;
+
+invoice_weg;
+    invoice_id;
+    weg_id;
+    weg_size_id;
+    price;
+    staffid;
+
+invoice_pkg
+    id
+    uuid
+    invoice_id
+    service_id
+    service_qty
+    staff_id
+    expiry_date
+    expiry_date
+    start_date
+    staff_selling_commision
+
+pkg_service_execute
+id
+store_id
+pkg_id
+service_id
+costomer_id
+exe_staff_id
+appointment_id
+status
+execute_date
+execute_time
+
+
+staff_commison;
+    staff_id;
+    commison_type
+    service_id;
+    product_id
+    pkg_service
+    hair_weg
+    commison_amount;
+    date;
+
+websappointment;
+    name;
+    store_id;
+    service_id;
+    mobile;
+
+vaoucer_type;
+    name;
+    status;
+
+vaucher;
+    id;
+    uuid;
+    costommer_id;
+    validity;
+    start;
+    end;
+    amount;
+    discount;
+    is_discount;
+    is_amount;
+    status;
+    expiry_status;
+
+reward_point;
+    costommer_id;
+    entry_type;
+    amount;
+
+offers_tyfa
+
+offers
+

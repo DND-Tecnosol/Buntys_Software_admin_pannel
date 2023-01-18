@@ -10,9 +10,6 @@ export const appAxios = axios.create({
       'UserType':userRole
     }
   });
-
-  console.log(store);
-
   const apiRoutes= {
     "costomer":`${apiDomain}/api/costomer`,
     "costomerType":`${apiDomain}/api/costumertype`,

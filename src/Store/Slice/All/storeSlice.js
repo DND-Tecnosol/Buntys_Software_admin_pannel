@@ -6,7 +6,7 @@ export const fetchStore = createAsyncThunk(
     'store/',
     async () => {
       // const response = await axios(apiRoutes.store).then((e)=>e.data.Store)
-      const response= await axios.get("http://192.168.29.106:8000/api/test").then((e)=>e.data.Store)
+      const response= await axios.get(apiRoutes.store).then((e)=>e.data.Store)
       // console.log(response);
       return response
     }
