@@ -51,7 +51,7 @@ expense;
     detail;
     date;
     expense_payment_mode;
-    expense_vocher_img;
+    expense_invoice_img;
     expense_amount;
 
 expensetotale;
@@ -130,16 +130,16 @@ invoice_pkg
     staff_selling_commision
 
 pkg_service_execute
-id
-store_id
-pkg_id
-service_id
-costomer_id
-exe_staff_id
-appointment_id
-status
-execute_date
-execute_time
+    id
+    store_id
+    pkg_id
+    service_id
+    costomer_id
+    exe_staff_id
+    appointment_id
+    status
+    execute_date
+    execute_time
 
 
 staff_commison;
@@ -181,7 +181,29 @@ reward_point;
     entry_type;
     amount;
 
-offers_tyfa
+global_offers_type
+    id
+    name
+    status
 
-offers
+global_offers
+    id
+    name
+    status
+    offers_type [case,discont]
+    offers_code
+    offers_status
+    expiry_date
+    validety
+    sms
+    web_banner
+
+costomer_offers
+    id
+    customer_id
+    offers_type [case,discont]
+    offers_code
+    offers_status
+    expiry_date
+    validety
 
