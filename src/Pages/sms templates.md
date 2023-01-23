@@ -1,0 +1,1 @@
+Happy birthday, [NAME]! To help you celebrate, enjoy [DISCOUNT]% off storewide this month. Use discount code [CODE] at [URL]
