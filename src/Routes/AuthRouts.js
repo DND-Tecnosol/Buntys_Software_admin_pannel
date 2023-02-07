@@ -1,5 +1,5 @@
 import React from 'react'
-import { Login } from '../Pages'
+import { Login,Resetpassword } from '../Pages'
 import {
     BrowserRouter,
     Routes,
@@ -13,7 +13,7 @@ export default function AuthRouts() {
                 <Routes>
                     
                     <Route path={'/'} element={<Login />} />
-                    {/* <Route path={routes.StuffManger} element={<StaffManager />} /> */}
+                    <Route path={'/password-reset'} element={<Resetpassword />} />
                 </Routes>
             </BrowserRouter>
         </>

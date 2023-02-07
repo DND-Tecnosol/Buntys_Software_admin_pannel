@@ -7,8 +7,9 @@ import {
   TextField,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import apiRoutes, { appAxios as axios } from "../../Constants/apiRoutes";
+import apiRoutes, {appAxios} from "../../Constants/apiRoutes";
 import { refreshStore } from "../../Store/Slice/refresh";
+// import { appAxios } from "../../Constants/apiRoutes";
 const Appoitment = ({ id }) => {
   var [date, setDate] = useState("");
   var [time, setTime] = useState("");
@@ -43,6 +44,7 @@ const Appoitment = ({ id }) => {
     setStafffSelected(staffData.filter((data) => data.id === id)[0]);
 
   const submit = () => {
+
     var data = {
       costomer_id: costomerSelected.id,
       staffid: staffSelected.id,
@@ -51,9 +53,9 @@ const Appoitment = ({ id }) => {
       appoitment_time: time.toString(),
       nextappoitment: true,
     };
-    console.log(data);
-    axios.post(apiRoutes.bookAppoitment, data).then((e) => {
-      // alert(e.data.msg)
+    appAxios.post(apiRoutes.bookAppoitment, data).then((e) => {
+      console.log(e.data);
+      // alert(e.data)
       dispatch(refreshStore());
     });
   };

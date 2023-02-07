@@ -1,78 +1,194 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { IconButton, Switch } from "@mui/material";
 import { useState, useCallback } from "react";
-import { HiBellAlert } from "react-icons/hi2";
-import { MdAlarm, MdDoorbell, MdEdit } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Page from "../Layouts/Page";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import apiRoutes, { appAxios } from "../Constants/apiRoutes";
+import { fetchAppoitment } from './../Store/Slice/All/appointmentSlice';
+import { Autocomplete, TextField } from "@mui/material";
 require("react-big-calendar/lib/css/react-big-calendar.css");
 
-// import 'react-big-calendar/lib/sass/styles'
 const localizer = momentLocalizer(moment);
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const Appoitment = ({ header }) => {
-  const [modelActive, setMopdelActive] = useState(false);
-  const [costomers, setCostomerData] = useState();
+  const [model, setModel] = useState(false);
+  const [appointmentinfo, setAppointmentinfo] = useState(false);
+  const [start, setStart] = useState(true);
+  const [end, setEnd] = useState(true);
+  const [services, setService] = useState("");
+  const [costomer, setCostomer] = useState(0);
+  const [staffid, setStaff] = useState("");
+  const [strict, setStrict] = useState(false);
+  const [event, setEvent] = useState(false);
 
-  const {
-    costomer: { costomer },
-    stuff: { staff },
-  } = useSelector((state) => state);
+  const disapatch = useDispatch()
 
-  const clientDetail = (id) => {
-    // alert(id)
-    setMopdelActive(true);
-    setCostomerData(id);
-    // console.log()
-    // cetEguryFilter(costomers)
-  };
+  const onSelectEvent = useCallback((e) => {
+    console.log(e)
+    setAppointmentinfo(!appointmentinfo)
+    setEvent(e.resourceId)
+  }, [model])
+  const onSelectSlot = useCallback((e) => {
+    console.log(e);
+    setModel(!model)
+    setStart(moment(e.start).format("Y-M-D HH:mm:ss"))
+    setEnd(moment(e.end).format("Y-M-D HH:mm:ss"))
+    setStaff(e.resourceId)
+    setCostomer(e.costomer)
+  }, [model])
+
+  const bookappointment = () => {
+    const data = {
+      start: start,
+      end: end,
+      satffId: staffid,
+      service: services,
+      strict: strict,
+      costomer: costomer
+    }
+    console.log(data);
+    appAxios.post(apiRoutes.bookAppoitment, data).then(e => {
+      console.log(e.data)
+      disapatch(fetchAppoitment())
+    })
+  }
 
   return (
     <Page header={header}>
-      {/* <div className="row justify-content-around">
-                {staff ? staff.map((data) => <AppoitmentCard data={data} clientDetail={clientDetail} />) : null}
-          </div> */}
       <div className="container">
-        <Resource localizer={localizer} />
+        <Resource localizer={localizer} onSelectEvent={onSelectEvent} onSelectSlot={onSelectSlot} />
       </div>
-      {modelActive ? (
-        <AppointmentModel close={() => setMopdelActive(false)} id={costomers} />
-      ) : null}
+      {model ?
+        <AppointmentModel
+          close={() => {
+            setModel(!model)
+            setCostomer(0)
+          }}
+          onClick={bookappointment}
+          cFinf={(i) => setCostomer(i.id)}
+          sFind={i => setService(i.id)}
+          strict={strict}
+          strictMode={() => setStrict(!strict)}
+          start={start}
+          staffId={staffid}
+          costomerId={costomer}
+        />
+        : null}
+
+      {
+        appointmentinfo ? <AppointmentInfoModel
+          close={() => setAppointmentinfo(!appointmentinfo)}
+          event={event}
+        /> : null
+      }
     </Page>
   );
 };
 
-const AppointmentModel = ({ close, id }) => {
-  const {
-    costomer: { costomer },
-    stuff: { staff },
-    appointment: { appoitment },
-  } = useSelector((state) => state);
+export default Appoitment;
 
-  const cetEguryFilter = (id) => {
-    const appointmentData = id
-      ? appoitment.filter((arry) => arry.id == id)[0]
-      : false;
-    const costomerData = appointmentData
-      ? costomer.filter((arry) => arry.id == appointmentData.costomer_id)[0]
-      : false;
-    const staffData = costomerData
-      ? staff.filter((arry) => arry.id == appointmentData.staffid)[0]
-      : false;
+function Resource({ localizer, onSelectEvent, onSelectSlot }) {
+
+  const [date, setDate] = useState(moment(new Date()));
+  const [view, setView] = useState(Views.DAY);
+
+  const { appointment: { appoitment }, stuff: { staff }, service: { service } } = useSelector(state => state)
+
+  const dateset = (d, e = true) => new Date(`${d.appoitment_date} ${e ? d.appoitment_time : d.appoitment_end_time}`)
+
+  const serviceName = (id) => service.filter((e) => e.id == id)[0].name
+
+  const staffs = useCallback(() => {
+    const data = staff.map(e => ({ resourceId: e.id, resourceTitle: e.name }));
+    return data;
+  }, [staff])
+
+
+  const appointmentMap = useCallback(() => {
+    const data = appoitment.map(e => ({
+      id: e.id,
+      title: `${serviceName(e.serviceid)}`,
+      start: new Date(dateset(e).getFullYear(), dateset(e).getMonth(), dateset(e).getDate(), dateset(e).getHours(), dateset(e).getMinutes(), dateset(e).getSeconds()),
+      end: new Date(dateset(e, false).getFullYear(), dateset(e, false).getMonth(), dateset(e, false).getDate(), dateset(e, false).getHours(), dateset(e, false).getMinutes(), dateset(e, false).getSeconds()),
+      resourceId: e.staffid,
+      service: e.serviceid,
+      costomer: e.costomer_id,
+    }))
+    return data
+  }, [appoitment])
+
+  const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
+  const onView = useCallback((newView) => setView(newView), [setView]);
+  const disapatch = useDispatch()
+  const moveEvent = (e) => {
     const data = {
-      appoitment: appointmentData,
-      costomer: costomerData,
-      staff: staffData,
-    };
-    console.log(data);
-  };
+      staffid: e.resourceId,
+      appoitment_date: moment(e.start).format("Y-M-D"),
+      appoitment_time: `${moment(e.start).format("HH:mm")}:00`,
+      appoitment_end_time: `${moment(e.end).format("HH:mm")}:00`,
+      appoitmentId: e.event.id,
+
+    }
+    appAxios.put(apiRoutes.appointment, data).then(e => {
+      disapatch(fetchAppoitment())
+    })
+
+  }
+  return (
+    <>
+      <div className="height600">
+        <DnDCalendar
+          localizer={localizer}
+          resources={staffs() || []}
+          resourceIdAccessor={"resourceId" || ""}
+          resourceTitleAccessor={"resourceTitle" || ""}
+          onNavigate={onNavigate}
+          onView={onView}
+          view={view}
+          date={date}
+          events={appointmentMap() || []}
+          draggableAccessor={(event) => true}
+
+          onEventDrop={e => moveEvent(e)}
+          onSelectEvent={e => onSelectEvent(e)}
+          onSelectSlot={(e) => onSelectSlot(e)}
+          onDragOver={(e) => moveEvent(e)}
+          onEventResize={(e) => moveEvent(e)}
+
+          resizable
+          selectable
+
+          min={new Date(1972, 0, 1, 9, 0, 0, 0)}
+          max={new Date(1972, 0, 1, 23, 59, 59)}
+
+        />
+      </div>
+
+    </>
+  );
+}
+
+
+
+const AppointmentModel = ({ close, onClick, cFinf, sFind, start, staffId, costomerId }) => {
+  const { costomer: { costomer }, stuff: { staff }, service: { service } } = useSelector((state) => state);
+
+  const costomerOption = costomer ? costomer.map((data, k) => ({ key: k, id: data.id, label: `${data.name} ${data.mobaile}`, })) : []
+
+  const serviceOption = service ? service.map((data, k) => ({ key: k, id: data.id, label: `${data.name} (${data.service_time} Hour)`, })) : []
+
+  const staffname = (i) => staff ? staff.filter(data => data.id === i)[0] : "No data Found"
+
+  const costomerFind = useCallback((i) => (costomerId ? costomer.filter(data => data.id === i)[0] : null), [costomerId])
+  const data = (data) => data ? data : "No Data Found";
+
+  // console.log(costomerFind(costomerId));
+
   return (
     <>
       <div
@@ -83,11 +199,11 @@ const AppointmentModel = ({ close, id }) => {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
+                Book Appointment on {moment(start).format("Do MMMM  h:mm a")} With {staffname(staffId).firstname}
               </h5>
               <button
                 type="button"
@@ -99,7 +215,48 @@ const AppointmentModel = ({ close, id }) => {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">{cetEguryFilter(id) || null}</div>
+            <div class="modal-body">
+              <div className="row">
+                <div className="col-md-6 col-sm-12">
+                  <div class="mb-2">
+                    <label htmlFor="name" class="form-label">
+                      Select Costomer
+                    </label>
+                    <SearchSelect
+                      col={true}
+                      id="name"
+                      onChange={(event, id) => cFinf(id)}
+                      options={costomerOption}
+                      label="Add Costomer"
+                    />
+                  </div>
+                  <div class="mb-2">
+                    <label htmlFor="name" class="form-label">
+                      Select Service
+                    </label>
+                    <SearchSelect
+                      col={true}
+                      id="name"
+                      onChange={(event, id) => sFind(id)}
+                      options={serviceOption}
+                      label="Add Costomer"
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <ul class="list-group">
+                    <li class="list-group-item" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><span className="font-weight-bold h6">{costomerFind(costomerId) && costomerFind(costomerId).name} Past Appointment</span></li>
+                    <div class="collapse" id="collapseExample">
+                    {costomerFind(costomerId) && costomerFind(costomerId).past_appointment.map((d)=><li class="list-group-item">A second item</li>)}
+                    </div>
+                    {/* <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li> */}
+                  </ul>
+                </div>
+              </div>
+            </div>
             <div class="modal-footer">
               <button
                 type="button"
@@ -109,8 +266,10 @@ const AppointmentModel = ({ close, id }) => {
               >
                 Close
               </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
+              <button
+                onClick={() => onClick()}
+                type="button" class="btn btn-primary">
+                Book Appoitment
               </button>
             </div>
           </div>
@@ -120,50 +279,55 @@ const AppointmentModel = ({ close, id }) => {
   );
 };
 
-const AppoitmentCard = ({ data, clientDetail }) => {
-  const { costomer_id, serviceid, id, staffid } = data;
-  const {
-    appointment: { appoitment },
-  } = useSelector((state) => state);
-  const staffAppointment = appoitment
-    ? appoitment.filter((datas) => datas.staffid == data.id)
-    : [];
+
+const AppointmentInfoModel = ({ close, event }) => {
+  const { costomer: { costomer }, stuff: { staff }, service: { service } } = useSelector((state) => state);
+
+  const events = event
+  console.log(events);
   return (
     <>
       <div
-        className="card col-md-5 col-sm-12 m-1"
-        style={{ height: "fit-content" }}
+        class="modal fade show"
+        style={{ display: "block" }}
+        id="hello"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
       >
-        <div className="">
-          <div className="card-header text-center text-capitalize">
-            <h5>{data.name || "staff name"}</h5>
-          </div>
-          <div className="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Costomer Name</th>
-                  <th scope="col">Time</th>
-                  <th scope="col">Service</th>
-                </tr>
-              </thead>
-              <tbody>
-                {staffAppointment
-                  ? staffAppointment.map((e, k) => (
-                      <AppoitmentTable
-                        clientClick={() => clientDetail(e.id)}
-                        data={e}
-                      />
-                    ))
-                  : null}
-                {/* <AppoitmentTable /> */}
-              </tbody>
-            </table>
-          </div>
-          <div className="card-footer">
-            <div className="justyfy-between">
-              <h5>{staffAppointment.length}</h5>
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Heading
+              </h5>
+              <button
+                type="button"
+                onClick={() => close()}
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                onClick={() => close()}
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => close()}
+                type="button" class="btn btn-primary">
+                Book Appoitment
+              </button>
             </div>
           </div>
         </div>
@@ -171,118 +335,21 @@ const AppoitmentCard = ({ data, clientDetail }) => {
     </>
   );
 };
-
-const AppoitmentTable = ({ clientClick, data }) => {
-  const {
-    costomer: { costomer },
-    service: { service },
-  } = useSelector((state) => state);
-  const costomerFind = (id) =>
-    costomer ? costomer.filter((datas) => datas.id == id)[0].name : [];
-  const serviceFind = (id) =>
-    service ? service.filter((datas) => datas.id == id)[0].name : [];
-  const { name } = data;
-  function tConvert(time) {
-    // Check correct time format and split into components
-    time = time
-      .toString()
-      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-    if (time.length > 1) {
-      // If time format correct
-      time = time.slice(1); // Remove full string match value
-      time[5] = +time[0] < 12 ? " AM" : " PM"; // Set AM/PM
-      time[0] = +time[0] % 12 || 12; // Adjust hours
-    }
-    return time.join(""); // return adjusted time or original string
-  }
+const SearchSelect = ({ label, inputchange, col, ...data }) => {
   return (
     <>
-      <tr className="">
-        <th scope="row">1</th>
-        <td>
-          <span onClick={clientClick} className="text-link" role="button">
-            {costomerFind(data.costomer_id)}
-          </span>
-        </td>
-        <td>{tConvert(data.appoitment_time)}</td>
-        <td>{serviceFind(data.serviceid)}</td>
-      </tr>
-    </>
-  );
-};
-
-export default Appoitment;
-
-function Resource({ localizer }) {
-  const events = [
-    {
-      id: 0,
-      title: "Board meeting",
-      start: new Date(2023, 0, 22, 9, 0, 0),
-      end: new Date(2023, 0, 22, 13, 0, 0),
-      resourceId: 1,
-    },
-    {
-      id: 1,
-      title: "MS training",
-      start: new Date(2023, 0, 22, 14, 0, 0),
-      end: new Date(2023, 0, 22, 16, 30, 0),
-      resourceId: 2,
-    },
-    {
-      id: 2,
-      title: "Team lead meeting",
-      start: new Date(2023, 0, 22, 8, 30, 0),
-      end: new Date(2023, 0, 22, 12, 30, 0),
-      resourceId: 3,
-    },
-    {
-      id: 11,
-      title: "Birthday Party",
-      start: new Date(2023, 0, 22, 7, 0, 0),
-      end: new Date(2023, 0, 22, 10, 30, 0),
-      resourceId: 4,
-    },
-  ];
-
-  const resourceMap = [
-    { resourceId: 1, resourceTitle: "havi" },
-    { resourceId: 2, resourceTitle: "hardik" },
-    { resourceId: 3, resourceTitle: "zara" },
-    { resourceId: 4, resourceTitle: "kavi" },
-  ];
-  const [date, setDate] = useState(new Date(2023, 0, 22));
-  const [view, setView] = useState(Views.DAY);
-
-  const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
-  const onView = useCallback((newView) => setView(newView), [setView]);
-
-  // const date = new Date(2023, 0, 22, 8, 30, 0);
-  // console.log(date);
-  return (
-    <>
-      <div className="height600">
-        <DnDCalendar
-          localizer={localizer}
-          resources={resourceMap}
-          resourceIdAccessor="resourceId"
-          resourceTitleAccessor="resourceTitle"
-          onNavigate={onNavigate}
-          onView={onView}
-          view={view}
-          date={date}
-          events={events || []}
-          draggableAccessor={(event) => true}
+      <div className={col ? null : "col-3"}>
+        <Autocomplete
+          {...data}
+          disablePortal
+          id="combo-box-demo"
+          // sx={{ width: 300 }}
+          noOptionsText={"Nothing"}
+          renderInput={(params) => (
+            <TextField {...params} onChange={inputchange} label={label} />
+          )}
         />
-        {events.map((e, k) => (
-          <button>{e.title}</button>
-        ))}
       </div>
     </>
   );
-}
-
-// Resource.propTypes = {
-//   localizer: PropTypes.instanceOf(DateLocalizer),
-// }
+};

@@ -5,6 +5,7 @@ import { Logo } from '../../assets'
 import { authLogin } from '../../Store/Slice/Auth/authSlice'
 // import axios from 'axios'
 import apiRoutes,{appAxios as axios} from '../../Constants/apiRoutes'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
   const [userName, setUserName] = useState("");
@@ -57,7 +58,7 @@ export default function Login() {
                 </div>
               </form>
               <p class="mb-1">
-                <a href="forgot-password.html" className='text-muted' >I forgot my password</a>
+                <Link to="/password-reset" className='text-muted' >I forgot my password</Link>
               </p>
             </div>
             {/* <!-- /.card-body --> */}

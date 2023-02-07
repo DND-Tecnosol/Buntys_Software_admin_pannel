@@ -111,9 +111,11 @@ const action=(id)=>alert(`perform action this ${id}`)
 const TabelHead = ({ key, data }) => <th>{data}</th>;
 
 const TabelData = ({ no, data }) => {
-  const cetEguryFilter=(id,arr)=>arr.filter((arry)=>arry.id===id)
+  const cetEguryFilter=(id,arr)=>arr.filter((arry)=>arry.id==id)
   const serviceCategury = useSelector((state) => state.categury.costomerCetegury)
-  console.log(cetEguryFilter(data.costomertypeid,serviceCategury)[0].name);
+  // console.log();
+  const supers=cetEguryFilter(data.costocateguryid,serviceCategury)
+  const datct=supers ? cetEguryFilter(data.costocateguryid,serviceCategury)[0].name : "No Data Found"
 
   return (
     <>
@@ -151,7 +153,7 @@ const TabelData = ({ no, data }) => {
           {/* <button className={"btn btn-"+data.status ? 'success' : 'danger'+" btn-sm"}>{data.status ? 'Active' : 'Deactivate'}</button> */}
         </td>
         <td>{
-          cetEguryFilter(data.costomertypeid,serviceCategury)[0].name
+          datct
         }</td>
         <td>
           <div className="d-flex justify-content-around">
@@ -187,33 +189,3 @@ const Input = ({ title, plase, onchange, ...props }) => {
     </>
   );
 };
-
-// {
-//     "id": 1,
-//     "storeid": 1,
-//     "costomertypeid": 1,
-//     "name": "Bhautik",
-//     "last_name": "Rathod",
-//     "img": null,
-//     "city": "Vadodara",
-//     "email": "Bhautik@gmail.com",
-//     "mobaile": "6358006532",
-//     "whatsapp": "2304200020",
-//     "DOB": "2023-04-23",
-//     "Anniversary": null,
-//     "email_verified_at": null,
-//     "mobaile_verified_at": null,
-//     "whatsapp_verified_at": null,
-//     "email_verified_status": 0,
-//     "mobaile_verified_status": 0,
-//     "whatsapp_verified_status": 0,
-//     "email_notyfication_status": 1,
-//     "mobaile_notyfication_status": 1,
-//     "whatsapp_notyfication_status": 0,
-//     "costomer_notes": "abcd efghi jklmano pqrstu vwxyz",
-//     "address": "Vadodara",
-//     "created_at": "2022-11-02T22:12:16.000000Z",
-//     "updated_at": "2022-11-02T22:12:16.000000Z",
-//     "promo_sms": 0,
-//     "gender": 0
-// }

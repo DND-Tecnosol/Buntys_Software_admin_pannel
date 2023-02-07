@@ -142,7 +142,7 @@ export default function Dashbord({ header }) {
           />
         </ChartCard> */}
         <ChartCard title="Today's Appoitment">
-          <table class="table table-striped table-valign-middle">
+          <table data-spy="scroll" style={{height:'500px'}} class="table table-striped table-valign-middle">
             <thead>
               <tr>
                 <th>Name</th>

@@ -36,6 +36,8 @@ const AddService = ({ id }) => {
       name: name,
       price: price,
       minprice: minPrice,
+      service_duration: serviceDuration,
+      service_time: serviceTime,
     };
     console.log(data);
     axios.post(apiRoutes.Service, data, {
@@ -126,16 +128,16 @@ const AddService = ({ id }) => {
                   </div>
                   <div className="form-row">
                     <Input
-                      onchange={(e) => setPrice(e.target.value)}
+                      onchange={(e) => setServiceDuration(e.target.value)}
                       plase={'Service Duration'}
-                      value={price}
+                      value={serviceDuration}
                       title={"Service Duration"}
                       type="text"
                     />
                     <Input
-                      onchange={(e) => setMinPrice(e.target.value)}
+                      onchange={(e) => setServiceTime(e.target.value)}
                       type="text"
-                      value={minPrice}
+                      value={serviceTime}
                       plase={'Service Time'}
                       title={"Service Time"}
                     />

@@ -20,7 +20,7 @@ import { Button } from '@mui/material';
 import { refreshStore } from '../Store/Slice/refresh';
 import { fetchInvoice } from '../Store/Slice/All/invoiceSlice';
 import { fetchAppoitment } from '../Store/Slice/All/appointmentSlice';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function Page({ children, header }) {
@@ -78,6 +78,7 @@ export default function Page({ children, header }) {
                 <Appoitment id={'Appoitment'} />
                 <Addinvoice id={'invoices'} />
                 {/* Models end */}
+                <ToastContainer/>
                 <Footer />
                 <aside class="control-sidebar control-sidebar-dark">
                     {/* <!-- Control sidebar content goes here --> */}
