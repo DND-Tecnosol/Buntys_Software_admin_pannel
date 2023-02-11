@@ -1,9 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchServices } from '../../../Store/Slice/All/serviceSlice';
-import { fetchStore } from '../../../Store/Slice/All/storeSlice';
-import apiRoutes,{appAxios as axios} from '../../../Constants/apiRoutes';
+import { fetchServices } from '../../../../Store/Slice/All/serviceSlice';
+import { fetchStore } from '../../../../Store/Slice/All/storeSlice';
+import apiRoutes,{appAxios as axios} from '../../../../Constants/apiRoutes';
 
 const NewStoreModel = ({ ids }) => {
 

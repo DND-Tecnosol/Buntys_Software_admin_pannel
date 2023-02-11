@@ -1,10 +1,10 @@
 import React from 'react';
 import Page from '../../Layouts/Page';
 
-const ServiceManager = () => {
+const ReportManager = () => {
     return (
         <>
-         <Page header={'Setting/Service Manager'}>
+         <Page header={'Report Manager'}>
             
          </Page>   
         </>

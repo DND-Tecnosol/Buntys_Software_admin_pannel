@@ -3,8 +3,8 @@ import { IconButton,Button } from '@mui/material';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchstuffCetegury } from '../../../../Store/Slice/types/allCetegurytypesSlice';
-import apiRoutes,{appAxios as axios} from '../../../../Constants/apiRoutes';
+import { fetchstuffCetegury } from '../../../../../Store/Slice/types/allCetegurytypesSlice';
+import apiRoutes,{appAxios as axios} from '../../../../../Constants/apiRoutes';
 
 export default function StuffCategury() {
   const categury = useSelector(state => state.categury.stuffCetegury)

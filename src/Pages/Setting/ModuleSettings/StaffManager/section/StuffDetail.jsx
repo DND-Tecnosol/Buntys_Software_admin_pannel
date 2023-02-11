@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { BsClipboard } from 'react-icons/bs'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import apiRoutes,{appAxios as axios} from '../../../../Constants/apiRoutes'
-import { fetchStaff } from '../../../../Store/Slice/All/staffSlice'
+import apiRoutes,{appAxios as axios} from '../../../../../Constants/apiRoutes'
+import { fetchStaff } from '../../../../../Store/Slice/All/staffSlice'
 
 export default function StuffDetail() {
   const { staff } = useSelector((state => state.stuff))

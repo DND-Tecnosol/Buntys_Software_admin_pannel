@@ -11,7 +11,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import Page from "../../../Layouts/Page";
+import Page from "../../../../Layouts/Page";
 import {
   BsClipboard,
   BsPlus,

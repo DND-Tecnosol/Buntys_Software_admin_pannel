@@ -11,12 +11,31 @@ import { authLogout } from "../Store/Slice/Auth/authSlice";
 import { FormControl,InputLabel,Select,MenuItem} from '@mui/material'
 import apiRoutes,{ appAxios as axios } from "../Constants/apiRoutes";
 import { Edit, Inventory } from "@mui/icons-material";
-
+import { fetchAppoitment } from './../Store/Slice/All/appointmentSlice';
+import { fetchInvoice } from './../Store/Slice/All/invoiceSlice';
+import { fetchStore } from './../Store/Slice/All/storeSlice';
+import { fetchStaff } from "../Store/Slice/All/staffSlice";
+import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
+import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
+import { fetchServices } from './../Store/Slice/All/serviceSlice';
 
 export default function Dashbord({ header }) {
   const [model, setModel] = useState(false);
   const { invoice: { invoice, invoiceTotle }, appointment: { appoitment }, costomer: { costomer }, stuff: { staff } } = useSelector((state) => state)
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchserviceCetegury())
+    dispatch(fetchStaff())
+    dispatch(fetchcostomerCetegury())
+    dispatch(fetchstuffCetegury())
+    dispatch(fetchServices())
+    dispatch(fetchCostomer())
+    dispatch(fetchStore())
+    dispatch(fetchInvoice())
+    dispatch(fetchAppoitment())
+}, [])
+
+
   const costomerName = (id) => costomer ? costomer.filter((e) => e.id == id)[0].name : []
   const staffName = (id) => staff ? staff.filter((e) => e.id == id)[0].name : []
 

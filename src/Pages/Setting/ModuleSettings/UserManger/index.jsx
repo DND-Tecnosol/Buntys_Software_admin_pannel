@@ -1,8 +1,9 @@
 import React from 'react';
-import Page from '../../../Layouts/Page';
-import { ActiveTabsContainer, Tab, TabsBtn, TabsCard, TabsContainer, TabsContent } from '../../../Components/Tabs'
+
+import { ActiveTabsContainer, Tab, TabsBtn, TabsCard, TabsContainer, TabsContent } from '../../../../Components/Tabs'
 import Users from './Users';
 import Role from './Role';
+import Page from '../../../../Layouts/Page';
 // import {UsersManager,RoleManeger} from './section'
 
 const UserManger = () => {

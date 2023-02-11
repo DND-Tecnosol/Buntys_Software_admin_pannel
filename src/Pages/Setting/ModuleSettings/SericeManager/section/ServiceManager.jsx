@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { IconButton, Button, Switch } from '@mui/material';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import apiRoutes,{appAxios as axios} from '../../../../Constants/apiRoutes';
+import apiRoutes,{appAxios as axios} from '../../../../../Constants/apiRoutes';
 
-import { fetchServices } from '../../../../Store/Slice/All/serviceSlice';
-import { refreshStore } from '../../../../Store/Slice/refresh';
-import { addmsg } from '../../../../Store/Slice/All/msgSlice';
+import { fetchServices } from '../../../../../Store/Slice/All/serviceSlice';
+import { refreshStore } from '../../../../../Store/Slice/refresh';
+import { addmsg } from '../../../../../Store/Slice/All/msgSlice';
 
 export default function ServiceManager() {
   const [id, setid] = useState('')

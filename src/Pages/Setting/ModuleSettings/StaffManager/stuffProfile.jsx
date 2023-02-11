@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import Page from '../../../Layouts/Page';
+import Page from '../../../../Layouts/Page';
 
 const StuffProfile = () => {
     const id= useParams('id')

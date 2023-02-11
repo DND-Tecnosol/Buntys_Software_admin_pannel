@@ -1,6 +1,6 @@
 import React from 'react';
-import Page from '../../../Layouts/Page';
-import { ActiveTabsContainer, Tab, TabsBtn, TabsCard, TabsContainer, TabsContent } from '../../../Components/Tabs'
+import Page from '../../../../Layouts/Page';
+import { ActiveTabsContainer, Tab, TabsBtn, TabsCard, TabsContainer, TabsContent } from '../../../../Components/Tabs'
 import {StaffSetting,StuffCategury,StuffDetail} from './section'
 const StuffManger = () => {
     return (
