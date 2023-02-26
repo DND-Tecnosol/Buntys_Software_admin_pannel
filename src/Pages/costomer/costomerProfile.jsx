@@ -12,9 +12,7 @@ const CostomerProfile = () => {
     const {name}=user[0]
     return (
         <>
-            <Page header={`Costomer Profile : ${name}`} >
-
-            </Page>
+            
         </>
     );
 }

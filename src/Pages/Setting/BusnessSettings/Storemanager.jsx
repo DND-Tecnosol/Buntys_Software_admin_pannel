@@ -11,7 +11,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import Page from "../../../../Layouts/Page";
+import Page from "../../../Layouts/Page";
 import {
   BsClipboard,
   BsPlus,
@@ -29,14 +29,27 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const StoreManger = () => {
-    var count=0
+  var count = 0
   const { store } = useSelector((state) => state.store);
   // console.log(store);
   return (
-    <Page header={"Store Manger"}>
+    <>
       {/* <Button title='New Store' variant='outlined' color='danger' /> */}
       <div className="row justify-content-between my-43">
         <div></div>
+        {(localStorage.getItem('userRole') == "admin") && 
+        <>
+        <Button
+          data-toggle="modal"
+          data-target="#NEWSTORE"
+          variant="contained"
+          color="error"
+          className="mx-3"
+          startIcon={<BsPlus size={20} />}
+        >
+          New Store
+        </Button>
+        </>}
         <Button
           data-toggle="modal"
           data-target="#NEWSTORE"
@@ -50,15 +63,22 @@ const StoreManger = () => {
       </div>
       <div className="container my-5">
         <TableContainer component={Paper}>
+
+
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>No.</TableCell>
                 <TableCell align="center">Name</TableCell>
-                <TableCell align="center">City</TableCell>
-                <TableCell align="center">Timing</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Live Time</TableCell>
+                {
+                  (localStorage.getItem('userRole') == "admin") &&
+                  <>
+                    <TableCell align="center">City</TableCell>
+                    <TableCell align="center">Timing</TableCell>
+                    <TableCell align="center">Status</TableCell>
+                    <TableCell align="center">Live Time</TableCell>
+                  </>
+                }
               </TableRow>
             </TableHead>
             <TableBody>
@@ -71,10 +91,15 @@ const StoreManger = () => {
                     {++count}
                   </TableCell>
                   <TableCell align="center">{row.name}</TableCell>
-                  <TableCell align="center">{row.city}</TableCell>
-                  <TableCell align="center">{`${row.opentime} To ${row.closetime}`}</TableCell>
-                  <TableCell align="center">{row.status ? <Active /> : <Deactive/>}</TableCell>
-                  <TableCell align="center">9:00 To N/A</TableCell>
+                  {
+                    (localStorage.getItem('userRole') == "admin") &&
+                    <>
+                      <TableCell align="center">{row.city}</TableCell>
+                      <TableCell align="center">{`${row.opentime} To ${row.closetime}`}</TableCell>
+                      <TableCell align="center">{row.status ? <Active /> : <Deactive />}</TableCell>
+                      <TableCell align="center">9:00 To N/A</TableCell>
+                    </>
+                  }
                 </TableRow>
               ))}
             </TableBody>
@@ -82,11 +107,11 @@ const StoreManger = () => {
         </TableContainer>
       </div>
       <NewStoreModel ids={"NEWSTORE"} />
-    </Page>
+    </>
   );
 };
 
 export default StoreManger;
 
-const Active=d=><span className="text-success">Open</span>
-const Deactive=d=><span className="text-danger">Closs</span>
+const Active = d => <span className="text-success">Open</span>
+const Deactive = d => <span className="text-danger">Closs</span>

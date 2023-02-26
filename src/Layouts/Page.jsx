@@ -1,57 +1,79 @@
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     CostomerModel, Footer, Navbar, Sidebar, AddService,
     AddProduct,
     Appoitment, Addinvoice
 } from '../Components'
 import { Link, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import routesconst from '../Constants/routesconst';
 import { ToastContainer, toast } from 'react-toastify';
-// import { getTokens }getToken, onMessage from '../Constants/firebase';
-// import { getMessaging } from "firebase/messaging";
 import firebaseapp from '../firebase'
+import { fetchAppoitment } from './../Store/Slice/All/appointmentSlice';
+import { fetchInvoice } from './../Store/Slice/All/invoiceSlice';
+import { fetchStore,fetchCity,fetchStorenotification ,fetchStorenotificationcatygury ,fetchStoretime ,fetchStoreclosingdate  } from './../Store/Slice/All/storeSlice';
+import { fetchStaff } from "../Store/Slice/All/staffSlice";
+import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
+import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
+import { fetchServices } from './../Store/Slice/All/serviceSlice';
+import Echo from 'laravel-echo';
+// import Pusher from 'pusher-js';
 
 export default function Page({ children, header }) {
     document.title = "Bunty's studio || " + header;
-    useEffect(()=>{
-        const msg = firebaseapp.messaging();//getMessaging();
-        msg.requestPermission().then(()=>{
-           return msg.getToken()
-        }).then((e)=>{
-            console.log("token",e);
-            msg.onMessage(payload => {
-                console.log('received',payload);
-              });
-        })
-    },[])
-    
+    const dispatch = useDispatch()
+    const state = useSelector(state => state)
+    useEffect(() => {
+        // window.Pusher = require('pusher-js');
+        // window.Event = new Echo({
+        //     broadcaster: 'pusher',
+        //     key: 'DXHQtg.1CC-Bg:wT2MJMJQQAdjcY2Q9GG8EAOKkHGNRvrCD-XK4tLVeos',
+        //     wsHost: 'realtime-pusher.ably.io',
+        //     wsPort: 443,
+        //     disableStats: true,
+        //     encrypted: true,
+        // });
+        // Event.channel('storeupdate').subscribed((e) => {
+        //     console.log("Subscribed Successfully");
+        //     console.log(e);
+        // }).listen((e) => {
+        //     console.log("new event msg")
+        //     console.log(e)
+        // })
+        dispatch(fetchserviceCetegury())
+        dispatch(fetchStaff())
+        dispatch(fetchcostomerCetegury())
+        dispatch(fetchstuffCetegury())
+        dispatch(fetchServices())
+        dispatch(fetchCostomer())
+        dispatch(fetchStore())
+        dispatch(fetchCity())
+        dispatch(fetchInvoice())
+        dispatch(fetchAppoitment())
+        dispatch(fetchStorenotification())
+        dispatch(fetchStorenotificationcatygury())
+        dispatch(fetchStoretime())
+        dispatch(fetchStoreclosingdate())
+    }, [])
     return (
         <>
             <div class="wrapper">
                 <Navbar />
                 <Sidebar />
                 <div class="content-wrapper rounded-lg">
-                    <div class="content-header">
+                    <div class="content-heade">
                         <div class="container-fluid">
                             <div class="row mb-2">
-                                <div class="col-sm-6">
-                                    <h1 class="m-0">{header}</h1>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ol class="breadcrumb float-sm-right">
-                                        <li class="breadcrumb-item"><Link to={routesconst.Dashbord}>Home</Link></li>
-                                        <li class="breadcrumb-item active">{header}</li>
-                                    </ol>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <section class="content">
                         <div class="container-fluid">
-                            {children}
+                            <Outlet />
                         </div>
                     </section>
                 </div>
+                
                 {/* Models start Hear */}
                 <CostomerModel id={'exampleModal'} />
                 <AddService id={'services'} />
@@ -59,7 +81,7 @@ export default function Page({ children, header }) {
                 <Appoitment id={'Appoitment'} />
                 <Addinvoice id={'invoices'} />
                 {/* Models end */}
-                <ToastContainer/>
+                <ToastContainer />
                 <Footer />
                 <aside class="control-sidebar control-sidebar-dark">
                     {/* <!-- Control sidebar content goes here --> */}
@@ -74,6 +96,7 @@ export default function Page({ children, header }) {
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getTokens } from './../Constants/firebase';
+import { useDispatch } from 'react-redux';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -94,4 +117,16 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 BIMV-2cBQyJlpLNfewn7IE-hQOE1dcp2Jd1ZtmYJN29rswVV2tAkBrZzKYdg5tfi58sNZus21Ni759tn0A8rQaw
+
+    useEffect(()=>{
+        const msg = firebaseapp.messaging();//getMessaging();
+        msg.requestPermission().then(()=>{
+           return msg.getToken()
+        }).then((e)=>{
+            console.log("token",e);
+            msg.onMessage(payload => {
+                console.log('received',payload);
+              });
+        })
+    },[])
 */

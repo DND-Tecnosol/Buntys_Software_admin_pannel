@@ -4,7 +4,7 @@ import { ActiveTabsContainer, Tab, TabsBtn, TabsCard, TabsContainer, TabsContent
 import {StaffSetting,StuffCategury,StuffDetail} from './section'
 const StuffManger = () => {
     return (
-        <Page header={'Stuff Manger'}>
+        <>
             <Tab>
                     <TabsCard>
                         <TabsBtn id={"StaffSetting-tab"} href={'#StaffSetting'} active="show active" title={'Staff Manager'} aria_control={'StaffSetting'} ariaselected={true} />
@@ -23,7 +23,7 @@ const StuffManger = () => {
                         </ActiveTabsContainer>
                     </TabsContent>
                 </Tab>
-        </Page>
+        </>
     );
 }
 

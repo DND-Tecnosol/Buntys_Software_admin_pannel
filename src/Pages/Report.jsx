@@ -4,7 +4,7 @@ import Page from '../Layouts/Page'
 
 export default function Report({ header }) {
   return (
-    <Page header={header}>
+    <>
       <Tab>
         <TabsCard>
           <TabsBtn id={"Store-Report-tab"} href={'#Store-Report'} active="show active" title={'Store-Report'} aria_control={'Store-Report'} ariaselected={true} />
@@ -27,6 +27,6 @@ export default function Report({ header }) {
           </ActiveTabsContainer>
         </TabsContent>
       </Tab>
-    </Page>
+    </>
   )
 }

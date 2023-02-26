@@ -5,9 +5,9 @@ const Campigns = ({header}) => {
 
     return (
         <>
-            <Page header={header}>
+            <>
 
-            </Page>
+            </>
         </>
     );
 }

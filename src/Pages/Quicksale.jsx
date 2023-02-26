@@ -11,7 +11,7 @@ export default function Quicksale({ header }) {
 
   return (
     <>
-      <Page header={header}>
+      <>
         <Tab>
           <TabsCard>
             <TabsBtn id={"RBS-Invoices-tab"} href={'#RBS-Invoices'} active="show active" title={'RBS-Invoices'} aria_control={'RBS-Invoices'} ariaselected={true} />
@@ -33,7 +33,7 @@ export default function Quicksale({ header }) {
             </ActiveTabsContainer>
           </TabsContent>
         </Tab>
-      </Page>
+      </>
     </>
   )
 }

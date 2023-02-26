@@ -11,7 +11,7 @@ import {
 import { Hairweg, Product } from "./inventury";
 export default function Inventory({ header }) {
   return (
-    <Page header={header}>
+    <>
       <div className="card border-0">
         <div className="card-body">
           <Tab>
@@ -48,7 +48,7 @@ export default function Inventory({ header }) {
           </Tab>
         </div>
       </div>
-    </Page>
+    </>
   );
 }
 {

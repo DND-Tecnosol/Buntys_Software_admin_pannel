@@ -41,24 +41,30 @@ export default function Sidebar() {
           {/* <!-- /.sidebar-menu --> */}
         </div>
         <div class="sidebar-custom pb-3">
-        <Button startIcon={<FaPowerOff size={15} className='text-danger' />} className='text-danger' >
-           Logout</Button>
+          <Button startIcon={<FaPowerOff size={15} className='text-danger' />} className='text-danger' >
+            Logout</Button>
         </div>
         {/* <!-- /.sidebar --> */}
       </aside>
     </>
   )
 }
+const Badges = ({ data }) => data>0 && (<><span class="badge bg-secondary">{data}</span></>)
 
 const Navlink = ({ data }) => {
   // console.log(data)
-  const { tag, path, icon } = data
+  const { tag, path, icon, noty } = data
+  const {appointment:{appoitment}}= useSelector(state=>state)
   return (
     <li class="nav-item">
       <Link to={path} class="nav-link">
         {/* <i class="nav-icon fas fa-th"></i> */}
         {icon}
         {/* <HiOutlineClipboardDocumentList color='white' size={20} style={{marginLeft:5,marginRight:10}} /> */}
+          {tag == "Appointment" ? <Badges data={appoitment.length} /> : null}
+          {tag == "Costomer" ? <Badges /> : null}
+          {tag == "Ticket" ? <Badges /> : null}
+          {tag == "Feedback" ? <Badges /> : null}
         <p>
           {tag}
           {/* <span class="right badge badge-danger">New</span> */}

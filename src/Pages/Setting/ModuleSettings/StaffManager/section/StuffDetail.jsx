@@ -3,18 +3,21 @@ import React, { useState } from 'react'
 import { BsClipboard } from 'react-icons/bs'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import apiRoutes,{appAxios as axios} from '../../../../../Constants/apiRoutes'
+import { toast } from 'react-toastify'
+import apiRoutes, { appAxios as axios } from '../../../../../Constants/apiRoutes'
 import { fetchStaff } from '../../../../../Store/Slice/All/staffSlice'
 
 export default function StuffDetail() {
   const { staff } = useSelector((state => state.stuff))
   const { stuffCetegury } = useSelector((state => state.categury))
-  const dispatch=useDispatch()
-  const cetEguryFilter=(id,arr)=>arr.filter((arry)=>arry.id===id)
+  const dispatch = useDispatch()
+  const cetEguryFilter = (id, arr) => arr.filter((arry) => arry.id === id)
   // console.log()
-  const onDelate=(id)=>{
-    axios.delete(`${apiRoutes.stuff}/${id}`).then((e)=>{
-
+  
+  const tostyfi=(data)=>toast(data)
+  const onDelate = (id) => {
+    axios.delete(`${apiRoutes.stuff}${id}`).then((e) => {
+      tostyfi(e.data.msg)
       dispatch(fetchStaff())
     })
   }
@@ -45,19 +48,19 @@ export default function StuffDetail() {
             {staff ?
 
               staff.map((staff, index) => {
-                const { firstname,lastname, status,id,stafftypesid } = staff
-                
+                const { firstname, lastname, status, id, stafftypesid } = staff
+
                 return (<>
                   <tr>
                     {/* <th scope="row">{++index}</th> */}
                     <td>{firstname} {lastname}</td>
-                    <td>{cetEguryFilter(stafftypesid,stuffCetegury)[0].name}</td>
+                    <td>{cetEguryFilter(stafftypesid, stuffCetegury)[0].name}</td>
                     <td>{status ? <span className='text-success'>Active</span> : <span className='text-danger'>DeActive</span>}</td>
                     <td>
                       <IconButton>
                         <MdEdit color='orange' size={20} />
                       </IconButton>
-                      <IconButton onClick={()=>onDelate(id)}>
+                      <IconButton onClick={() => onDelate(id)}>
                         <MdDelete color='red' size={20} />
                       </IconButton>
                     </td>
@@ -113,14 +116,14 @@ const AddStuff = ({ id }) => {
   const [bank_account_ifc, setbank_account_ifc] = useState("")
   const [bank_name, setbank_name] = useState("")
   const [bank_account_holder_name, setbank_account_holder_name] = useState("")
-  
+
   // Store Categury & StffType
   const [stufftype, setstufftype] = useState("")
-  
+
   const { store } = useSelector((state => state.store))
   const [StoreId, setStoreId] = useState('')
 
-  
+
   const [addhar_no, setaddhar_no] = useState("")
   const [pan_no, setpan_no] = useState("")
   const [drl_no, setdrl_no] = useState("")
@@ -135,6 +138,7 @@ const AddStuff = ({ id }) => {
   const [mediClaim, setMediclaim] = useState(true)
 
   const [msg, setMsg] = useState("")
+  const [userlogin, setUserlogin] = useState(false)
 
 
   const dispatch = useDispatch()
@@ -142,8 +146,8 @@ const AddStuff = ({ id }) => {
     const formData = new FormData();
     const data = {
       firstname: firstname,
-      lastname: lastname,
-      middelname: middelname,
+      secondname: middelname,
+      lastame: lastname,
 
       mobaile: mobaile,
       whatmobaile: whatmobaile,
@@ -187,6 +191,8 @@ const AddStuff = ({ id }) => {
       bank_account_ifc: bank_account_ifc,
       bank_name: bank_name,
       bank_account_holder_name: bank_account_holder_name,
+
+      userlogin: userlogin
     }
     formData.append('profile_img', img);
     formData.append('datas', JSON.stringify(data));
@@ -312,7 +318,7 @@ const AddStuff = ({ id }) => {
                         <div class="form-group">
                           <label for="inputGroupSelect01">Marital Status</label>
                           <select
-                            onChange={(e) => setWeekend(e.target.value)}
+                            onChange={(e) => setmarital(e.target.value)}
                             class="custom-select"
                             id="inputGroupSelect01"
                           >
@@ -594,12 +600,12 @@ const AddStuff = ({ id }) => {
                           <label for="inputGroupSelect01">Select store</label>
                           <select
 
-                            onChange={(e) =>setStoreId(e.target.value)}
+                            onChange={(e) => setStoreId(e.target.value)}
                             class="custom-select"
                             id="inputGroupSelect01"
                           >
                             <option selected>Select Weekend Day</option>
-                            {store.map((e)=><option key={e.id} value={e.id}>{e.name}</option>)}
+                            {store.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
 
                           </select>
                         </div>
@@ -608,12 +614,12 @@ const AddStuff = ({ id }) => {
                         <div class="form-group">
                           <label for="inputGroupSelect01">Select Stuff Type</label>
                           <select
-                            onChange={(e) =>setstufftype(e.target.value)}
+                            onChange={(e) => setstufftype(e.target.value)}
                             class="custom-select"
                             id="inputGroupSelect01"
                           >
                             <option selected>Select Stuff Type</option>
-                            {stuffCetegury.map((e)=><option key={e.id} value={e.id}>{e.name}</option>)}
+                            {stuffCetegury.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
                           </select>
                         </div>
                       </div>
@@ -657,6 +663,16 @@ const AddStuff = ({ id }) => {
                   </div>
                 </div>
                 <div class="modal-footer border-0">
+                  <div class="form-group my-0">
+                    <Switch
+                      onChange={(e) => setUserlogin(!userlogin)}
+                      checked={userlogin}
+                    />
+                    {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                    <label class="form-check-label" for="invalidCheck">
+                      Users Pannel Login 
+                    </label>
+                  </div>
                   <input type="reset" class="btn btn-danger" />
 
                   <button type="button" onClick={submit} class="btn btn-primary">

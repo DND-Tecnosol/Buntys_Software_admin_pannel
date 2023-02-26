@@ -8,7 +8,7 @@ import Page from '../../../../Layouts/Page';
 
 const UserManger = () => {
     return (
-        <Page header={"User Manager"}>
+        <>
             <Tab>
                     <TabsCard>
                         <TabsBtn id={"Users-Manager-tab"} href={'#Users-Manager'} active="show active" title={'Users Manager'} aria_control={'Users-Manager'} ariaselected={true} />
@@ -24,7 +24,7 @@ const UserManger = () => {
                         </ActiveTabsContainer>
                     </TabsContent>
                 </Tab>
-        </Page>
+        </>
     );
 }
 

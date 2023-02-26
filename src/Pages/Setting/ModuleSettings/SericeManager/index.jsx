@@ -5,7 +5,7 @@ import {ServiceManager,ServiceCateguryManeger} from './section'
 const ServiceManagers = () => {
     return (
         <>
-            <Page header={'Service Manager'}>
+            <>
                 <Tab>
                     <TabsCard>
                         <TabsBtn id={"Service-Manager-tab"} href={'#Service-Manager'} active="show active" title={'Service Manager'} aria_control={'Service-Manager'} ariaselected={true} />
@@ -21,7 +21,7 @@ const ServiceManagers = () => {
                         </ActiveTabsContainer>
                     </TabsContent>
                 </Tab>
-            </Page>
+            </>
         </>
     );
 }

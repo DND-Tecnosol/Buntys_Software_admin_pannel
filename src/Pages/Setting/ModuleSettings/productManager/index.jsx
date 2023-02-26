@@ -3,9 +3,9 @@ import Page from '../../../../Layouts/Page';
 
 const ProductManger = () => {
     return (
-        <Page header={'Produt Manger'}>
+        <>
             
-        </Page>
+        </>
     );
 }
 

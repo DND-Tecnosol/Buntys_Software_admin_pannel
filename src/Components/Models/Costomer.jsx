@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import apiRoutes,{appAxios as axios} from '../../Constants/apiRoutes';
 // 
 import { addCostomer } from '../../Store/Slice/Costomer/costumerSlice';
+import { toast } from 'react-toastify';
+import { fetchCostomer } from './../../Store/Slice/Costomer/costumerSlice';
 
 const Costomer = ({id}) => {
     var [mo, setmo] = useState("");
@@ -53,10 +55,10 @@ const Costomer = ({id}) => {
         gender: gender,
         email_notyfication_status:emailnot
       };
-      console.log(data);
+      const tosty=(e)=>toast(e)
       axios.post(apiRoutes.costomer, data).then((e) => {
-        alert(e.data.msg)
-        dispatch(addCostomer(e.data.Costomer))
+        tosty(e.data.msg)
+        dispatch(fetchCostomer())
       });
     };
     return (

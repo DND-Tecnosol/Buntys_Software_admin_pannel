@@ -23,17 +23,17 @@ export default function Dashbord({ header }) {
   const [model, setModel] = useState(false);
   const { invoice: { invoice, invoiceTotle }, appointment: { appoitment }, costomer: { costomer }, stuff: { staff } } = useSelector((state) => state)
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(fetchserviceCetegury())
-    dispatch(fetchStaff())
-    dispatch(fetchcostomerCetegury())
-    dispatch(fetchstuffCetegury())
-    dispatch(fetchServices())
-    dispatch(fetchCostomer())
-    dispatch(fetchStore())
-    dispatch(fetchInvoice())
-    dispatch(fetchAppoitment())
-}, [])
+//   useEffect(() => {
+//     dispatch(fetchserviceCetegury())
+//     dispatch(fetchStaff())
+//     dispatch(fetchcostomerCetegury())
+//     dispatch(fetchstuffCetegury())
+//     dispatch(fetchServices())
+//     dispatch(fetchCostomer())
+//     dispatch(fetchStore())
+//     dispatch(fetchInvoice())
+//     dispatch(fetchAppoitment())
+// }, [])
 
 
   const costomerName = (id) => costomer ? costomer.filter((e) => e.id == id)[0].name : []
@@ -47,7 +47,7 @@ export default function Dashbord({ header }) {
     setModel(true)
   }
   return (
-    <Page header={header}>
+    <>
       <Button
         onClick={() => dispatch(authLogout())}
       >Logout</Button>
@@ -212,7 +212,7 @@ export default function Dashbord({ header }) {
           </table>
         </ChartCard>
       </div>
-    </Page>
+    </>
   );
 }
 

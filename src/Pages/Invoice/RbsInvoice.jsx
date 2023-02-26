@@ -25,6 +25,7 @@ import {
 import { MdRestoreFromTrash } from "react-icons/md";
 
 import apiRoutes, { appAxios as axios } from '../../Constants/apiRoutes';
+import { BsPlus } from "react-icons/bs";
 // var [totles,setTotale]=useState(0)
 export default function RbsInvoice() {
   const [costomerSelected, setCostomerSelected] = useState(false);
@@ -32,11 +33,7 @@ export default function RbsInvoice() {
   const dispatch = useDispatch();
 
   const { data: { service, totale, miNtotale } } = useSelector((stae) => stae.invoiceItems);
-  const serviceData = useSelector((stae) => stae.service.service);
-  const staffData = useSelector((stae) => stae.stuff.staff);
-  const costomerData = useSelector((stae) => stae.costomer.costomer);
-  // const {data:{service}} = useSelector((stae) => stae);
-
+  const costomerData = useSelector((stae) => stae.costomer.costomer) || [];
   const costomerOption = costomerData.map((data) => ({ id: data.id, label: `${data.name} ${data.mobaile}`, }));
   const costomerfind = (id) => {
     const data = costomerData ? costomerData.filter((data) => data.id === id)[0] : [];
@@ -99,6 +96,7 @@ export default function RbsInvoice() {
                       Select Costomer
                     </label>
                     <SearchSelect
+                      noOptionsText={<Button data-toggle="modal" data-target="#exampleModal" startIcon={<BsPlus />} variant="text" fullWidth={true} color="error">New Costomer</Button>}
                       col={true}
                       id="name"
                       onChange={(event, id) => costomerfind(id.id)}
@@ -532,7 +530,6 @@ const SearchSelect = ({ label, inputchange, col, ...data }) => {
           size="small"
           id="combo-box-demo"
           // sx={{ width: 300 }}
-          noOptionsText={"Nothing"}
           renderInput={(params) => (
             <TextField {...params} onChange={inputchange} label={label} />
           )}

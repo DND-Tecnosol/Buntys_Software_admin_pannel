@@ -59,7 +59,7 @@ const Appoitment = ({ header }) => {
   }
 
   return (
-    <Page header={header}>
+    <>
       <div className="container">
         <Resource localizer={localizer} onSelectEvent={onSelectEvent} onSelectSlot={onSelectSlot} />
       </div>
@@ -86,7 +86,7 @@ const Appoitment = ({ header }) => {
           event={event}
         /> : null
       }
-    </Page>
+    </>
   );
 };
 

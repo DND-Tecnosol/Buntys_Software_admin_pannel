@@ -10,9 +10,7 @@ const StuffProfile = () => {
     console.log(user);
     return (
         <>
-            <Page header={'Hello'}>
-
-            </Page>
+        
         </>
     );
 }
