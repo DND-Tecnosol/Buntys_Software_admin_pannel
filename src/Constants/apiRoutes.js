@@ -37,6 +37,9 @@ export const appAxios = axios.create({
     "notificationcatygury":`${apiDomain}/api/notificationcatygury/`,
     "time":`${apiDomain}/api/time/`,
     "closingdate":`${apiDomain}/api/closingdate/`,
+    "product":`${apiDomain}/api/product/`,
+    "producttype":`${apiDomain}/api/producttype/`,
+    "productbrand":`${apiDomain}/api/productbrand/`,
 }
 
 
