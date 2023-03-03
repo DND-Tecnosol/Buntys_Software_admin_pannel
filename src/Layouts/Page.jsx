@@ -16,6 +16,7 @@ import { fetchStaff } from "../Store/Slice/All/staffSlice";
 import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
 import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
 import { fetchServices } from './../Store/Slice/All/serviceSlice';
+import { fetchProduct,fetchProductBrand,fetchProductCategury, } from './../Store/Slice/All/productSlice';
 import Echo from 'laravel-echo';
 // import Pusher from 'pusher-js';
 
@@ -41,6 +42,9 @@ export default function Page({ children, header }) {
         //     console.log(e)
         // })
         dispatch(fetchserviceCetegury())
+        dispatch(fetchProduct())
+        dispatch(fetchProductBrand())
+        dispatch(fetchProductCategury())
         dispatch(fetchStaff())
         dispatch(fetchcostomerCetegury())
         dispatch(fetchstuffCetegury())
@@ -97,6 +101,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getTokens } from './../Constants/firebase';
 import { useDispatch } from 'react-redux';
+import { fetchProduct } from './../Store/Slice/All/productSlice';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

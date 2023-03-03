@@ -1,17 +1,48 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { FormControl, TextField, Slide, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Stack, Button, Container, InputBase, InputLabel, Input, IconButton, } from '@mui/material'
-import { useSelector } from 'react-redux';
-import { Edit } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux';
+import { Delete, Edit } from '@mui/icons-material';
+import apiRoutes, { appAxios } from './../../../../Constants/apiRoutes';
+import { toast } from 'react-toastify';
+import { fetchProductCategury } from './../../../../Store/Slice/All/productSlice';
+
+
 
 function ProductCategury() {
 
-    const product_categury=useSelector(state=>state.product.product_categury)
-const updateProductCategury=()=>{
+  const product_categury = useSelector(state => state.product.product_categury)
+  const [data, setData] = useState(false)
+  const dispatch = useDispatch()
+  const product_brand = useSelector(state => state.product.product_brand)
+  const saveProductCategury = (names) => {
+    appAxios.post(apiRoutes.producttype, { name: names }).then(e => {
+      toast(e.data.msg)
+      dispatch(fetchProductCategury())
+    })
+  }
+  const updateProductCategury = (name, id) => {
+    appAxios.put(apiRoutes.producttype + id, { name: name }).then(e => {
+      toast(e.data.msg)
+      dispatch(fetchProductCategury())
+    })
+  }
 
-}
+  const deleteProductCategury = (id) => {
+    appAxios.delete(apiRoutes.producttype + id).then(e => {
+      toast(e.data.msg)
+      dispatch(fetchProductCategury())
+    })
+  }
+  const update = useCallback((datas) => {
+    console.log(data);
+    setData(datas)
+  }, [data])
   return (
-    <div>
-        <TableContainer>
+    <>
+      <Stack direction={"row"} justifyContent={"flex-end"} >
+        <Button data-toggle="modal" data-target="#addproductsCategury" variant='contained'>Add Categury</Button>
+      </Stack>
+      <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -27,13 +58,13 @@ const updateProductCategury=()=>{
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell align="">{++key}</TableCell>
-                <TableCell component="th" scope="row">
-                  {row.event_name}
-                </TableCell>
-                <TableCell align="">{row.date}</TableCell>
+                <TableCell align="">{row.name}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => updateProductCategury(row, row.id)}>
+                  <IconButton onClick={() => update(row)}>
                     <Edit color='warning' />
+                  </IconButton>
+                  <IconButton onClick={() => deleteProductCategury(row.id)}>
+                    <Delete color='error' />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -41,8 +72,53 @@ const updateProductCategury=()=>{
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+      <AddProductCateguryModel data={data} setData={setData} save={saveProductCategury} />
+      {data && <AddProductCateguryModel setData={setData} data={data} update={updateProductCategury} />}
+    </>
   )
 }
 
 export default ProductCategury
+
+const AddProductCateguryModel = ({ data, save, update, setData }) => {
+  const [names,setNames]=useState(data.name)
+  return (
+    <>
+      <div class={`modal fade ${data ? "show" : ''}`} style={{ display: `${data ? "block" : "none"}` }} id="addproductsCategury" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header border-0">
+              <h5 class="modal-title" id="exampleModalLabel">Add Categury</h5>
+              <button type="button" class="close" data-dismiss="modal" onClick={()=>setData(false)} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body border-0">
+              <div className="container">
+                <Stack direction={"row"} spacing={2} justifyContent={"center"} alignItems={"center"} my={1} >
+                  <TextField label="Categury Name" value={names} onChange={(e)=>setNames(e.target.value)}  fullWidth variant="filled" />
+                </Stack>
+              </div>
+            </div>
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              {data ?
+                <>
+                  <button type="button" class="btn btn-primary" onClick={() => update(names, data.id)} >
+                    Update changes
+                  </button>
+                </>
+                :
+                <>
+                  <button type="button" class="btn btn-primary" onClick={() => save(names)} >
+                    Save changes
+                  </button>
+                </>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
