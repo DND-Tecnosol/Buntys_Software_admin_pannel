@@ -29,7 +29,7 @@ const NewStoreModel = ({ ids }) => {
     var [sessionclosetime, setsessionclosetime] = useState("")
     var [address, setaddress] = useState("")
     var [pin, setpin] = useState("")
-    var [city, setcity] = useState("")
+    var [city, setcity] = useState(1)
     var [newcity, setNewcity] = useState("")
     var [state, setstate] = useState("")
     var [insta_link, setinsta_link] = useState("")
