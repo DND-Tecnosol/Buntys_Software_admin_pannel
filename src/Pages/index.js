@@ -12,4 +12,5 @@ export {default as Ticket} from './Ticket'
 export {default as Feedback} from './Feedback'
 
 export {default as CostomerProfile} from './costomer/costomerProfile'
+export {default as StaffProfile} from './Setting/ModuleSettings/StaffManager/stuffProfile'
 // export {default as ServiceManager} from './Setting/'

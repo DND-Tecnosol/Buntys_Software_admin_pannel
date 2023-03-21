@@ -35,7 +35,7 @@ export default function Setting({ header }) {
           <div className="row">
             <LinkComponents to={`/${routes.ServiceManger}`} title={'Service Manager'} info={'Add Service , Manage Service Detail'} />
             <LinkComponents title={'Product Manager'} to={`/${routes.ProductManger}`} info={'Add Product , Manage Product Detail'} />
-            <LinkComponents title={'Costumer Manager'} to={`/${routes.ProductManger}`} info={'Add Costumer , Manage Costumer Settings'} />
+            <LinkComponents title={'Costumer Manager'} to={`/${routes.CostomerManger}`} info={'Add Costumer , Manage Costumer Settings'} />
             <LinkComponents title={'Staff Manager'} to={`/${routes.StuffManger}`} info={'Add staff , Manage staff Detail'} />
             <LinkComponents title={'User Manager'} to={`/${routes.UserManger}`} info={'Add User , Manage User Detail'} />
             <LinkComponents title={'Invoice Manager'} to={`/${routes.InvoiceManger}`} info={'Change Invoice Setting'} />

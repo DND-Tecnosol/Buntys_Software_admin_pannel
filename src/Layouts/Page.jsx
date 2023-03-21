@@ -8,39 +8,43 @@ import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import routesconst from '../Constants/routesconst';
 import { ToastContainer, toast } from 'react-toastify';
-import firebaseapp from '../firebase'
 import { fetchAppoitment } from './../Store/Slice/All/appointmentSlice';
 import { fetchInvoice } from './../Store/Slice/All/invoiceSlice';
-import { fetchStore,fetchCity,fetchStorenotification ,fetchStorenotificationcatygury ,fetchStoretime ,fetchStoreclosingdate  } from './../Store/Slice/All/storeSlice';
+import { fetchStore, fetchCity, fetchStorenotification, fetchStorenotificationcatygury, fetchStoretime, fetchStoreclosingdate } from './../Store/Slice/All/storeSlice';
 import { fetchStaff } from "../Store/Slice/All/staffSlice";
 import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
 import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
 import { fetchServices } from './../Store/Slice/All/serviceSlice';
-import { fetchProduct,fetchProductBrand,fetchProductCategury, } from './../Store/Slice/All/productSlice';
-import Echo from 'laravel-echo';
-// import Pusher from 'pusher-js';
+import { fetchProduct, fetchProductBrand, fetchProductCategury, } from './../Store/Slice/All/productSlice';
+import Echo from "laravel-echo";
+import Pusher from 'pusher-js';
+import { requestForToken } from '../Constants/firebase';
+// const firebaseMassage=  
+
+const echo = new Echo({
+    key: "621acca9abe83bd9e178",
+    // broadcaster: 'pusher',
+    broadcaster: 'pusher',
+    cluster: 'ap2',
+    // wsHost: window.location.hostname,
+    // wsPort: 6001,
+    forceTLS: false,
+    disableStats: true,
+});
 
 export default function Page({ children, header }) {
     document.title = "Bunty's studio || " + header;
     const dispatch = useDispatch()
     const state = useSelector(state => state)
     useEffect(() => {
-        // window.Pusher = require('pusher-js');
-        // window.Event = new Echo({
-        //     broadcaster: 'pusher',
-        //     key: 'DXHQtg.1CC-Bg:wT2MJMJQQAdjcY2Q9GG8EAOKkHGNRvrCD-XK4tLVeos',
-        //     wsHost: 'realtime-pusher.ably.io',
-        //     wsPort: 443,
-        //     disableStats: true,
-        //     encrypted: true,
-        // });
-        // Event.channel('storeupdate').subscribed((e) => {
-        //     console.log("Subscribed Successfully");
-        //     console.log(e);
-        // }).listen((e) => {
-        //     console.log("new event msg")
-        //     console.log(e)
-        // })
+        const store = localStorage.getItem('store');
+        echo.channel(`storeupdate.${store}`)
+            .listen('storeUpdate', (data) => {
+                console.log(data);
+                toast(data.msg.msg)
+                // alert(data.msg)
+            });
+            requestForToken()
         dispatch(fetchserviceCetegury())
         dispatch(fetchProduct())
         dispatch(fetchProductBrand())
@@ -77,7 +81,7 @@ export default function Page({ children, header }) {
                         </div>
                     </section>
                 </div>
-                
+
                 {/* Models start Hear */}
                 <CostomerModel id={'exampleModal'} />
                 <AddService id={'services'} />
@@ -99,7 +103,7 @@ export default function Page({ children, header }) {
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getTokens } from './../Constants/firebase';
+import { getTokens, requestForToken } from './../Constants/firebase';
 import { useDispatch } from 'react-redux';
 import { fetchProduct } from './../Store/Slice/All/productSlice';
 // TODO: Add SDKs for Firebase products that you want to use

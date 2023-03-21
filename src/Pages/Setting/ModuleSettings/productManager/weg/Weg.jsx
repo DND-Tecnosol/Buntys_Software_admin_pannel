@@ -28,10 +28,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Delete, Edit } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useCallback } from "react";
-import apiRoutes, { appAxios } from "../../../../Constants/apiRoutes";
-import { fetchProduct } from "../../../../Store/Slice/All/productSlice";
+import apiRoutes, { appAxios } from "../../../../../Constants/apiRoutes";
+import { fetchProduct } from "../../../../../Store/Slice/All/productSlice";
 import { toast } from "react-toastify";
-function Product() {
+function Weg() {
   const [data, setData] = useState(false);
   const product = useSelector((state) => state.product.product);
   const dispatch = useDispatch();
@@ -116,7 +116,7 @@ function Product() {
   );
 }
 
-export default Product;
+export default Weg;
 
 const AddProductModel = ({ save, update, datas, close }) => {
   const [proCate, setProCate] = useState(datas.proCate);

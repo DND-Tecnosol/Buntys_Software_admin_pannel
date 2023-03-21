@@ -7,6 +7,7 @@ import {
   MenuItem,
   Select,
   Switch,
+  Divider
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@mui/material";
@@ -20,7 +21,7 @@ import {
   changeService,
   changeServiceQty,
   changeServiceStaff,
-  changeServiceDisc
+  changeServiceDisc, addPoduct, changePoduct, changePoductStaff, changePoductQty, remPoduct,
 } from "../../Store/Slice/All/invoiceItemsSlice";
 import { MdRestoreFromTrash } from "react-icons/md";
 
@@ -32,7 +33,7 @@ export default function RbsInvoice() {
   const [discount, setDiscount] = useState(0);
   const dispatch = useDispatch();
 
-  const { data: { service, totale, miNtotale } } = useSelector((stae) => stae.invoiceItems);
+  const { data: { service, totale, miNtotale, product } } = useSelector((stae) => stae.invoiceItems);
   const costomerData = useSelector((stae) => stae.costomer.costomer) || [];
   const costomerOption = costomerData.map((data) => ({ id: data.id, label: `${data.name} ${data.mobaile}`, }));
   const costomerfind = (id) => {
@@ -70,7 +71,7 @@ export default function RbsInvoice() {
       service: service
     }
     axios.post(apiRoutes.invoice, invoiceData).then((e) => {
-      console.log(e)
+      // console.log(e)
     })
   }
 
@@ -79,10 +80,16 @@ export default function RbsInvoice() {
     for (let index = 0; index < service.length; index++) {
       var insta = instant += Number(service[index].serviceTotalePrice);
     }
-    // console.log(insta);
-    dispatch(setTotaleValue(insta))
+
+    var productTotale = 0;
+    for (let index = 0; index < product.length; index++) {
+      var productTotales = productTotale += Number(product[index].productTotalePrice);
+    }
+    var insta=insta ? insta : 0;
+    var productTotales=productTotales ? productTotales :0 ;
+    dispatch(setTotaleValue(Number(insta += productTotales)))
     // return instant
-  }, [service])
+  }, [service, product])
   return (
     <>
       <div className="container-fluide">
@@ -146,7 +153,9 @@ export default function RbsInvoice() {
                 Clear All Items
               </Button>
               {service.map((e, k) => <InvoiceService key={k} serviceReduxid={k} />)}
-              {/* <InvoiceProduct/>
+              {product.map((e, k) => <InvoiceProduct key={k} serviceReduxid={k} />)}
+
+              {/* 
               <InvoicePkg/>
               <InvoiceVoucher/>
               <InvoiceWeg/>
@@ -158,8 +167,8 @@ export default function RbsInvoice() {
               <div className="row">
               </div>
               <div className="row container">
-                <InvoiceBtn title={"Add Serrvice"} onClick={() => dispatch(addService())} />
-                <InvoiceBtn title={"Add Product"} ></InvoiceBtn>
+                <InvoiceBtn title={"Add Service"} onClick={() => dispatch(addService())} />
+                <InvoiceBtn title={"Add Product"} onClick={() => dispatch(addPoduct())} ></InvoiceBtn>
                 <InvoiceBtn title={"Create Pkg"} ></InvoiceBtn>
                 <InvoiceBtn title={"Create Voucher"} ></InvoiceBtn>
                 <InvoiceBtn title={"Add Weg"} ></InvoiceBtn>
@@ -302,7 +311,7 @@ const InvoiceBtn = ({ onClick, title }) => {
 
 const InvoiceService = ({ serviceReduxid }) => {
   const { service: { service }, invoiceItems: { data }, stuff: { staff } } = useSelector(state => state)
-  // console.log(`componet index ${serviceReduxid} qty value ${data.service[serviceReduxid].serviceQty}`);
+  // // console.log(`componet index ${serviceReduxid} qty value ${data.service[serviceReduxid].serviceQty}`);
   const serviceData = service.map((e) => ({ label: e.name, id: e.id }))
   const staffData = staff.map((e) => ({ label: e.firstname, id: e.id }))
   const dispatch = useDispatch()
@@ -336,10 +345,11 @@ const InvoiceService = ({ serviceReduxid }) => {
     dispatch(changeServiceDisc({ key: serviceReduxid, value: e }))
   }, [data])
 
-  console.log(Number(data.service[serviceReduxid].serviceQty) * (data.service[serviceReduxid].servicePrice - (data.service[serviceReduxid].servicePrice * (data.service[serviceReduxid].serviceDisc / 100))));
-  console.log(10 * (250 - (250 * (10 / 100))));
+  // console.log(Number(data.service[serviceReduxid].serviceQty) * (data.service[serviceReduxid].servicePrice - (data.service[serviceReduxid].servicePrice * (data.service[serviceReduxid].serviceDisc / 100))));
+  // console.log(10 * (250 - (250 * (10 / 100))));
   return (
     <>
+
       <div className="row d-flex justify-content-around m-2">
         {/* <p>{data.service[serviceReduxid].servicePrice - (data.service[serviceReduxid].servicePrice * (data.service[serviceReduxid].serviceDisc/100))}</p> */}
         <SearchSelect
@@ -370,7 +380,7 @@ const InvoiceService = ({ serviceReduxid }) => {
           <TextField
             sx={{ width: "100%" }}
             id="outlined-basic"
-            label="Price"
+            label="Discount"
             value={data.service[serviceReduxid].serviceDisc}
             onChange={(e) => serviceDiscChange(e.target.value)}
             variant="outlined"
@@ -388,7 +398,17 @@ const InvoiceService = ({ serviceReduxid }) => {
             size="small"
           />
         </div>
-        <div className="col-3">
+        <div className="col-1">
+          <TextField
+            sx={{ width: "100%" }}
+            id="outlined-basic"
+            label="Totale Price"
+            value={data.service[serviceReduxid].serviceTotalePrice || 0}
+            variant="outlined"
+            size="small"
+          />
+        </div>
+        <div className="col-1">
           <IconButton onClick={() => dispatch(remService({ id: data.service[serviceReduxid].serviceId, price: data.service[serviceReduxid].servicePrice }))}>
             <MdRestoreFromTrash color="red" />
           </IconButton>
@@ -398,10 +418,84 @@ const InvoiceService = ({ serviceReduxid }) => {
   )
 }
 
-const InvoiceProduct = ({ }) => {
+const InvoiceProduct = ({ serviceReduxid }) => {
+  const dispatch = useDispatch()
+  const { product: { product }, invoiceItems: { data }, stuff: { staff } } = useSelector(state => state)
+  const productData = product.map((e) => ({ label: e.name, id: e.id }))
+  const staffData = staff.map((e) => ({ label: e.firstname, id: e.id }))
+
+  const serVicefind = useCallback((id) => {
+    const servicedata = product.filter(data => data.id === id)[0];
+    // console.log(servicedata);
+    // setserviceState(serviceData.filter(data => data.id === id)[0])
+    dispatch(changePoduct({ id: servicedata.id, key: serviceReduxid, minprice: servicedata.minprice, price: servicedata.price }))
+    return servicedata
+  }, [data]);
+
+  const stafffind = useCallback((id) => {
+    const servicedata = staff.filter(data => data.id === id)[0];
+    dispatch(changePoductStaff({ key: serviceReduxid, staffId: servicedata.id }))
+    return servicedata
+  }, [data]);
+
+  const labelName = useCallback((id) => {
+    const datas = productData.filter((data) => data.id === id)
+    // console.log(`labelname: ${id}`);
+    if (datas !== []) {
+      return datas
+    } else {
+      return null
+    }
+  }, [data])
+  const changePoductQtyByVal = useCallback(e => {
+    dispatch(changePoductQty({ key: serviceReduxid, value: e }))
+  }, [data])
   return (
     <>
-
+      {((serviceReduxid === 0) && (data.service.length != 0)) && <Divider sx={{ margin: 1.5 }} />}
+      <div className="row d-flex justify-content-around m-2">
+        <SearchSelect
+          value={labelName(data.product[serviceReduxid].productId)[0] || null}
+          onChange={(event, id) => {
+            serVicefind(id.id)
+          }}
+          options={productData || []}
+          label="Add Product"
+        />
+          <SearchSelect
+            onChange={(event, id) => stafffind(id.id)}
+            options={staffData}
+            label="Add Staff"
+          />
+        <div className="col-2">
+          <TextField
+            sx={{ width: "100%" }}
+            id="outlined-basic"
+            label="Product Qty"
+            value={data.product[serviceReduxid].productQty || 0}
+            variant="outlined"
+            size="small"
+            onChange={(e) => changePoductQtyByVal(e.target.value)}
+          />
+        </div>
+        <div className="col-2">
+          <TextField
+            sx={{ width: "100%" }}
+            id="outlined-basic"
+            label="Product Price"
+            value={data.product[serviceReduxid].productPrice || 0}
+            variant="outlined"
+            size="small"
+          />
+        </div>
+        <div className="col-1">
+          <IconButton onClick={() => {
+            dispatch(remPoduct({ id: data.product[serviceReduxid].productId, price: data.product[serviceReduxid].productPrice }))
+          }}>
+            <MdRestoreFromTrash color="red" />
+          </IconButton>
+        </div>
+      </div>
     </>
   )
 }
@@ -446,80 +540,6 @@ const InvoiceWegRepair = ({ }) => {
   )
 }
 
-// const InvoiceServiceSection = ({ title, label, plase, onchange, ...props }) => {
-//   const dispatch = useDispatch();
-//   const [serviceObj, setServiceObg] = useState({});
-//   const [staffId, setstaffId] = useState("");
-//   const [qty, setqty] = useState(1);
-//   const [price, setprice] = useState("");
-
-//   const serviceData = useSelector((stae) => stae.service.service);
-//   const staffData = useSelector((stae) => stae.stuff.staff);
-
-//   const service =serviceData ? serviceData.map((data) => ({
-//     id: data.id,
-//     label: data.name,
-//   })) : [];
-//   const serVicefind = (id) =>setServiceObg(serviceData.filter((data) => data.id === id)[0]);
-
-//   const staff = staffData ? staffData.map((data) => ({ id: data.id, label: data.name })):[];
-
-//   const addService = () => {
-//     // const discountCheck =serviceObj.price - serviceObj.price * (disc / 100) >= serviceObj.minprice;
-//     var state = {
-//       serviceId: serviceObj.id,
-//       staffId: staffId,
-//       price: serviceObj.price,
-//       totale: serviceObj.price * qty,
-//       miNtotale: serviceObj.minprice * qty,
-//       qty: qty,
-//     };
-//     dispatch(addItems(state));
-//   };
-
-//   return (
-//     <>
-//       <div className="row d-flex justify-content-around">
-//         <SearchSelect
-//           onChange={(event, id) => serVicefind(id.id)}
-//           options={service}
-//           label="Add Service"
-//         />
-//         <SearchSelect
-//           onChange={(event, id) => setstaffId(id.id)}
-//           options={staff}
-//           label="Add Staff"
-//         />
-//         <div className="col-1">
-//           <TextField
-//             id="outlined-basic"
-//             onChange={(e) => setqty(e.target.value)}
-//             value={qty}
-//             sx={{ width: "100%" }}
-//             label="Qty"
-//             variant="outlined"
-//           />
-//         </div>
-//         <div className="col-1">
-//           <TextField
-//             sx={{ width: "100%" }}
-//             id="outlined-basic"
-//             label="Price"
-//             onChange={(e) => setprice(e.target.value)}
-//             value={serviceObj.price || 0}
-//             variant="outlined"
-//           />
-//         </div>
-//         <div className="col-1">
-//           <IconButton onClick={addService}>
-//             <FiPlus color="red" />
-//           </IconButton>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
 const SearchSelect = ({ label, inputchange, col, ...data }) => {
   return (
     <>
@@ -538,56 +558,3 @@ const SearchSelect = ({ label, inputchange, col, ...data }) => {
     </>
   );
 };
-
-/*
- <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Service</th>
-                    <th scope="col">Staff</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Discount</th>
-                    <th scope="col">Totale</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items
-                    ? items.map((e, i) => {
-                        // setTotale(e.totale)
-                        var ik = ++i;
-                        return (
-                          <tr>
-                            <th scope="row">{ik}</th>
-                            <td>{serVicefind(e.serviceId)[0].name}</td>
-                            <td>{stafffind(e.staffId)[0].name}</td>
-                            <td>{e.qty}</td>
-                            <td>{e.price}</td>
-                            <td>{discount}</td>
-                            <td>{e.totale}</td>
-                            <td>
-                              <IconButton
-                                onClick={() =>
-                                  dispatch(
-                                    remItems({ id: --i, totale: e.totale })
-                                  )
-                                }
-                              >
-                                <MdRestoreFromTrash color="red" />
-                              </IconButton>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : null}
-                  {/* <tr>
-                                        <td colspan="6" className='text-right px-5'>Totle</td>
-                                        <td>{totale}</td>
-                                        <td>{ }</td>
-                                        (serviceObj.price - serviceObj.price * (disc / 100))
-                    </tr> *///}
-  //                                  </tbody>
-//                                    </table>
-//*/

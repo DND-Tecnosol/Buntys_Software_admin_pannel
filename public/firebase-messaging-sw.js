@@ -1,20 +1,6 @@
-importScripts('https://www.gstatic.com/firebasejs/3.5.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/3.5.0/firebase-messaging.js');
-
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('../firebase-messaging-sw.js')
-      .then(function(registration) {
-        console.log('Registration successful, scope is:', registration.scope);
-      }).catch(function(err) {
-        console.log('Service worker registration failed, error:', err);
-      });
-    }
-
-// firebase.initializeApp({
-//   messagingSenderId: "324796960410",
-//   })
-
-const initMessaging = firebase.messaging()
+importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js');
+// const initMessaging = firebase.messaging()
  const firebaseConfig = {
   apiKey: "AIzaSyAbMsDCISg2KmwR26Q8uvKfX8dBGv_niwE",
   authDomain: "buntys-app.firebaseapp.com",
@@ -25,18 +11,19 @@ const initMessaging = firebase.messaging()
   measurementId: "G-J8PS7J88CC"
 };
 
- firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
- // Retrieve firebase messaging
- const messaging = firebase.messaging();
+// Retrieve firebase messaging
+const messaging = firebase.messaging(app);
 
- messaging.onBackgroundMessage(function(payload) {
-   console.log("Received background message ", payload);
+messaging.onBackgroundMessage(function(payload) {
+  console.log('Received background message ', payload);
+ // Customize notification here
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+  };
 
-   const notificationTitle = payload.notification.title;
-   const notificationOptions = {
-     body: payload.notification.body,
-   };
-
-   self.registration.showNotification(notificationTitle, notificationOptions);
- });
+  self.registration.showNotification(notificationTitle,
+    notificationOptions);
+});

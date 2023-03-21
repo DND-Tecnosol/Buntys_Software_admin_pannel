@@ -8,7 +8,7 @@ import {
     Outlet,
 } from "react-router-dom";
 import routesconst, { routes } from '../Constants/routesconst';
-import { CostomerProfile } from "../Pages";
+import { CostomerProfile, StaffProfile } from "../Pages";
 import {
     Storemanager,
     StoreClosedate,
@@ -93,6 +93,7 @@ export default function Routs() {
 
 
                     <Route path={'costomer/:id'} element={<CostomerProfile />} />
+                    <Route path={'staff/:id'} element={<StaffProfile />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

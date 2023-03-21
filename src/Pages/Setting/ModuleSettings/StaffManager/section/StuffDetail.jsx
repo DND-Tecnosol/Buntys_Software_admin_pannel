@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import apiRoutes, { appAxios as axios } from '../../../../../Constants/apiRoutes'
 import { fetchStaff } from '../../../../../Store/Slice/All/staffSlice'
+import { Stepper, Step, StepLabel, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Link } from 'react-router-dom'
 
 export default function StuffDetail() {
   const { staff } = useSelector((state => state.stuff))
@@ -13,8 +15,8 @@ export default function StuffDetail() {
   const dispatch = useDispatch()
   const cetEguryFilter = (id, arr) => arr.filter((arry) => arry.id === id)
   // console.log()
-  
-  const tostyfi=(data)=>toast(data)
+
+  const tostyfi = (data) => toast(data)
   const onDelate = (id) => {
     axios.delete(`${apiRoutes.stuff}${id}`).then((e) => {
       tostyfi(e.data.msg)
@@ -29,7 +31,7 @@ export default function StuffDetail() {
         </div>
         <Button variant='contained' data-toggle="modal"
           data-target="#addstuff" className='my-3' color='warning'>
-          Add Stuff Categury
+          Add new Stuff
         </Button>
       </div>
       <div className="table-card bg-white rounded-lg m-3">
@@ -53,7 +55,11 @@ export default function StuffDetail() {
                 return (<>
                   <tr>
                     {/* <th scope="row">{++index}</th> */}
-                    <td>{firstname} {lastname}</td>
+                    <td>
+                      <Link to={"/staff/"+id} >
+                        {firstname} {lastname}
+                      </Link>
+                    </td>
                     <td>{cetEguryFilter(stafftypesid, stuffCetegury)[0].name}</td>
                     <td>{status ? <span className='text-success'>Active</span> : <span className='text-danger'>DeActive</span>}</td>
                     <td>
@@ -76,6 +82,16 @@ export default function StuffDetail() {
   )
 }
 
+const steps = [
+  'Staff Personel Info',
+  'Staff Address',
+  'Job Scidule & Time',
+  'Stuff Payouts',
+  "Stuff Document's",
+  'Stuff Account Detail',
+  'Stuff Categury',
+  'Stuff Benifits'
+]
 
 const AddStuff = ({ id }) => {
   // personel Info
@@ -140,7 +156,8 @@ const AddStuff = ({ id }) => {
   const [msg, setMsg] = useState("")
   const [userlogin, setUserlogin] = useState(false)
 
-
+  var [count, setcount] = useState(0)
+  console.log(count);
   const dispatch = useDispatch()
   const submit = () => {
     const formData = new FormData();
@@ -225,13 +242,9 @@ const AddStuff = ({ id }) => {
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content border-0">
               <div class="modal-header border-0">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  New Staff
-
-                </h5>
                 <button
                   type="button"
                   class="close"
@@ -243,441 +256,504 @@ const AddStuff = ({ id }) => {
               </div>
               <form class="needs-validation" novalidate>
                 <div class="modal-body">
-                  {msg ? <Alertmsg msg={msg} /> : null}
+                  <center>
+                    <h5 id="exampleModalLabel">
+                      New Staff
+                    </h5>
+                  </center>
+                  <Stepper activeStep={count} alternativeLabel>
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
                   {/* personel Info */}
-                  <center className="my-3"><h5>Staff Personel Info</h5></center>
 
                   <div className="container">
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setfirstname(e.target.value)}
-                        plase={'First Name'}
-                        value={firstname}
-                        title={"First Name"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setlastname(e.target.value)}
-                        plase={'Last Name'}
-                        value={lastname}
-                        title={"Last Name"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setmiddelname(e.target.value)}
-                        plase={'Middel Name'}
-                        value={middelname}
-                        title={"Middel Name"}
-                        type="text"
-                      />
-                    </div>
-
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setBirthday(e.target.value)}
-                        plase={'Birth Day'}
-                        value={birthday}
-                        title={"Staff Birthday"}
-                        type="date"
-                      />
-                      <Input
-                        onchange={(e) => setAnny(e.target.value)}
-                        plase={'Staff Birthday'}
-                        value={anny}
-                        title={"Staff Marrige Annyversury"}
-                        type="date"
-                      />
-
-                    </div>
-
-                    <div class="form-row">
-                      {/* <input */}
-                      <Input
-                        onchange={(e) => setImg(e.target.files[0])}
-                        // plase={'9 hours'}
-                        name="file"
-                        // value={img}
-                        title={"Profile Img"}
-                        type="file"
-                      />
-                      <div className="col-4">
-                        <div class="form-group">
-                          <label for="inputGroupSelect01">Gender</label>
-                          <select
-                            onChange={(e) => setGender(e.target.value)}
-                            class="custom-select"
-                            id="inputGroupSelect01"
-                          >
-                            <option selected>Select Staff Gender</option>
-                            <option value="1">Male</option>
-                            <option value="0">Female</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-4">
-                        <div class="form-group">
-                          <label for="inputGroupSelect01">Marital Status</label>
-                          <select
-                            onChange={(e) => setmarital(e.target.value)}
-                            class="custom-select"
-                            id="inputGroupSelect01"
-                          >
-                            <option selected>Select Weekend Day</option>
-                            <option value="0">Meride</option>
-                            <option value="1">none marride</option>
-                            <option value="3">Devorce</option>
-                            <option value="4">Angage</option>
-                          </select>
-                        </div>
-                      </div>
-
-                    </div>
-                    {/* Contact Info */}
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setmobaile(e.target.value)}
-                        plase={'Mobaile No.'}
-                        value={mobaile}
-                        title={"Mobaile No"}
-                        type="text"
-                      />
-                      <div class="col-md-4 mb-3">
-                        <label for="validationCustomUsername">Whatsapp No</label>
-                        <div class="input-group">
-                          <input
-                            onChange={(e) => setwhatmobaile(e.target.value)}
-                            value={whatmobaile}
+                    {(count == 0) &&
+                      <>
+                        <center className="my-3"><h5>Staff Personel Info</h5></center>
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setfirstname(e.target.value)}
+                            plase={'First Name'}
+                            value={firstname}
+                            title={"First Name"}
                             type="text"
-
-                            class="form-control"
-                            id="validationCustomUsername"
-                            placeholder="Whatsapp no."
-                            aria-describedby="inputGroupPrepend"
-                            required
                           />
-                          <div class="input-group-append">
-                            <button
-                              onClick={() => setwhatmobaile(mobaile)}
-                              class="btn btn-primary"
-                              type="button"
-                            >
-                              <BsClipboard />
-                            </button>
+                          <Input
+                            onchange={(e) => setlastname(e.target.value)}
+                            plase={'Last Name'}
+                            value={lastname}
+                            title={"Last Name"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setmiddelname(e.target.value)}
+                            plase={'Middel Name'}
+                            value={middelname}
+                            title={"Middel Name"}
+                            type="text"
+                          />
+                        </div>
+
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setBirthday(e.target.value)}
+                            plase={'Birth Day'}
+                            value={birthday}
+                            title={"Staff Birthday"}
+                            type="date"
+                          />
+                          <Input
+                            onchange={(e) => setAnny(e.target.value)}
+                            plase={'Staff Birthday'}
+                            value={anny}
+                            title={"Staff Marrige Annyversury"}
+                            type="date"
+                          />
+
+                        </div>
+
+                        <div class="form-row">
+                          {/* <input */}
+                          <Input
+                            onchange={(e) => setImg(e.target.files[0])}
+                            // plase={'9 hours'}
+                            name="file"
+                            // value={img}
+                            title={"Profile Img"}
+                            type="file"
+                          />
+                          <div className="col-4">
+                            <div class="form-group">
+                              <label for="inputGroupSelect01">Gender</label>
+                              <select
+                                onChange={(e) => setGender(e.target.value)}
+                                class="custom-select"
+                                id="inputGroupSelect01"
+                              >
+                                <option selected>Select Staff Gender</option>
+                                <option value="1">Male</option>
+                                <option value="0">Female</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-4">
+                            <div class="form-group">
+                              <label for="inputGroupSelect01">Marital Status</label>
+                              <select
+                                onChange={(e) => setmarital(e.target.value)}
+                                class="custom-select"
+                                id="inputGroupSelect01"
+                              >
+                                <option selected>Select Weekend Day</option>
+                                <option value="0">Meride</option>
+                                <option value="1">none marride</option>
+                                <option value="3">Devorce</option>
+                                <option value="4">Angage</option>
+                              </select>
+                            </div>
+                          </div>
+
+                        </div>
+                        {/* Contact Info */}
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setmobaile(e.target.value)}
+                            plase={'Mobaile No.'}
+                            value={mobaile}
+                            title={"Mobaile No"}
+                            type="text"
+                          />
+                          <div class="col-md-4 mb-3">
+                            <label for="validationCustomUsername">Whatsapp No</label>
+                            <div class="input-group">
+                              <input
+                                onChange={(e) => setwhatmobaile(e.target.value)}
+                                value={whatmobaile}
+                                type="text"
+
+                                class="form-control"
+                                id="validationCustomUsername"
+                                placeholder="Whatsapp no."
+                                aria-describedby="inputGroupPrepend"
+                                required
+                              />
+                              <div class="input-group-append">
+                                <button
+                                  onClick={() => setwhatmobaile(mobaile)}
+                                  class="btn btn-primary"
+                                  type="button"
+                                >
+                                  <BsClipboard />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <Input
+                            onchange={(e) => setemail(e.target.value)}
+                            plase={'Email Id'}
+                            value={email}
+                            title={"Email Id"}
+                            type="email"
+                          />
+                        </div>
+                      </>
+                    }
+
+                    {/* Address */}
+                    {
+                      (count == 1) &&
+                      <>
+                        <center className="my-3"><h5>Staff Address</h5></center>
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setCity(e.target.value)}
+                            plase={'City'}
+                            value={city}
+                            title={"City"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setState(e.target.value)}
+                            plase={'State'}
+                            value={state}
+                            title={"state"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setPin(e.target.value)}
+                            plase={'Pin'}
+                            value={pin}
+                            title={"pin"}
+                            type="text"
+                          />
+                        </div>
+                        <div className="form-row">
+                          <div className="col-md-6 col-sm-12">
+                            <div class="form-group">
+                              <label for="exampleFormControlTextarea1">Permenent Addreess</label>
+                              <textarea
+                                onChange={(e) => setpermenentAddress(e.target.value)}
+                                class="form-control"
+                                id="exampleFormControlTextarea1"
+                                rows="3"
+                              ></textarea>
+                            </div>
+                          </div>
+                          <div className="col-md-6 col-sm-12">
+                            <div class="form-group">
+                              <label for="exampleFormControlTextarea1">
+                                Resident Address
+                              </label>
+                              <textarea
+                                onChange={(e) => setResidentAddresses(e.target.value)}
+                                class="form-control"
+                                id="exampleFormControlTextarea1"
+                                rows="3"
+                              ></textarea>
+                            </div>
                           </div>
                         </div>
-                      </div>
-
-                      <Input
-                        onchange={(e) => setemail(e.target.value)}
-                        plase={'Email Id'}
-                        value={email}
-                        title={"Email Id"}
-                        type="email"
-                      />
-                    </div>
-                    {/* Address */}
-                    <center className="my-3"><h5>Staff Address</h5></center>
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setCity(e.target.value)}
-                        plase={'City'}
-                        value={city}
-                        title={"City"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setState(e.target.value)}
-                        plase={'State'}
-                        value={state}
-                        title={"state"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setPin(e.target.value)}
-                        plase={'Pin'}
-                        value={pin}
-                        title={"pin"}
-                        type="text"
-                      />
-                    </div>
-                    <div className="form-row">
-                      <div className="col-md-6 col-sm-12">
-                        <div class="form-group">
-                          <label for="exampleFormControlTextarea1">Permenent Addreess</label>
-                          <textarea
-                            onChange={(e) => setpermenentAddress(e.target.value)}
-                            class="form-control"
-                            id="exampleFormControlTextarea1"
-                            rows="3"
-                          ></textarea>
-                        </div>
-                      </div>
-                      <div className="col-md-6 col-sm-12">
-                        <div class="form-group">
-                          <label for="exampleFormControlTextarea1">
-                            Resident Address
-                          </label>
-                          <textarea
-                            onChange={(e) => setResidentAddresses(e.target.value)}
-                            class="form-control"
-                            id="exampleFormControlTextarea1"
-                            rows="3"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
+                      </>
+                    }
                     {/* Job Shedule */}
-                    <center className="my-3"><h5>Job Scidule & Time</h5></center>
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => seteJobstart(e.target.value)}
-                        plase={'Job Starting Time'}
-                        value={jobstart}
-                        title={"Job Starting Time"}
-                        type="time"
-                      />
-                      <Input
-                        onchange={(e) => setJobhours(e.target.value)}
-                        plase={'9 hours'}
-                        value={jobhours}
-                        title={"Working Hours"}
-                        type="text"
-                      />
-                      <div className="col-4">
-                        <div class="form-group">
-                          <label for="inputGroupSelect01">Select Weekend Day</label>
-                          <select
-                            onChange={(e) => setWeekend(e.target.value)}
-                            class="custom-select"
-                            id="inputGroupSelect01"
-                          >
-                            <option selected>Select Weekend Day</option>
-                            <option value="Mon">Monday</option>
-                            <option value="Thu">Thusday</option>
-                            <option value="Wen">Wenusday</option>
-                            <option value="Thu">Thursday</option>
-                            <option value="Fri">Friday</option>
-                            <option value="Sat">Saturday</option>
-                            <option value="Sun">Sunday</option>
-                          </select>
+                    {
+                      (count == 2) &&
+                      <>
+                        <center className="my-3"><h5>Job Scidule & Time</h5></center>
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => seteJobstart(e.target.value)}
+                            plase={'Job Starting Time'}
+                            value={jobstart}
+                            title={"Job Starting Time"}
+                            type="time"
+                          />
+                          <Input
+                            onchange={(e) => setJobhours(e.target.value)}
+                            plase={'9 hours'}
+                            value={jobhours}
+                            title={"Working Hours"}
+                            type="text"
+                          />
+                          <div className="col-4">
+                            <div class="form-group">
+                              <label for="inputGroupSelect01">Select Weekend Day</label>
+                              <select
+                                onChange={(e) => setWeekend(e.target.value)}
+                                class="custom-select"
+                                id="inputGroupSelect01"
+                              >
+                                <option selected>Select Weekend Day</option>
+                                <option value="Mon">Monday</option>
+                                <option value="Thu">Thusday</option>
+                                <option value="Wen">Wenusday</option>
+                                <option value="Thu">Thursday</option>
+                                <option value="Fri">Friday</option>
+                                <option value="Sat">Saturday</option>
+                                <option value="Sun">Sunday</option>
+                              </select>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <center className="my-3"><h5>Stuff Payouts</h5></center>
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setSellary(e.target.value)}
-                        plase={'in no.'}
-                        value={sallery}
-                        title={"Sallery"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setProductSale(e.target.value)}
-                        plase={'In No'}
-                        value={ProductSale}
-                        title={"Product Sell Payout"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setPkgSale(e.target.value)}
-                        plase={'In No'}
-                        value={PkgSale}
-                        title={"Package Sell Payout"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setserviceSale(e.target.value)}
-                        plase={'In No'}
-                        value={serviceSale}
-                        title={"Service Sell Payout"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setserviceExicute(e.target.value)}
-                        plase={'In No'}
-                        value={serviceExicute}
-                        title={"Service Exicute Payout"}
-                        type="text"
-                      />
-
-                    </div>
+                      </>
+                    }
                     {/* Stufff Document */}
-                    <center className="my-3"><h5>Stuff Document's</h5></center>
+                    {(count == 3) &&
+                      <>
+                        <center className="my-3"><h5>Stuff Payouts</h5></center>
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setSellary(e.target.value)}
+                            plase={'in no.'}
+                            value={sallery}
+                            title={"Sallery"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setProductSale(e.target.value)}
+                            plase={'In No'}
+                            value={ProductSale}
+                            title={"Product Sell Payout"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setPkgSale(e.target.value)}
+                            plase={'In No'}
+                            value={PkgSale}
+                            title={"Package Sell Payout"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setserviceSale(e.target.value)}
+                            plase={'In No'}
+                            value={serviceSale}
+                            title={"Service Sell Payout"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setserviceExicute(e.target.value)}
+                            plase={'In No'}
+                            value={serviceExicute}
+                            title={"Service Exicute Payout"}
+                            type="text"
+                          />
 
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setaddhar_no(e.target.value)}
-                        plase={'in no.'}
-                        value={addhar_no}
-                        title={"Adhar Card No."}
-                        type="number"
-                      />
-                      <Input
-                        onchange={(e) => setpan_no(e.target.value)}
-                        plase={'In No'}
-                        value={pan_no}
-                        title={"Pan Card No."}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setdrl_no(e.target.value)}
-                        plase={'Driving Lincence No.'}
-                        value={drl_no}
-                        title={"Driving Lincence No."}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setaddhar_doc_url(e.target.files[0])}
-                        plase={'in no.'}
-                        // value={addhar_doc_url}
-                        title={"Adhar Card Doc"}
-                        type="file"
-                      />
-                      <Input
-                        onchange={(e) => setpan_doc_url(e.target.files[0])}
-                        plase={'In No'}
-                        // value={pan_doc_url}
-                        title={"Pan Card Doc"}
-                        type="file"
-                      />
-                      <Input
-                        onchange={(e) => setdrl_doc_url(e.target.files[0])}
-                        plase={'Driving Lincence No.'}
-                        // value={drl_doc_url}
-                        title={"Driving Lincence Doc"}
-                        type="file"
-                      />
-                    </div>
+                        </div>
+
+                      </>
+                    }
 
                     {/* Stufff Document */}
-                    <center className="my-3"><h5>Stuff Account Detail</h5></center>
+                    {(count == 4) &&
+                      <>
+                        <center className="my-3"><h5>Stuff Document's</h5></center>
 
-                    <div class="form-row">
-                      <Input
-                        onchange={(e) => setbank_account_no(e.target.value)}
-                        plase={'in no.'}
-                        value={bank_account_no}
-                        title={"Bank Account No."}
-                        type="number"
-                      />
-                      <Input
-                        onchange={(e) => setbank_account_ifc(e.target.value)}
-                        plase={'In No'}
-                        value={bank_account_ifc}
-                        title={"Bank Account IFC Code"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setbank_name(e.target.value)}
-                        plase={''}
-                        value={bank_name}
-                        title={"Bank Name"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setbank_account_holder_name(e.target.value)}
-                        plase={'in no.'}
-                        value={bank_account_holder_name}
-                        title={"Bank Holder Name"}
-                        type="text"
-                      />
-                      <Input
-                        onchange={(e) => setbank_account_doc(e.target.files[0])}
-                        plase={'In No'}
-                        // value={bank_account_doc}
-                        title={"Passbook Ya cheq Copy"}
-                        type="file"
-                      />
-                    </div>
-
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setaddhar_no(e.target.value)}
+                            plase={'in no.'}
+                            value={addhar_no}
+                            title={"Adhar Card No."}
+                            type="number"
+                          />
+                          <Input
+                            onchange={(e) => setpan_no(e.target.value)}
+                            plase={'In No'}
+                            value={pan_no}
+                            title={"Pan Card No."}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setdrl_no(e.target.value)}
+                            plase={'Driving Lincence No.'}
+                            value={drl_no}
+                            title={"Driving Lincence No."}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setaddhar_doc_url(e.target.files[0])}
+                            plase={'in no.'}
+                            // value={addhar_doc_url}
+                            title={"Adhar Card Doc"}
+                            type="file"
+                          />
+                          <Input
+                            onchange={(e) => setpan_doc_url(e.target.files[0])}
+                            plase={'In No'}
+                            // value={pan_doc_url}
+                            title={"Pan Card Doc"}
+                            type="file"
+                          />
+                          <Input
+                            onchange={(e) => setdrl_doc_url(e.target.files[0])}
+                            plase={'Driving Lincence No.'}
+                            // value={drl_doc_url}
+                            title={"Driving Lincence Doc"}
+                            type="file"
+                          />
+                        </div>
+                      </>
+                    }
                     {/* Stufff Document */}
-                    <center className="my-3"><h5>Center & Stuff Categury</h5></center>
 
-                    <div class="form-row">
-                      <div className="col-6">
-                        <div class="form-group">
-                          <label for="inputGroupSelect01">Select store</label>
-                          <select
+                    {
+                      (count == 5) &&
+                      <>
+                        <center className="my-3"><h5>Stuff Account Detail</h5></center>
 
-                            onChange={(e) => setStoreId(e.target.value)}
-                            class="custom-select"
-                            id="inputGroupSelect01"
-                          >
-                            <option selected>Select Weekend Day</option>
-                            {store.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
-
-                          </select>
+                        <div class="form-row">
+                          <Input
+                            onchange={(e) => setbank_account_no(e.target.value)}
+                            plase={'in no.'}
+                            value={bank_account_no}
+                            title={"Bank Account No."}
+                            type="number"
+                          />
+                          <Input
+                            onchange={(e) => setbank_account_ifc(e.target.value)}
+                            plase={'In No'}
+                            value={bank_account_ifc}
+                            title={"Bank Account IFC Code"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setbank_name(e.target.value)}
+                            plase={''}
+                            value={bank_name}
+                            title={"Bank Name"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setbank_account_holder_name(e.target.value)}
+                            plase={'in no.'}
+                            value={bank_account_holder_name}
+                            title={"Bank Holder Name"}
+                            type="text"
+                          />
+                          <Input
+                            onchange={(e) => setbank_account_doc(e.target.files[0])}
+                            plase={'In No'}
+                            // value={bank_account_doc}
+                            title={"Passbook Ya cheq Copy"}
+                            type="file"
+                          />
                         </div>
-                      </div>
-                      <div className="col-6">
-                        <div class="form-group">
-                          <label for="inputGroupSelect01">Select Stuff Type</label>
-                          <select
-                            onChange={(e) => setstufftype(e.target.value)}
-                            class="custom-select"
-                            id="inputGroupSelect01"
-                          >
-                            <option selected>Select Stuff Type</option>
-                            {stuffCetegury.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
-                          </select>
-                        </div>
-                      </div>
 
-                    </div>
-                    <center className="my-3"><h5>Stuff Benifits</h5></center>
+                      </>
+                    }
+
+                    {(count == 6) &&
+                      <>
+                        <center className="my-3"><h5>Stuff Categury</h5></center>
+
+                        <div class="form-row">
+                          <div className="col-6">
+                            <div class="form-group">
+                              <label for="inputGroupSelect01">Select store</label>
+                              <select
+
+                                onChange={(e) => setStoreId(e.target.value)}
+                                class="custom-select"
+                                id="inputGroupSelect01"
+                              >
+                                <option selected>Select Weekend Day</option>
+                                {store.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-6">
+                            <div class="form-group">
+                              <label for="inputGroupSelect01">Select Stuff Type</label>
+                              <select
+                                onChange={(e) => setstufftype(e.target.value)}
+                                class="custom-select"
+                                id="inputGroupSelect01"
+                              >
+                                <option selected>Select Stuff Type</option>
+                                {stuffCetegury.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+                              </select>
+                            </div>
+                          </div>
+
+                        </div>
+                      </>
+                    }
+
                     {/* Benifits */}
-                    <div className="row">
-                      <div class="form-group my-0">
-                        <Switch
-                          onChange={(e) => setIns(!ins)}
-                          checked={ins}
-                        />
+                    {(count == 7) &&
+                      <>
+                        <center className="my-3"><h5>Stuff Benifits</h5></center>
+                        <div className="row">
+                          <div class="form-group my-0">
+                            <Switch
+                              onChange={(e) => setIns(!ins)}
+                              checked={ins}
+                            />
 
-                        {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
-                        <label class="form-check-label" for="invalidCheck">
-                          Insourense
-                        </label>
-                      </div>
-                      <div class="form-group my-0">
-                        <Switch
-                          onChange={(e) => setPf(!pf)}
-                          checked={pf}
-                        />
-                        {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
-                        <label class="form-check-label" for="invalidCheck">
-                          Pf
-                        </label>
-                      </div>
-                      <div class="form-group my-0">
-                        <Switch
-                          onChange={(e) => setMediclaim(!mediClaim)}
-                          checked={mediClaim}
-                        />
-                        {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
-                        <label class="form-check-label" for="invalidCheck">
-                          Mediclam
-                        </label>
-                      </div>
-                    </div>
+                            {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                            <label class="form-check-label" for="invalidCheck">
+                              Insourense
+                            </label>
+                          </div>
+                          <div class="form-group my-0">
+                            <Switch
+                              onChange={(e) => setPf(!pf)}
+                              checked={pf}
+                            />
+                            {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                            <label class="form-check-label" for="invalidCheck">
+                              Pf
+                            </label>
+                          </div>
+                          <div class="form-group my-0">
+                            <Switch
+                              onChange={(e) => setMediclaim(!mediClaim)}
+                              checked={mediClaim}
+                            />
+                            {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                            <label class="form-check-label" for="invalidCheck">
+                              Mediclam
+                            </label>
+                          </div>
+                          <div class="form-group my-0">
+                            <Switch
+                              onChange={(e) => setUserlogin(!userlogin)}
+                              checked={userlogin}
+                            />
+                            {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
+                            <label class="form-check-label" for="invalidCheck">
+                              Users Pannel Login
+                            </label>
+                          </div>
+                        </div>
+                      </>
+                    }
                   </div>
                 </div>
                 <div class="modal-footer border-0">
-                  <div class="form-group my-0">
-                    <Switch
-                      onChange={(e) => setUserlogin(!userlogin)}
-                      checked={userlogin}
-                    />
-                    {/* <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required /> */}
-                    <label class="form-check-label" for="invalidCheck">
-                      Users Pannel Login 
-                    </label>
-                  </div>
-                  <input type="reset" class="btn btn-danger" />
-
-                  <button type="button" onClick={submit} class="btn btn-primary">
-                    Create New Stuff
-                  </button>
+                  {/* <Button type="reset" >Reset</Button> */}
+                  <Button type="button" color='error' onClick={() => setcount((count > 0) ? --count : count)}>
+                    Back
+                  </Button>
+                  {
+                    (count == 7) ?
+                      <>
+                        <Button type="button" onClick={submit}>
+                          Create New Stuff
+                        </Button>
+                      </> :
+                      <>
+                        <Button type="button" onClick={() => setcount((count < 7) ? ++count : count)}>
+                          Next
+                        </Button>
+                      </>
+                  }
                 </div>
               </form>
             </div>

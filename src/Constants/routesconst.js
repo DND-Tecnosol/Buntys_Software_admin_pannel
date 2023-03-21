@@ -5,8 +5,8 @@ import { MdOutlineCampaign as Mdc, MdInventory as Mdi } from 'react-icons/md';
 import { FaFileInvoiceDollar as Fai } from 'react-icons/fa';
 import { AiOutlineBarChart as Air, AiFillSetting as Ais, AiFillDashboard as Aid } from 'react-icons/ai';
 import { GoPerson } from 'react-icons/go';
-import { randomColor as rc } from "../Utils";
 import { AirplaneTicket, BookmarkOutlined, CalendarMonthRounded, CalendarViewDayRounded } from "@mui/icons-material";
+import { randomColor as rc } from "../Utils";
 // import { CalendarApi } from "@fullcalendar/common";
 export const routes = {
     dashbord: '/',

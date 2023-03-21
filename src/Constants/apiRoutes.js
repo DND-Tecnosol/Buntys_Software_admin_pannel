@@ -1,17 +1,19 @@
 import axios from "axios";
 
-const apiDomain = "http://192.168.29.106:8000"
+const apiDomain = "http://127.0.0.1:8000"
 
 const store = localStorage.getItem('store');
 const userRole = localStorage.getItem('userType');
 const tocken = localStorage.getItem('tocken');
 const sessionid = localStorage.getItem('sessionid');
+const Userid = localStorage.getItem('userid');
 export const appAxios = axios.create({
   headers: {
     'Store': store,
     'UserType': userRole,
     'Tocken': tocken,
     'sessionid': sessionid,
+    'Userid': Userid,
   }
 });
 
@@ -40,6 +42,7 @@ const apiRoutes = {
   "product": `${apiDomain}/api/product/`,
   "producttype": `${apiDomain}/api/producttype/`,
   "productbrand": `${apiDomain}/api/productbrand/`,
+  "updateToken": `${apiDomain}/api/updateToken/`,
 }
 
 

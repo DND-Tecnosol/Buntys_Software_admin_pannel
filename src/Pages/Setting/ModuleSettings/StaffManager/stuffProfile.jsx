@@ -5,9 +5,9 @@ import Page from '../../../../Layouts/Page';
 
 const StuffProfile = () => {
     const id= useParams('id')
-    const user= useSelector((state)=>state.costomer.costomer)
-    const userProfile=user.filter((user)=>user.id===id)
-    console.log(user);
+    const { staff } = useSelector((state => state.stuff))
+    const staffProfile=staff.filter((user)=>user.id==id.id)[0] || []
+    console.log(staffProfile);
     return (
         <>
         

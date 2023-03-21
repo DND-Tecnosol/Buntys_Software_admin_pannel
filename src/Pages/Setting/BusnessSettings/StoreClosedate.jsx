@@ -70,7 +70,7 @@ function StoreClosedate() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {closedate.map((row,key) => (
+            {closedate && closedate.map((row,key) => (
               <TableRow
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

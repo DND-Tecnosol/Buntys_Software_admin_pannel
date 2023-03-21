@@ -1,7 +1,7 @@
 import React from 'react';
 import Page from '../../../../Layouts/Page';
 
-const Invoice = () => {
+const Invoicemanager = () => {
     return (
         <>
             
@@ -9,4 +9,4 @@ const Invoice = () => {
     );
 }
 
-export default Invoice;
+export default Invoicemanager;

@@ -66,7 +66,7 @@ function ManageStoreTime() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {time.map((row, key) => (
+            {time && time.map((row, key) => (
               <TableRow
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
