@@ -5,7 +5,7 @@ import {
   FormControl,
   Dialog,
   MenuItem,
-  DialogTitle,
+  Autocomplete,
   DialogContent,
   DialogContentText,
   DialogActions,
@@ -119,45 +119,42 @@ function Weg() {
 export default Weg;
 
 const AddProductModel = ({ save, update, datas, close }) => {
-  const [proCate, setProCate] = useState(datas.proCate);
-  const [proBrand, setProBrand] = useState(datas.proBrand);
-  const [name, setname] = useState(datas.name);
-  const [cost, setcost] = useState(datas.cost);
-  const [price, setprice] = useState(datas.price);
-  const [special_price, setspecial_price] = useState(datas.special_price);
-  const [discription, setdiscription] = useState(datas.discription);
-  const [expiry_date, setexpiry_date] = useState(datas.expiry_date);
-  const [alertqty, setalertqty] = useState(datas.inventury_product_alert);
-  const [unite_in_product, setunite_in_product] = useState(datas.unite_in_product);
-  const [menuefacture_date, setmenuefacture_date] = useState(datas.menuefacture_date);
-  const [qty, setqty] = useState(datas.inventury_product_qty);
-  const [productcategury, setproductcategury] = useState(datas.productcategury);
-  const [inventury_product_qty, setinventury_product_qty] = useState(datas.inventury_product_qty);
-  const [totale_qty, settotale_qty] = useState(datas.totale_qty);
-  const [uuid, setuuid] = useState(datas.uuid);
+  const [wegcategury_id, setwegcategury_id] = useState("");
+  const [name, setname] = useState("");
+  const [price, setprice] = useState("");
+  const [cost, setcost] = useState("");
+  const [min_price, setmin_price] = useState("");
+  const [offers_price, setoffers_price] = useState("");
+  const [front, setfront] = useState("");
+  const [frontRound, setfrontRound] = useState("");
+  const [frontBack, setfrontBack] = useState("");
+  const [back, setback] = useState("");
+  const [round, setround] = useState("");
+  const [neck, setneck] = useState("");
+  const [hairLenth, sethairLenth] = useState("");
+  const [shall, setshall] = useState("");
+  const [inventory_qty, setinventory_qty] = useState("");
   const { product_categury, product_brand } = useSelector(
     (state) => state.product
   );
-  const brandhandleChange = useCallback((e) => { setProBrand(e.target.value) }, [proCate]);
-  const categuryhandleChange = useCallback((e) => { setProCate(e.target.value) }, [proBrand]);
+  // const brandhandleChange = useCallback((e) => { setProBrand(e.target.value) }, [proCate]);
+  // const categuryhandleChange = useCallback((e) => { setProCate(e.target.value) }, [proBrand]);
   const data = {
-    producttypes_id: proCate,
-    brand_id: proBrand,
-    productcategury: productcategury,
-    name: name,
-    cost: cost,
-    price: price,
-    special_price: special_price,
-
-    discription: discription,
-    qty: qty,
-    totale_qty: totale_qty,
-
-    inventury_product_qty: inventury_product_qty,
-    per_unite_price: cost / qty,
-    alertqty: alertqty,
-    unite_in_product: unite_in_product,
-    uuid: uuid,
+    wegcategury_id: "",
+    name: "",
+    price: "",
+    cost: "",
+    min_price: "",
+    offers_price: "",
+    front: "",
+    frontRound: "",
+    frontBack: "",
+    back: "",
+    round: "",
+    neck: "",
+    hairLenth: "",
+    shall: "",
+    inventory_qty: "",
   };
 
   console.log(datas);
@@ -189,7 +186,66 @@ const AddProductModel = ({ save, update, datas, close }) => {
             </div>
             <div class="modal-body border-0">
               <div className="container">
-                <Stack
+                
+              </div>
+            </div>
+            <div class="modal-footer border-0">
+              <Button type="button" color="warning" onClick={() => update(data, datas.id)} >
+                Update
+              </Button>
+              <Button type="button" onClick={() => save(data)} >
+                Save
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+const UpdateProductModel = ({ key, data }) => {
+  return (
+    <>
+      <div
+        class="modal fade"
+        id="updateproducts"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-text" data-dismiss="modal">
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+/*
+<Stack
                   direction={"row"}
                   spacing={2}
                   justifyContent={"center"}
@@ -211,50 +267,21 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   alignItems={"center"}
                   my={1}
                 >
-                  <TextField
-                    select
-                    placeholder="Product Type"
-                    label="Product Type"
-                    variant="filled"
-                    value={productcategury}
-                    onChange={(e) => setproductcategury(e.target.value)}
-                    fullWidth
-                  >
-                    <MenuItem value="insalon">Insalon</MenuItem>
-                    <MenuItem value="selling">Selling</MenuItem>
-                  </TextField>
-
-                  <TextField
-                    select
-                    label="Product Categury"
-                    variant="filled"
-                    fullWidth
-                    defaultValue={proCate}
-                    onChange={categuryhandleChange}
-                    shado
-                  >
-                    {product_categury.map((e) => (
-                      <MenuItem key={e.id} value={e.id}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    select
-                    label="Product Brand"
-                    variant="filled"
-                    fullWidth
-                    defaultValue={proBrand}
-                    onChange={brandhandleChange}
-                    shado
-                  >
-                    {product_brand &&
-                      product_brand.map((e, key) => (
-                        <MenuItem key={e.id} value={e.id}>
-                          {e.brand_name}
-                        </MenuItem>
-                      ))}
-                  </TextField>
+                  <Autocomplete
+                    value={wegcategury_id}
+                    onChange={(event, newValue) => {
+                      setwegcategury_id(newValue);
+                    }}
+                    inputValue={inputValue}
+                    onInputChange={(event, newInputValue) => {
+                      setwegcategury_id(newInputValue);
+                    }}
+                    id="controllable-states-demo"
+                    options={options}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} label="Hair Weg Types" />}
+                  />
+                 
                 </Stack>
                 <Stack
                   direction={{ xs: "column", md: "row" }}
@@ -316,81 +343,26 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   alignItems={"center"}
                   my={1}
                 >
-                  {/* <TextField label="Product Discription" fullWidth variant="filled"  /> */}
+                  {/* <TextField label="Product Discription" fullWidth variant="filled"  /> *///}
                   {/* <Stack direction={'row'} spacing={2} width="100%" > */}
-                  <div className="col-md-6 col-sm-12">
-                    <TextField
-                      fullWidth
-                      value={qty}
-                      onChange={e => setqty(e.target.value)}
-                      label="Totale Qty in Store Inventory"
-                      variant="filled"
-                    />
-                  </div>
-                  <div className="col-md-6 col-sm-12">
-                    <TextField
-                      value={alertqty}
-                      fullWidth
-                      onChange={e => setalertqty(e.target.value)}
-                      label="Alert Stock qty."
-                      variant="filled"
-                    />
-                  </div>
-                  {/* </Stack> */}
-                </Stack>
-              </div>
-            </div>
-            <div class="modal-footer border-0">
-              <Button type="button" color="warning" onClick={() => update(data, datas.id)} >
-                Update
-              </Button>
-              <Button type="button" onClick={() => save(data)} >
-                Save
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-const UpdateProductModel = ({ key, data }) => {
-  return (
-    <>
-      <div
-        class="modal fade"
-        id="updateproducts"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Modal title
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">...</div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-text" data-dismiss="modal">
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
+                //   <div className="col-md-6 col-sm-12">
+                //     <TextField
+                //       fullWidth
+                //       value={qty}
+                //       onChange={e => setqty(e.target.value)}
+                //       label="Totale Qty in Store Inventory"
+                //       variant="filled"
+                //     />
+                //   </div>
+                //   <div className="col-md-6 col-sm-12">
+                //     <TextField
+                //       value={alertqty}
+                //       fullWidth
+                //       onChange={e => setalertqty(e.target.value)}
+                //       label="Alert Stock qty."
+                //       variant="filled"
+                //     />
+                //   </div>
+                // </Stack>
+                {/* </Stack> */}
+//*/

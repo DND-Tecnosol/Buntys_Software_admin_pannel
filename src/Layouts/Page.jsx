@@ -19,6 +19,9 @@ import { fetchProduct, fetchProductBrand, fetchProductCategury, } from './../Sto
 import Echo from "laravel-echo";
 import Pusher from 'pusher-js';
 import { requestForToken } from '../Constants/firebase';
+// import { OneSignal } from '../Constants/oneSignal';
+import OneSignal from 'react-onesignal';
+
 // const firebaseMassage=  
 
 const echo = new Echo({
@@ -32,6 +35,21 @@ const echo = new Echo({
     disableStats: true,
 });
 
+async function runOneSignal() {
+    await OneSignal.init({ appId: 'fee71504-b5c5-40cc-ba8f-f67b1cda387f', allowLocalhostAsSecureOrigin: true });
+    OneSignal.getUserId().then(userId => {
+        console.log('OneSignal User ID:', userId);
+
+        OneSignal.getNotificationPermission().then(permission => {
+            if (permission === 'granted') {
+                OneSignal.getActiveSubscription().then(subscription => {
+                    console.log('Device token:', subscription?.deviceId);
+                });
+            }
+        });
+    });
+}
+
 export default function Page({ children, header }) {
     document.title = "Bunty's studio || " + header;
     const dispatch = useDispatch()
@@ -44,7 +62,8 @@ export default function Page({ children, header }) {
                 toast(data.msg.msg)
                 // alert(data.msg)
             });
-            requestForToken()
+        // requestForToken()
+        runOneSignal()
         dispatch(fetchserviceCetegury())
         dispatch(fetchProduct())
         dispatch(fetchProductBrand())
@@ -106,6 +125,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getTokens, requestForToken } from './../Constants/firebase';
 import { useDispatch } from 'react-redux';
 import { fetchProduct } from './../Store/Slice/All/productSlice';
+import OneSignal from './../Constants/oneSignal';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
