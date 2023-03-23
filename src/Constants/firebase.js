@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging,getToken } from "firebase/messaging";
+// import { getMessaging,getToken } from "firebase/messaging";
 import apiRoutes, { appAxios } from './apiRoutes';
 
 const firebaseConfig = {
@@ -12,26 +12,26 @@ const firebaseConfig = {
   measurementId: "G-J8PS7J88CC"
 };
 
-const app= initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+const app = initializeApp(firebaseConfig);
+// const messaging = getMessaging(app);
 const userRole = localStorage.getItem('userType');
 
 export const requestForToken = async () => {
   try {
-    const currentToken = await getToken(messaging, { vapidKey: "BIMV-2cBQyJlpLNfewn7IE-hQOE1dcp2Jd1ZtmYJN29rswVV2tAkBrZzKYdg5tfi58sNZus21Ni759tn0A8rQaw" });
-    if (currentToken) {
-      console.log("token",currentToken);
-      console.log("role",userRole);
-      
-      // Perform any other neccessary action with the token
-      if (userRole == "masteradmin") {
-        console.log("me chala store karane");
-        appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e=>console.log(e));
-      }
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
-    }
+    // const currentToken = await getToken(messaging, { vapidKey: "BIMV-2cBQyJlpLNfewn7IE-hQOE1dcp2Jd1ZtmYJN29rswVV2tAkBrZzKYdg5tfi58sNZus21Ni759tn0A8rQaw" });
+    // if (currentToken) {
+    //   console.log("token",currentToken);
+    //   console.log("role",userRole);
+
+    //   // Perform any other neccessary action with the token
+    //   if (userRole == "masteradmin") {
+    //     console.log("me chala store karane");
+    //     appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e=>console.log(e));
+    //   }
+    // } else {
+    //   // Show permission request UI
+    //   console.log('No registration token available. Request permission to generate one.');
+    // }
   } catch (err) {
     // alert("No Token get From Google Firebase")
     console.log('An error occurred while retrieving token. ', err);
