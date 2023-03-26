@@ -22,7 +22,7 @@ import { fetchHairWeg } from "../../../../../Store/Slice/All/productSlice";
 import { toast } from "react-toastify";
 function Weg() {
   const [data, setData] = useState(false);
-  const hairweg = useSelector((state) => state.product.hairweg);
+  const hairweg = useSelector((state) => state.product.hairPatch);
   const dispatch = useDispatch();
 
   const updateProduct = (datas, id) => {

@@ -43,6 +43,12 @@ const apiRoutes = {
   "producttype": `${apiDomain}/api/producttype/`,
   "productbrand": `${apiDomain}/api/productbrand/`,
   "updateToken": `${apiDomain}/api/updateToken/`,
+  "hairwegtype": `${apiDomain}/api/hairwegtype/`,
+  "hairweg": `${apiDomain}/api/hairweg/`,
+  "hairpatchtype": `${apiDomain}/api/hairpatchtype/`,
+  "hairpatch": `${apiDomain}/api/hairpatch/`,
+  "hairextentiontype": `${apiDomain}/api/hairextentiontype/`,
+  "hairextention": `${apiDomain}/api/hairextention/`,
 }
 
 

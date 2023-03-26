@@ -18,6 +18,7 @@ const userRole = localStorage.getItem('userType');
 
 export const requestForToken = async () => {
   try {
+<<<<<<< HEAD
     // const currentToken = await getToken(messaging, { vapidKey: "BIMV-2cBQyJlpLNfewn7IE-hQOE1dcp2Jd1ZtmYJN29rswVV2tAkBrZzKYdg5tfi58sNZus21Ni759tn0A8rQaw" });
     // if (currentToken) {
     //   console.log("token",currentToken);
@@ -32,6 +33,34 @@ export const requestForToken = async () => {
     //   // Show permission request UI
     //   console.log('No registration token available. Request permission to generate one.');
     // }
+=======
+    const currentToken = await getToken(messaging, { vapidKey: "BIMV-2cBQyJlpLNfewn7IE-hQOE1dcp2Jd1ZtmYJN29rswVV2tAkBrZzKYdg5tfi58sNZus21Ni759tn0A8rQaw" });
+    if (currentToken) {
+      console.log("token",currentToken);
+      console.log("role",userRole);
+      
+      // Perform any other neccessary action with the token
+      if (userRole == "masteradmin") {
+        console.log("me chala store karane");
+        appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e=>console.log(e));
+        messaging.onMessage((payload) => {
+          console.log('Message received. ', payload);
+          // ...
+          // Customize notification here
+          const notificationTitle = payload.data.title;
+          const notificationOptions = {
+            body: payload.data.message,
+            icon: '/firebase-logo.png'
+          };
+        
+          messaging.showNotification(notificationTitle, notificationOptions);
+        });
+      }
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+    }
+>>>>>>> df465a1f7c1e04b0e0eba987c03ee4f83342974f
   } catch (err) {
     // alert("No Token get From Google Firebase")
     console.log('An error occurred while retrieving token. ', err);

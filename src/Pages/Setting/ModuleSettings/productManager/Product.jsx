@@ -23,6 +23,7 @@ import {
   InputLabel,
   Input,
   IconButton,
+  Switch,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, Edit } from "@mui/icons-material";
@@ -131,6 +132,7 @@ const AddProductModel = ({ save, update, datas, close }) => {
   const [unite_in_product, setunite_in_product] = useState(datas.unite_in_product);
   const [menuefacture_date, setmenuefacture_date] = useState(datas.menuefacture_date);
   const [qty, setqty] = useState(datas.inventury_product_qty);
+  const [gst, setgst] = useState(datas.gst);
   const [productcategury, setproductcategury] = useState(datas.productcategury);
   const [inventury_product_qty, setinventury_product_qty] = useState(datas.inventury_product_qty);
   const [totale_qty, settotale_qty] = useState(datas.totale_qty);
@@ -157,7 +159,7 @@ const AddProductModel = ({ save, update, datas, close }) => {
     per_unite_price: cost / qty,
     alertqty: alertqty,
     unite_in_product: unite_in_product,
-    uuid: uuid,
+    gst: gst,
   };
 
   console.log(datas);
@@ -338,6 +340,12 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   </div>
                   {/* </Stack> */}
                 </Stack>
+                <div className="container">
+                  <div className="col-12">
+                    <Switch value={gst} onChange={e=>setgst(!gst)} checked={gst} />
+                    : <b>Gst</b>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="modal-footer border-0">

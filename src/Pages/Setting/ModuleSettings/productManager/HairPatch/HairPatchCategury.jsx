@@ -4,35 +4,33 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Delete, Edit } from '@mui/icons-material';
 import apiRoutes, { appAxios } from './../../../../../Constants/apiRoutes';
 import { toast } from 'react-toastify';
-import { fetchHairWegtype } from './../../../../../Store/Slice/All/productSlice';
+import { fetchProductCategury } from './../../../../../Store/Slice/All/productSlice';
 
 
 
+function ExtentionCategury() {
 
-
-function WegCategury() {
-
-  const product_categury = useSelector(state => state.product.product_categury)
+  const product_categury = useSelector(state => state.product.hairPatchtype)
   const [data, setData] = useState(false)
   const dispatch = useDispatch()
-  const hairwegtype = useSelector(state => state.product.hairwegtype)
+  const product_brand = useSelector(state => state.product.product_brand)
   const saveProductCategury = (names) => {
-    appAxios.post(apiRoutes.hairwegtype, { name: names }).then(e => {
+    appAxios.post(apiRoutes.hairpatchtype, { name: names }).then(e => {
       toast(e.data.msg)
-      dispatch(fetchHairWegtype())
+      dispatch(fetchProductCategury())
     })
   }
   const updateProductCategury = (name, id) => {
-    appAxios.put(apiRoutes.hairwegtype + id, { name: name }).then(e => {
+    appAxios.put(apiRoutes.producttype + id, { name: name }).then(e => {
       toast(e.data.msg)
-      dispatch(fetchHairWegtype())
+      dispatch(fetchProductCategury())
     })
   }
 
   const deleteProductCategury = (id) => {
-    appAxios.delete(apiRoutes.hairwegtype + id).then(e => {
+    appAxios.delete(apiRoutes.producttype + id).then(e => {
       toast(e.data.msg)
-      dispatch(fetchHairWegtype())
+      dispatch(fetchProductCategury())
     })
   }
   const update = useCallback((datas) => {
@@ -54,7 +52,7 @@ function WegCategury() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {hairwegtype.map((row, key) => (
+            {product_categury.map((row, key) => (
               <TableRow
                 key={key}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -80,7 +78,7 @@ function WegCategury() {
   )
 }
 
-export default WegCategury
+export default ExtentionCategury
 
 const AddProductCateguryModel = ({ data, save, update, setData }) => {
   const [names,setNames]=useState(data.name)
