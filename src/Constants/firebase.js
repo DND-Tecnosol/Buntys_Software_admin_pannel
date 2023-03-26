@@ -27,6 +27,18 @@ export const requestForToken = async () => {
       if (userRole == "masteradmin") {
         console.log("me chala store karane");
         appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e=>console.log(e));
+        messaging.onMessage((payload) => {
+          console.log('Message received. ', payload);
+          // ...
+          // Customize notification here
+          const notificationTitle = payload.data.title;
+          const notificationOptions = {
+            body: payload.data.message,
+            icon: '/firebase-logo.png'
+          };
+        
+          messaging.showNotification(notificationTitle, notificationOptions);
+        });
       }
     } else {
       // Show permission request UI

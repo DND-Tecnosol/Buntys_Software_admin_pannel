@@ -5,6 +5,8 @@ import ExtentionCategury from './extention/ExtentionCategury';
 import Extention from './extention/Extention';
 import Weg from './weg/Weg';
 import WegCategury from './weg/WegCategury';
+import HairPatch from './HairPatch';
+import HairPatchCategury from './HairPatch/HairPatchCategury';
 import Product from './Product';
 import ProductBrand from './ProductBrand';
 import ProductCategury from './ProductCategury';
@@ -26,6 +28,7 @@ const ProductManger = () => {
                         <Tab label="Product Inventory" {...a11yProps(0)} />
                         <Tab label="Hair Weg Inventory" {...a11yProps(1)} />
                         <Tab label="Hair Extention Inventory" {...a11yProps(2)} />
+                        <Tab label="Hair Patch Inventory" {...a11yProps(3)} />
                     </Tabs>
                 </Paper>
                 <TabPanel value={value} index={0}>
@@ -36,6 +39,9 @@ const ProductManger = () => {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <HairExtentionInventory />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                    <HairPatchInventory />
                 </TabPanel>
 
             </div>
@@ -95,6 +101,33 @@ const HairWegInventory = () => {
             </ChildTabPanel>
             <ChildTabPanel value={value} index={1}>
                 <WegCategury />
+            </ChildTabPanel>
+
+        </>
+    )
+}
+const HairPatchInventory = () => {
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    return (
+        <>
+            <>
+                <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="basic tabs example">
+                    <Tab label="Hair Patch" {...a11yProps(0)} />
+                    <Tab label="Hair Patch Categury" {...a11yProps(1)} />
+                </Tabs>
+            </>
+            <ChildTabPanel value={value} index={0}>
+                <Stack direction={"row"} spacing={3} justifyContent="flex-end">
+                    <Button style={{ marginTop: 10, marginBottom: 10 }} variant="outlined">Transfer Product</Button>
+                </Stack>
+                <HairPatch />
+            </ChildTabPanel>
+            <ChildTabPanel value={value} index={1}>
+                <HairPatchCategury />
             </ChildTabPanel>
 
         </>

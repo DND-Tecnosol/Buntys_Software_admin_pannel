@@ -15,7 +15,7 @@ import { fetchStaff } from "../Store/Slice/All/staffSlice";
 import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
 import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
 import { fetchServices } from './../Store/Slice/All/serviceSlice';
-import { fetchProduct, fetchProductBrand, fetchProductCategury, } from './../Store/Slice/All/productSlice';
+import { fetchProduct, fetchProductBrand, fetchProductCategury,fetchHairWegtype,fetchHairWeg } from './../Store/Slice/All/productSlice';
 import Echo from "laravel-echo";
 import Pusher from 'pusher-js';
 import { requestForToken } from '../Constants/firebase';
@@ -39,14 +39,6 @@ async function runOneSignal() {
     await OneSignal.init({ appId: 'fee71504-b5c5-40cc-ba8f-f67b1cda387f', allowLocalhostAsSecureOrigin: true });
     OneSignal.getUserId().then(userId => {
         console.log('OneSignal User ID:', userId);
-
-        OneSignal.getNotificationPermission().then(permission => {
-            if (permission === 'granted') {
-                OneSignal.getActiveSubscription().then(subscription => {
-                    console.log('Device token:', subscription?.deviceId);
-                });
-            }
-        });
     });
 }
 
@@ -63,7 +55,9 @@ export default function Page({ children, header }) {
                 // alert(data.msg)
             });
         // requestForToken()
-        runOneSignal()
+        requestForToken()
+        dispatch(fetchHairWegtype())
+        dispatch(fetchHairWeg())
         dispatch(fetchserviceCetegury())
         dispatch(fetchProduct())
         dispatch(fetchProductBrand())
