@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import apiRoutes, { appAxios } from './apiRoutes';
-
+import { toast } from 'react-toastify';
 const firebaseConfig = {
   apiKey: "AIzaSyAbMsDCISg2KmwR26Q8uvKfX8dBGv_niwE",
   authDomain: "buntys-app.firebaseapp.com",
@@ -26,21 +26,22 @@ export const requestForToken = async () => {
 
       // Perform any other neccessary action with the token
       if (userRole == "masteradmin") {
-        console.log("me chala store karane");
+        // console.log("me chala store karane");
         appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e => console.log(e));
-        onMessage(messaging, (payload) => {
-          console.log('Message received. ', payload);
-          // ...
-          // Customize notification here
-          const notificationTitle = payload.data.title;
-          const notificationOptions = {
-            body: payload.data.message,
-            icon: '/firebase-logo.png'
-          };
-
-          messaging.showNotification(notificationTitle, notificationOptions);
-        });
       }
+      onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        // ...
+        toast(payload.data.message)
+        // Customize notification here
+        const notificationTitle = payload.data.title;
+        const notificationOptions = {
+          body: payload.data.message,
+          icon: '/firebase-logo.png'
+        };
+        // showNotification(notificationTitle,notificationOptions);
+        // messaging.registration.showNotification(notificationTitle, notificationOptions);
+      });
     } else {
       // Show permission request UI
       console.log('No registration token available. Request permission to generate one.');
@@ -50,4 +51,14 @@ export const requestForToken = async () => {
     console.log('An error occurred while retrieving token. ', err);
   }
 };
+// self.addEventListener('push', (event) => {
+//   console.log('Push notification received:', event.data.text());
+//   const title = notificationTitle;
+//   const options = {
+//     body: notificationOptions,
+//     icon: '/logo.png',
+//     badge: '/badge.png'
+//   };
+//   event.waitUntil(self.registration.showNotification(title, options));
+// });
 

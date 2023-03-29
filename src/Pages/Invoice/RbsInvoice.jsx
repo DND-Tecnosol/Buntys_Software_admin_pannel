@@ -1,28 +1,11 @@
 import React, { useState, useCallback } from "react";
 import TextField from "@mui/material/TextField";
-import {
-  Autocomplete,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Switch,
-  Divider
-} from "@mui/material";
+import { Autocomplete, FormControl, InputLabel, MenuItem, Select, Switch, Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@mui/material";
 import { FiPlus } from "react-icons/fi";
 // import {PhotoCamera} from '@mui/icons-material';
-import {
-  setTotaleValue,
-  remService,
-  allItemsRem,
-  addService,
-  changeService,
-  changeServiceQty,
-  changeServiceStaff,
-  changeServiceDisc, addPoduct, changePoduct, changePoductStaff, changePoductQty, remPoduct,
-} from "../../Store/Slice/All/invoiceItemsSlice";
+import { setTotaleValue, remService, allItemsRem, addService, changeService, changeServiceQty, changeServiceStaff, changeServiceDisc, addPoduct, changePoduct, changePoductStaff, changePoductQty, remPoduct, } from "../../Store/Slice/All/invoiceItemsSlice";
 import { MdRestoreFromTrash } from "react-icons/md";
 
 import apiRoutes, { appAxios as axios } from '../../Constants/apiRoutes';
@@ -85,8 +68,8 @@ export default function RbsInvoice() {
     for (let index = 0; index < product.length; index++) {
       var productTotales = productTotale += Number(product[index].productTotalePrice);
     }
-    var insta=insta ? insta : 0;
-    var productTotales=productTotales ? productTotales :0 ;
+    var insta = insta ? insta : 0;
+    var productTotales = productTotales ? productTotales : 0;
     dispatch(setTotaleValue(Number(insta += productTotales)))
     // return instant
   }, [service, product])
@@ -462,11 +445,11 @@ const InvoiceProduct = ({ serviceReduxid }) => {
           options={productData || []}
           label="Add Product"
         />
-          <SearchSelect
-            onChange={(event, id) => stafffind(id.id)}
-            options={staffData}
-            label="Add Staff"
-          />
+        <SearchSelect
+          onChange={(event, id) => stafffind(id.id)}
+          options={staffData}
+          label="Add Staff"
+        />
         <div className="col-2">
           <TextField
             sx={{ width: "100%" }}

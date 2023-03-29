@@ -68,7 +68,7 @@ export const fetchHairExtentionType = createAsyncThunk(
 export const fetchHairPatch = createAsyncThunk(
   'hairPatch/',
   async () => {
-    const response = await axios(apiRoutes.hairpatch).then((e) => e.data.hairweg)
+    const response = await axios(apiRoutes.hairpatch).then((e) => e.data.hairpatch)
     console.log(response);
     return response
   }

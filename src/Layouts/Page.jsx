@@ -15,12 +15,18 @@ import { fetchStaff } from "../Store/Slice/All/staffSlice";
 import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
 import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
 import { fetchServices } from './../Store/Slice/All/serviceSlice';
-import { fetchProduct, fetchProductBrand, fetchProductCategury,fetchHairWegtype,fetchHairWeg } from './../Store/Slice/All/productSlice';
+import { fetchProduct, fetchProductBrand, fetchProductCategury,fetchHairWegtype,fetchHairWeg,fetchHairExtention,fetchHairExtentionType,fetchHairPatch,fetchHairPatchtype } from './../Store/Slice/All/productSlice';
 import Echo from "laravel-echo";
 import Pusher from 'pusher-js';
 import { requestForToken } from '../Constants/firebase';
 // import { OneSignal } from '../Constants/oneSignal';
 import OneSignal from 'react-onesignal';
+
+
+
+
+
+
 
 // const firebaseMassage=  
 
@@ -56,6 +62,10 @@ export default function Page({ children, header }) {
             });
         // requestForToken()
         requestForToken()
+        dispatch(fetchHairExtention())
+        dispatch(fetchHairExtentionType())
+        dispatch(fetchHairPatch())
+        dispatch(fetchHairPatchtype())
         dispatch(fetchHairWegtype())
         dispatch(fetchHairWeg())
         dispatch(fetchserviceCetegury())
