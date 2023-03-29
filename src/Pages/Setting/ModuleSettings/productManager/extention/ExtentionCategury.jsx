@@ -4,33 +4,33 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Delete, Edit } from '@mui/icons-material';
 import apiRoutes, { appAxios } from './../../../../../Constants/apiRoutes';
 import { toast } from 'react-toastify';
-import { fetchProductCategury } from './../../../../../Store/Slice/All/productSlice';
+import { fetchHairExtentionType } from './../../../../../Store/Slice/All/productSlice';
 
 
 
 function ExtentionCategury() {
 
-  const product_categury = useSelector(state => state.product.product_categury)
+  const product_categury = useSelector(state => state.product.hairextentiontype)
   const [data, setData] = useState(false)
   const dispatch = useDispatch()
   const product_brand = useSelector(state => state.product.product_brand)
   const saveProductCategury = (names) => {
-    appAxios.post(apiRoutes.producttype, { name: names }).then(e => {
+    appAxios.post(apiRoutes.hairextentiontype, { name: names }).then(e => {
       toast(e.data.msg)
-      dispatch(fetchProductCategury())
+      dispatch(fetchHairExtentionType())
     })
   }
   const updateProductCategury = (name, id) => {
-    appAxios.put(apiRoutes.producttype + id, { name: name }).then(e => {
+    appAxios.put(apiRoutes.hairextentiontype + id, { name: name }).then(e => {
       toast(e.data.msg)
-      dispatch(fetchProductCategury())
+      dispatch(fetchHairExtentionType())
     })
   }
 
   const deleteProductCategury = (id) => {
-    appAxios.delete(apiRoutes.producttype + id).then(e => {
+    appAxios.delete(apiRoutes.hairextentiontype + id).then(e => {
       toast(e.data.msg)
-      dispatch(fetchProductCategury())
+      dispatch(fetchHairExtentionType())
     })
   }
   const update = useCallback((datas) => {

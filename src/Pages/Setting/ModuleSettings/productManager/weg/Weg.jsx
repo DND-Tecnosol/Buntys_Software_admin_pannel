@@ -12,6 +12,8 @@ import {
   Button,
   IconButton,
   Grid,
+  Switch,
+  FormControl, InputLabel, Select, MenuItem,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, Edit } from "@mui/icons-material";
@@ -125,12 +127,15 @@ const AddProductModel = ({  update, datas, close }) => {
   const [alertinventory_qty, setalertinventory_qty] = useState("");
   const [value, setValue] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [notes, setnotes] = useState("");
+  const [gst, setgst] = useState(false);
+  const [xender, setxender] = useState("");
   const hairweg = useSelector((state) => state.product.hairwegtype);
   const hairwegTypeFilter = hairweg.map(e => ({ label: e.name, id: e.id }))
   // const brandhandleChange = useCallback((e) => { setProBrand(e.target.value) }, [proCate]);
   // const categuryhandleChange = useCallback((e) => { setProCate(e.target.value) }, [proBrand]);
   const dispatch = useDispatch();
-
+ 
   const save =()=>{
     const data = {
       name: name,
@@ -148,8 +153,11 @@ const AddProductModel = ({  update, datas, close }) => {
       hairLenth: hairLenth,
       inventory_qty: inventory_qty,
       alert_qty: alertinventory_qty,
+      notes:notes,
+      hair_color:hair_color,
+      gst:gst,
+      xender:xender
     }
-
     appAxios.post(apiRoutes.hairweg, data).then((e) => {
       toast(e.data.msg);
       dispatch(fetchHairWeg());
@@ -258,6 +266,28 @@ const AddProductModel = ({  update, datas, close }) => {
                   </Grid>
                   <Grid item sm={6} md={6} xs={12} lg={6} >
                     <TextField label="Alert Inventory Stock" size="small"  fullWidth value={alertinventory_qty} onChange={(e)=>setalertinventory_qty(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12} >
+                    <TextField label="Notes" size="small" multiline rows={4}  fullWidth value={alertinventory_qty} onChange={(e)=>setalertinventory_qty(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={6} md={12} xs={6} lg={6} display="flex" justifyContent="center" alignItems={"center"} >
+                    <Switch label="" size="lg" value={gst} onChange={(e) => setgst(!gst)} />
+                    : GST
+                  </Grid>
+                  <Grid item sm={6} md={12} xs={6} lg={6} >
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Select Xender</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={xender}
+                        label="Select Xender"
+                        onChange={e=>setxender(e.target.value)}
+                      >
+                        <MenuItem value={0}>Female</MenuItem>
+                        <MenuItem value={1}>Male</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                 </Grid>
               </div>

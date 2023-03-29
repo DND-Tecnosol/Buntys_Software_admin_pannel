@@ -12,13 +12,15 @@ import {
   Button,
   IconButton,
   Grid,
+  Switch,
+  FormControl, InputLabel, Select, MenuItem,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, Edit } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useCallback } from "react";
 import apiRoutes, { appAxios } from "../../../../../Constants/apiRoutes";
-import { fetchHairWeg } from "../../../../../Store/Slice/All/productSlice";
+import { fetchHairPatch } from "../../../../../Store/Slice/All/productSlice";
 import { toast } from "react-toastify";
 function Weg() {
   const [data, setData] = useState(false);
@@ -29,14 +31,14 @@ function Weg() {
     console.log(datas);
     appAxios.put(apiRoutes.hairweg + id, datas).then((e) => {
       toast(e.data.msg);
-      dispatch(fetchHairWeg());
+      dispatch(fetchHairPatch());
     });
   };
 
   const deleteProduct = (id) => {
     appAxios.delete(apiRoutes.hairweg + id).then((e) => {
       toast(e.data.msg);
-      dispatch(fetchHairWeg());
+      dispatch(fetchHairPatch());
     });
   };
   const saveProduct = (datas) => {
@@ -107,7 +109,7 @@ function Weg() {
 
 export default Weg;
 
-const AddProductModel = ({  update, datas, close }) => {
+const AddProductModel = ({ update, datas, close }) => {
   const [name, setname] = useState("");
   const [price, setprice] = useState("");
   const [cost, setcost] = useState("");
@@ -124,17 +126,20 @@ const AddProductModel = ({  update, datas, close }) => {
   const [hair_color, sethair_color] = useState("");
   const [alertinventory_qty, setalertinventory_qty] = useState("");
   const [value, setValue] = useState("");
+  const [notes, setnotes] = useState("");
+  const [gst, setgst] = useState(false);
+  const [xender, setxender] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const hairweg = useSelector((state) => state.product.hairwegtype);
+  const hairweg = useSelector((state) => state.product.hairPatchtype);
   const hairwegTypeFilter = hairweg.map(e => ({ label: e.name, id: e.id }))
   // const brandhandleChange = useCallback((e) => { setProBrand(e.target.value) }, [proCate]);
   // const categuryhandleChange = useCallback((e) => { setProCate(e.target.value) }, [proBrand]);
   const dispatch = useDispatch();
 
-  const save =()=>{
+  const save = () => {
     const data = {
       name: name,
-      wegcategury_id: value.id,
+      hairpatchtype: value.id,
       price: price,
       cost: cost,
       min_price: min_price,
@@ -146,16 +151,20 @@ const AddProductModel = ({  update, datas, close }) => {
       round: round,
       neck: neck,
       hairLenth: hairLenth,
-      inventory_qty: inventory_qty,
-      alert_qty: alertinventory_qty,
+      hairinventorypatch_qty: inventory_qty,
+      alerthairinventorypatch_qty: alertinventory_qty,
+      hair_color: hair_color,
+      notes: notes,
+      gst: gst,
+      xender: xender,
     }
 
-    appAxios.post(apiRoutes.hairweg, data).then((e) => {
+    appAxios.post(apiRoutes.hairpatch, data).then((e) => {
       toast(e.data.msg);
-      dispatch(fetchHairWeg());
+      dispatch(fetchHairPatch());
     });
 
-  } 
+  }
 
   // console.log(` Value : ${value.id}  inputValue: ${inputValue}`);
   return (
@@ -172,7 +181,7 @@ const AddProductModel = ({  update, datas, close }) => {
           <div class="modal-content">
             <div class="modal-header border-0">
               <h5 class="modal-title" id="exampleModalLabel">
-                Add Hair Weg In Store Inventory
+                Add Hair Patch In Store Inventory
               </h5>
               <button
                 type="button"
@@ -188,7 +197,7 @@ const AddProductModel = ({  update, datas, close }) => {
               <div className="container">
                 <Grid container spacing={3} >
                   <Grid item sm={6} md={6} xs={12} lg={6} >
-                    <TextField label="Name" value={name} onChange={(e)=>setname(e.target.value)} size="small" fullWidth />
+                    <TextField label="Name" value={name} onChange={(e) => setname(e.target.value)} size="small" fullWidth />
                   </Grid>
                   <Grid item sm={6} md={6} xs={12} lg={6} >
                     <Autocomplete
@@ -205,59 +214,81 @@ const AddProductModel = ({  update, datas, close }) => {
                       options={hairwegTypeFilter || []}
                       size="small"
                       fullWidth
-                      renderInput={(params) => <TextField {...params} label="Hair Weg Categury" />}
+                      renderInput={(params) => <TextField {...params} label="Hair Patch Categury" />}
                     />
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Cost" onChange={(e)=>setcost(e.target.value)} value={cost} size="small" fullWidth />
+                    <TextField label="Cost" onChange={(e) => setcost(e.target.value)} value={cost} size="small" fullWidth />
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Price" size="small" onChange={(e)=>setprice(e.target.value)} value={price} fullWidth />
+                    <TextField label="Price" size="small" onChange={(e) => setprice(e.target.value)} value={price} fullWidth />
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Minimum Price" size="small" value={min_price} onChange={(e)=>setmin_price(e.target.value)} fullWidth />
+                    <TextField label="Minimum Price" size="small" value={min_price} onChange={(e) => setmin_price(e.target.value)} fullWidth />
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Offer Price" size="small" onChange={(e)=>setoffers_price(e.target.value)} fullWidth value={offers_price} />
+                    <TextField label="Offer Price" size="small" onChange={(e) => setoffers_price(e.target.value)} fullWidth value={offers_price} />
                   </Grid>
                   <Grid item sm={12} md={12} xs={12} lg={12}>
                     <center>Size</center>
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3}  >
-                    <TextField label="Front" size="small" value={front} onChange={(e)=>setfront(e.target.value)} fullWidth />
+                    <TextField label="Front" size="small" value={front} onChange={(e) => setfront(e.target.value)} fullWidth />
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Front Round" size="small" fullWidth value={frontRound} onChange={(e)=>setfrontRound(e.target.value)} />
+                    <TextField label="Front Round" size="small" fullWidth value={frontRound} onChange={(e) => setfrontRound(e.target.value)} />
                   </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Front Back " size="small" fullWidth value={frontBack} onChange={(e)=>setfrontBack(e.target.value)} />
-                  </Grid> 
+                    <TextField label="Front Back " size="small" fullWidth value={frontBack} onChange={(e) => setfrontBack(e.target.value)} />
+                  </Grid>
                   <Grid item sm={6} md={3} xs={12} lg={3} >
-                    <TextField label="Back" size="small" fullWidth onChange={(e)=>setback(e.target.value)} value={back} />
+                    <TextField label="Back" size="small" fullWidth onChange={(e) => setback(e.target.value)} value={back} />
                   </Grid>
                   <Grid item sm={4} md={4} xs={12} lg={4} >
-                    <TextField label="Round" size="small" fullWidth onChange={(e)=>setround(e.target.value)} value={round} />
+                    <TextField label="Round" size="small" fullWidth onChange={(e) => setround(e.target.value)} value={round} />
                   </Grid>
                   <Grid item sm={4} md={4} xs={12} lg={4} >
-                    <TextField label="Neck" size="small" fullWidth onChange={(e)=>setneck(e.target.value)} value={neck} />
+                    <TextField label="Neck" size="small" fullWidth onChange={(e) => setneck(e.target.value)} value={neck} />
                   </Grid>
                   <Grid item sm={4} md={4} xs={12} lg={4} >
-                    <TextField label="Hair Lenth" size="small" fullWidth onChange={(e)=>sethairLenth(e.target.value)} value={hairLenth} />
+                    <TextField label="Hair Lenth" size="small" fullWidth onChange={(e) => sethairLenth(e.target.value)} value={hairLenth} />
                   </Grid>
                   <Grid item sm={12} md={12} xs={12} lg={12}>
                     <center>Hair Color</center>
                   </Grid>
                   <Grid item sm={12} md={12} xs={12} lg={12} >
-                    <TextField label="Hair Color" size="small" fullWidth onChange={(e)=>sethair_color(e.target.value)} value={hair_color} />
+                    <TextField label="Hair Color" size="small" fullWidth onChange={(e) => sethair_color(e.target.value)} value={hair_color} />
                   </Grid>
                   <Grid item sm={12} md={12} xs={12} lg={12}>
                     <center>Inventory</center>
                   </Grid>
                   <Grid item sm={6} md={6} xs={12} lg={6} >
-                    <TextField label="Store Inventory Stock" size="small" fullWidth value={inventory_qty} onChange={(e)=>setinventory_qty(e.target.value)} />
+                    <TextField label="Store Inventory Stock" size="small" fullWidth value={inventory_qty} onChange={(e) => setinventory_qty(e.target.value)} />
                   </Grid>
                   <Grid item sm={6} md={6} xs={12} lg={6} >
-                    <TextField label="Alert Inventory Stock" size="small"  fullWidth value={alertinventory_qty} onChange={(e)=>setalertinventory_qty(e.target.value)} />
+                    <TextField label="Alert Inventory Stock" size="small" fullWidth value={alertinventory_qty} onChange={(e) => setalertinventory_qty(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12} >
+                    <TextField multiline rows={4} id="outlined-multiline-flexible" label="Notes" size="small" fullWidth value={notes} onChange={(e) => setnotes(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={6} md={12} xs={6} lg={6} display="flex" justifyContent="center" alignItems={"center"}  >
+                    <Switch label="" size="lg" value={gst} onChange={(e) => setgst(!gst)} />
+                    : GST
+                  </Grid>
+                  <Grid item sm={6} md={12} xs={6} lg={6} >
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Select Xender</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={xender}
+                        label="Select Xender"
+                        onChange={e=>setxender(e.target.value)}
+                      >
+                        <MenuItem value={0}>Female</MenuItem>
+                        <MenuItem value={1}>Male</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                 </Grid>
               </div>
@@ -276,6 +307,7 @@ const AddProductModel = ({  update, datas, close }) => {
     </>
   );
 };
+
 const UpdateProductModel = ({ key, data }) => {
   return (
     <>

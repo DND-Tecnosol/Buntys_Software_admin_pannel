@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Delete, Edit } from '@mui/icons-material';
 import apiRoutes, { appAxios } from './../../../../../Constants/apiRoutes';
 import { toast } from 'react-toastify';
-import { fetchProductCategury } from './../../../../../Store/Slice/All/productSlice';
+import { fetchHairPatchtype } from './../../../../../Store/Slice/All/productSlice';
 
 
 
@@ -17,20 +17,20 @@ function ExtentionCategury() {
   const saveProductCategury = (names) => {
     appAxios.post(apiRoutes.hairpatchtype, { name: names }).then(e => {
       toast(e.data.msg)
-      dispatch(fetchProductCategury())
+      dispatch(fetchHairPatchtype())
     })
   }
   const updateProductCategury = (name, id) => {
     appAxios.put(apiRoutes.producttype + id, { name: name }).then(e => {
       toast(e.data.msg)
-      dispatch(fetchProductCategury())
+      dispatch(fetchHairPatchtype())
     })
   }
 
   const deleteProductCategury = (id) => {
     appAxios.delete(apiRoutes.producttype + id).then(e => {
       toast(e.data.msg)
-      dispatch(fetchProductCategury())
+      dispatch(fetchHairPatchtype())
     })
   }
   const update = useCallback((datas) => {
@@ -122,3 +122,4 @@ const AddProductCateguryModel = ({ data, save, update, setData }) => {
     </>
   )
 }
+

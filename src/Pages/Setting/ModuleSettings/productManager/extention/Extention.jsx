@@ -1,62 +1,53 @@
 import React from "react";
 import {
-  Select,
   TextField,
-  FormControl,
-  Dialog,
-  MenuItem,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
+  Autocomplete,
   TableContainer,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Paper,
   Stack,
   Button,
-  Container,
-  InputBase,
-  InputLabel,
-  Input,
   IconButton,
+  Grid,
+  Switch,
+  FormControl, InputLabel, Select, MenuItem,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, Edit } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useCallback } from "react";
 import apiRoutes, { appAxios } from "../../../../../Constants/apiRoutes";
-import { fetchProduct } from "../../../../../Store/Slice/All/productSlice";
+import { fetchHairExtention } from "../../../../../Store/Slice/All/productSlice";
 import { toast } from "react-toastify";
 
 
 function Extention() {
   const [data, setData] = useState(false);
-  const product = useSelector((state) => state.product.product);
+  const product = useSelector((state) => state.product.hairextention);
   const dispatch = useDispatch();
 
   const updateProduct = (datas, id) => {
     console.log(datas);
-    appAxios.put(apiRoutes.product + id, datas).then((e) => {
+    appAxios.put(apiRoutes.hairextention + id, datas).then((e) => {
       toast(e.data.msg);
-      dispatch(fetchProduct());
+      dispatch(fetchHairExtention());
     });
   };
 
   const deleteProduct = (id) => {
-    appAxios.delete(apiRoutes.product + id).then((e) => {
+    appAxios.delete(apiRoutes.hairextention + id).then((e) => {
       toast(e.data.msg);
-      dispatch(fetchProduct());
+      dispatch(fetchHairExtention());
     });
   };
   const saveProduct = (datas) => {
     console.log("Save Run");
-    appAxios.post(apiRoutes.product, datas).then((e) => {
+    appAxios.post(apiRoutes.hairextention, datas).then((e) => {
       toast(e.data.msg);
-      dispatch(fetchProduct());
+      dispatch(fetchHairExtention());
     });
   };
   return (
@@ -120,49 +111,63 @@ function Extention() {
 
 export default Extention;
 
-const AddProductModel = ({ save, update, datas, close }) => {
-  const [proCate, setProCate] = useState(datas.proCate);
-  const [proBrand, setProBrand] = useState(datas.proBrand);
-  const [name, setname] = useState(datas.name);
-  const [cost, setcost] = useState(datas.cost);
-  const [price, setprice] = useState(datas.price);
-  const [special_price, setspecial_price] = useState(datas.special_price);
-  const [discription, setdiscription] = useState(datas.discription);
-  const [expiry_date, setexpiry_date] = useState(datas.expiry_date);
-  const [alertqty, setalertqty] = useState(datas.inventury_product_alert);
-  const [unite_in_product, setunite_in_product] = useState(datas.unite_in_product);
-  const [menuefacture_date, setmenuefacture_date] = useState(datas.menuefacture_date);
-  const [qty, setqty] = useState(datas.inventury_product_qty);
-  const [productcategury, setproductcategury] = useState(datas.productcategury);
-  const [inventury_product_qty, setinventury_product_qty] = useState(datas.inventury_product_qty);
-  const [totale_qty, settotale_qty] = useState(datas.totale_qty);
-  const [uuid, setuuid] = useState(datas.uuid);
-  const { product_categury, product_brand } = useSelector(
-    (state) => state.product
-  );
-  const brandhandleChange = useCallback((e) => { setProBrand(e.target.value) }, [proCate]);
-  const categuryhandleChange = useCallback((e) => { setProCate(e.target.value) }, [proBrand]);
-  const data = {
-    producttypes_id: proCate,
-    brand_id: proBrand,
-    productcategury: productcategury,
-    name: name,
-    cost: cost,
-    price: price,
-    special_price: special_price,
+const AddProductModel = ({update, datas, close }) => {
+  const [name, setname] = useState("");
+  const [price, setprice] = useState("");
+  const [cost, setcost] = useState("");
+  const [min_price, setmin_price] = useState("");
+  const [offers_price, setoffers_price] = useState("");
+  const [front, setfront] = useState("");
+  const [frontRound, setfrontRound] = useState("");
+  const [frontBack, setfrontBack] = useState("");
+  const [back, setback] = useState("");
+  const [round, setround] = useState("");
+  const [neck, setneck] = useState("");
+  const [hairLenth, sethairLenth] = useState("");
+  const [inventory_qty, setinventory_qty] = useState("");
+  const [hair_color, sethair_color] = useState("");
+  const [alertinventory_qty, setalertinventory_qty] = useState("");
+  const [value, setValue] = useState("");
+  const [notes, setnotes] = useState("");
+  const [gst, setgst] = useState(false);
+  const [xender, setxender] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const hairweg = useSelector((state) => state.product.hairextentiontype);
+  const hairwegTypeFilter = hairweg.map(e => ({ label: e.name, id: e.id }))
+  // const brandhandleChange = useCallback((e) => { setProBrand(e.target.value) }, [proCate]);
+  // const categuryhandleChange = useCallback((e) => { setProCate(e.target.value) }, [proBrand]);
+  const dispatch = useDispatch();
 
-    discription: discription,
-    qty: qty,
-    totale_qty: totale_qty,
+  const save = () => {
+    const data = {
+      name: name,
+      extentioncategury_id: value.id,
+      price: price,
+      cost: cost,
+      min_price: min_price,
+      offers_price: offers_price,
+      front: front,
+      frontRound: frontRound,
+      frontBack: frontBack,
+      back: back,
+      round: round,
+      neck: neck,
+      hairLenth: hairLenth,
+      extentioncategury_qty: inventory_qty,
+      alertentioncategury_qty: alertinventory_qty,
+      hair_color: hair_color,
+      notes: notes,
+      gst: gst,
+      xender: xender,
+    }
+    appAxios.post(apiRoutes.hairextention, data).then((e) => {
+      toast(e.data.msg);
+      dispatch(fetchHairExtention());
+    });
 
-    inventury_product_qty: inventury_product_qty,
-    per_unite_price: cost / qty,
-    alertqty: alertqty,
-    unite_in_product: unite_in_product,
-    uuid: uuid,
-  };
+  }
 
-  console.log(datas);
+  // console.log(` Value : ${value.id}  inputValue: ${inputValue}`);
   return (
     <>
       <div
@@ -177,7 +182,7 @@ const AddProductModel = ({ save, update, datas, close }) => {
           <div class="modal-content">
             <div class="modal-header border-0">
               <h5 class="modal-title" id="exampleModalLabel">
-                Add Product
+                Add Hair Extention In Store Inventory
               </h5>
               <button
                 type="button"
@@ -191,162 +196,109 @@ const AddProductModel = ({ save, update, datas, close }) => {
             </div>
             <div class="modal-body border-0">
               <div className="container">
-                <Stack
-                  direction={"row"}
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  my={1}
-                >
-                  <TextField
-                    label="Product Name"
-                    value={name}
-                    onChange={(e) => setname(e.target.value)}
-                    fullWidth
-                    variant="filled"
-                  />
-                </Stack>
-                <Stack
-                  direction={{ xs: "column", md: "row" }}
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  my={1}
-                >
-                  <TextField
-                    select
-                    placeholder="Product Type"
-                    label="Product Type"
-                    variant="filled"
-                    value={productcategury}
-                    onChange={(e) => setproductcategury(e.target.value)}
-                    fullWidth
-                  >
-                    <MenuItem value="insalon">Insalon</MenuItem>
-                    <MenuItem value="selling">Selling</MenuItem>
-                  </TextField>
+                <Grid container spacing={3} >
+                  <Grid item sm={6} md={6} xs={12} lg={6} >
+                    <TextField label="Name" value={name} onChange={(e) => setname(e.target.value)} size="small" fullWidth />
+                  </Grid>
+                  <Grid item sm={6} md={6} xs={12} lg={6} >
+                    <Autocomplete
+                      value={value}
+                      onChange={(event, newValue) => {
+                        setValue(newValue);
+                      }}
 
-                  <TextField
-                    select
-                    label="Product Categury"
-                    variant="filled"
-                    fullWidth
-                    defaultValue={proCate}
-                    onChange={categuryhandleChange}
-                    shado
-                  >
-                    {product_categury.map((e) => (
-                      <MenuItem key={e.id} value={e.id}>
-                        {e.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    select
-                    label="Product Brand"
-                    variant="filled"
-                    fullWidth
-                    defaultValue={proBrand}
-                    onChange={brandhandleChange}
-                    shado
-                  >
-                    {product_brand &&
-                      product_brand.map((e, key) => (
-                        <MenuItem key={e.id} value={e.id}>
-                          {e.brand_name}
-                        </MenuItem>
-                      ))}
-                  </TextField>
-                </Stack>
-                <Stack
-                  direction={{ xs: "column", md: "row" }}
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  my={1}
-                >
-                  <TextField
-                    value={cost}
-                    onChange={(e) => setcost(e.target.value)}
-                    label="Product Cost"
-                    fullWidth
-                    variant="filled"
-                  />
-                  <TextField
-                    value={price}
-                    onChange={(e) => setprice(e.target.value)}
-                    label="Product Price"
-                    fullWidth
-                    variant="filled"
-                  />
-                  <TextField
-                    value={unite_in_product}
-                    onChange={(e) => setunite_in_product(e.target.value)}
-                    label="Product (gm,ml)"
-                    fullWidth
-                    variant="filled"
-                  />
-                  <TextField label="Special Price" fullWidth variant="filled" />
-                </Stack>
-                <Stack
-                  direction={"row"}
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  my={1}
-                >
-                  <TextField
-                    value={discription}
-                    onChange={(e) => setdiscription(e.target.value)}
-                    label="Product Discription"
-                    fullWidth
-                    variant="filled"
-                    multiline={4}
-                  />
-                </Stack>
-                <Stack py={0.5}>
-                  <center>
-                    <h5>Inventory</h5>
-                  </center>
-                </Stack>
-                <Stack
-                  value={inventury_product_qty}
-                  onChange={(e) => setinventury_product_qty(e.target.value)}
-                  direction={"row"}
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  my={1}
-                >
-                  {/* <TextField label="Product Discription" fullWidth variant="filled"  /> */}
-                  {/* <Stack direction={'row'} spacing={2} width="100%" > */}
-                  <div className="col-md-6 col-sm-12">
-                    <TextField
+                      inputValue={inputValue}
+                      onInputChange={(event, newInputValue) => {
+                        setInputValue(newInputValue);
+                      }}
+                      id="controllable-states-demo"
+                      options={hairwegTypeFilter || []}
+                      size="small"
                       fullWidth
-                      value={qty}
-                      onChange={e => setqty(e.target.value)}
-                      label="Totale Qty in Store Inventory"
-                      variant="filled"
+                      renderInput={(params) => <TextField {...params} label="Hair Extention Categury" />}
                     />
-                  </div>
-                  <div className="col-md-6 col-sm-12">
-                    <TextField
-                      value={alertqty}
-                      fullWidth
-                      onChange={e => setalertqty(e.target.value)}
-                      label="Alert Stock qty."
-                      variant="filled"
-                    />
-                  </div>
-                  {/* </Stack> */}
-                </Stack>
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Cost" onChange={(e) => setcost(e.target.value)} value={cost} size="small" fullWidth />
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Price" size="small" onChange={(e) => setprice(e.target.value)} value={price} fullWidth />
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Minimum Price" size="small" value={min_price} onChange={(e) => setmin_price(e.target.value)} fullWidth />
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Offer Price" size="small" onChange={(e) => setoffers_price(e.target.value)} fullWidth value={offers_price} />
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12}>
+                    <center>Size</center>
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3}  >
+                    <TextField label="Front" size="small" value={front} onChange={(e) => setfront(e.target.value)} fullWidth />
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Front Round" size="small" fullWidth value={frontRound} onChange={(e) => setfrontRound(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Front Back " size="small" fullWidth value={frontBack} onChange={(e) => setfrontBack(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={6} md={3} xs={12} lg={3} >
+                    <TextField label="Back" size="small" fullWidth onChange={(e) => setback(e.target.value)} value={back} />
+                  </Grid>
+                  <Grid item sm={4} md={4} xs={12} lg={4} >
+                    <TextField label="Round" size="small" fullWidth onChange={(e) => setround(e.target.value)} value={round} />
+                  </Grid>
+                  <Grid item sm={4} md={4} xs={12} lg={4} >
+                    <TextField label="Neck" size="small" fullWidth onChange={(e) => setneck(e.target.value)} value={neck} />
+                  </Grid>
+                  <Grid item sm={4} md={4} xs={12} lg={4} >
+                    <TextField label="Hair Lenth" size="small" fullWidth onChange={(e) => sethairLenth(e.target.value)} value={hairLenth} />
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12}>
+                    <center>Hair Color</center>
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12} >
+                    <TextField label="Hair Color" size="small" fullWidth onChange={(e) => sethair_color(e.target.value)} value={hair_color} />
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12}>
+                    <center>Inventory</center>
+                  </Grid>
+                  <Grid item sm={6} md={6} xs={12} lg={6} >
+                    <TextField label="Store Inventory Stock" size="small" fullWidth value={inventory_qty} onChange={(e) => setinventory_qty(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={6} md={6} xs={12} lg={6} >
+                    <TextField label="Alert Inventory Stock" size="small" fullWidth value={alertinventory_qty} onChange={(e) => setalertinventory_qty(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={12} md={12} xs={12} lg={12} >
+                    <TextField multiline rows={4} id="outlined-multiline-flexible" label="Notes" size="small" fullWidth value={notes} onChange={(e) => setnotes(e.target.value)} />
+                  </Grid>
+                  <Grid item sm={6} md={12} xs={6} lg={6} display="flex" justifyContent="center" alignItems={"center"}  >
+                    <Switch label="" size="lg" value={gst} onChange={(e) => setgst(!gst)} />
+                    : GST
+                  </Grid>
+                  <Grid item sm={6} md={12} xs={6} lg={6} >
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Select Xender</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={xender}
+                        label="Select Xender"
+                        onChange={e => setxender(e.target.value)}
+                      >
+                        <MenuItem value={0}>Female</MenuItem>
+                        <MenuItem value={1}>Male</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
               </div>
             </div>
             <div class="modal-footer border-0">
-              <Button type="button" color="warning" onClick={() => update(data, datas.id)} >
+              <Button type="button" color="warning" onClick={() => update()} >
                 Update
               </Button>
-              <Button type="button" onClick={() => save(data)} >
+              <Button type="button" onClick={() => save()} >
                 Save
               </Button>
             </div>

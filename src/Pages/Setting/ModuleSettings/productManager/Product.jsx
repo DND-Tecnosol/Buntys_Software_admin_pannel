@@ -161,7 +161,11 @@ const AddProductModel = ({ save, update, datas, close }) => {
     unite_in_product: unite_in_product,
     gst: gst,
   };
-
+  // gst
+  // uuid
+  // discription
+  // inventury_product_qty
+  // inventury_product_alert
   console.log(datas);
   return (
     <>
@@ -202,8 +206,8 @@ const AddProductModel = ({ save, update, datas, close }) => {
                     label="Product Name"
                     value={name}
                     onChange={(e) => setname(e.target.value)}
-                    fullWidth
-                    variant="filled"
+                    fullWidth size="small"
+
                   />
                 </Stack>
                 <Stack
@@ -217,10 +221,10 @@ const AddProductModel = ({ save, update, datas, close }) => {
                     select
                     placeholder="Product Type"
                     label="Product Type"
-                    variant="filled"
+
                     value={productcategury}
                     onChange={(e) => setproductcategury(e.target.value)}
-                    fullWidth
+                    fullWidth size="small"
                   >
                     <MenuItem value="insalon">Insalon</MenuItem>
                     <MenuItem value="selling">Selling</MenuItem>
@@ -229,8 +233,8 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   <TextField
                     select
                     label="Product Categury"
-                    variant="filled"
-                    fullWidth
+
+                    fullWidth size="small"
                     defaultValue={proCate}
                     onChange={categuryhandleChange}
                     shado
@@ -244,8 +248,8 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   <TextField
                     select
                     label="Product Brand"
-                    variant="filled"
-                    fullWidth
+
+                    fullWidth size="small"
                     defaultValue={proBrand}
                     onChange={brandhandleChange}
                     shado
@@ -266,44 +270,35 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   my={1}
                 >
                   <TextField
-                    value={cost}
-                    onChange={(e) => setcost(e.target.value)}
-                    label="Product Cost"
-                    fullWidth
-                    variant="filled"
-                  />
-                  <TextField
                     value={price}
                     onChange={(e) => setprice(e.target.value)}
                     label="Product Price"
-                    fullWidth
-                    variant="filled"
+                    fullWidth size="small"
+
+                  />
+                  <TextField
+                    value={special_price}
+                    onChange={(e) => setspecial_price(e.target.value)}
+                    label="Product Special Price"
+                    fullWidth size="small"
+
+                  />
+                  <TextField
+                    value={cost}
+                    onChange={(e) => setcost(e.target.value)}
+                    label="Product Cost"
+                    fullWidth size="small"
+
                   />
                   <TextField
                     value={unite_in_product}
                     onChange={(e) => setunite_in_product(e.target.value)}
                     label="Product (gm,ml)"
-                    fullWidth
-                    variant="filled"
-                  />
-                  <TextField label="Special Price" fullWidth variant="filled" />
-                </Stack>
-                <Stack
-                  direction={"row"}
-                  spacing={2}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  my={1}
-                >
-                  <TextField
-                    value={discription}
-                    onChange={(e) => setdiscription(e.target.value)}
-                    label="Product Discription"
-                    fullWidth
-                    variant="filled"
-                    multiline={4}
+                    fullWidth size="small"
+
                   />
                 </Stack>
+
                 <Stack py={0.5}>
                   <center>
                     <h5>Inventory</h5>
@@ -318,31 +313,48 @@ const AddProductModel = ({ save, update, datas, close }) => {
                   alignItems={"center"}
                   my={1}
                 >
-                  {/* <TextField label="Product Discription" fullWidth variant="filled"  /> */}
+                  {/* <TextField label="Product Discription" fullWidth size="small"   /> */}
                   {/* <Stack direction={'row'} spacing={2} width="100%" > */}
                   <div className="col-md-6 col-sm-12">
                     <TextField
-                      fullWidth
+                      fullWidth size="small"
                       value={qty}
                       onChange={e => setqty(e.target.value)}
                       label="Totale Qty in Store Inventory"
-                      variant="filled"
+
                     />
                   </div>
                   <div className="col-md-6 col-sm-12">
                     <TextField
                       value={alertqty}
-                      fullWidth
+                      fullWidth size="small"
                       onChange={e => setalertqty(e.target.value)}
                       label="Alert Stock qty."
-                      variant="filled"
+
                     />
                   </div>
                   {/* </Stack> */}
                 </Stack>
+                <Stack
+                  direction={"row"}
+                  spacing={2}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  my={1}
+                >
+                  <TextField
+                    value={discription}
+                    onChange={(e) => setdiscription(e.target.value)}
+                    label="Product Discription"
+                    fullWidth size="small"
+                    // variant=""
+                    multiline={4}
+                    rows={5}
+                  />
+                </Stack>
                 <div className="container">
                   <div className="col-12">
-                    <Switch value={gst} onChange={e=>setgst(!gst)} checked={gst} />
+                    <Switch value={gst} onChange={e => setgst(!gst)} checked={gst} />
                     : <b>Gst</b>
                   </div>
                 </div>
