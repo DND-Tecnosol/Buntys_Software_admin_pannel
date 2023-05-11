@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
 import { Button, IconButton, Switch } from "@mui/material";
+import { Tabs, Tab, Typography, Accordion, AccordionSummary, AccordionDetails, Paper } from '@mui/material';
+
 import {
   BsClipboard,
   BsPlus,
@@ -14,7 +16,7 @@ import { AiOutlineMail } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { MdSendToMobile } from "react-icons/md";
 
-import apiRoutes,{appAxios as axios} from "../../Constants/apiRoutes";
+import apiRoutes, { appAxios as axios } from "../../Constants/apiRoutes";
 import { useSelector, useDispatch } from "react-redux";
 import { addCostomer, fetchCostomer } from "../../Store/Slice/Costomer/costumerSlice";
 const tabelHeade = [
@@ -35,12 +37,11 @@ const CustomerSegment = () => {
   useEffect(() => {
     // dispatch(fetchCostomer());
     setCostomer(costome)
-  }, []);
-  
-  // costomer Serch filter
-  const searchS=(e)=>setCostomer(costome.filter((costomer)=>costomer.name.toLowerCase().includes(e.toLowerCase()) || costomer.mobaile.includes(e) ))
+  }, [costome]);
 
-  console.log();
+  // costomer Serch filter
+  const searchS = useCallback((e) => setCostomer(costome.filter((costomer) => `${costomer.name.toLowerCase()} ${costomer.last_name.toLowerCase()}`.includes(e.toLowerCase()) || costome.mobaile.includes(e))))
+  const firstChar = useCallback((c)=> setCostomer(costome.filter((costomer)=> costomer.name.toLowerCase().charAt(0) == c.toLowerCase())))
   return (
     <>
       <div className="container-fluide row justify-content-between px-3">
@@ -51,7 +52,7 @@ const CustomerSegment = () => {
             placeholder="Serach Costumer Name/ Mobaile No."
             aria-label="Recipient's username"
             aria-describedby="button-addon2"
-            onChange={(e)=>searchS(e.target.value)}
+            onChange={(e) => searchS(e.target.value)}
           />
           <Button variant="contained" startIcon={<BsSearch size={15} />}>
             Search
@@ -70,52 +71,53 @@ const CustomerSegment = () => {
           </Button>
         </div>
       </div>
-      <div className="container-fluide col-sm-12">
+      <div className="col-12">
+        <IconButton onClick={()=>firstChar('a')} >A</IconButton>
+      </div>
+      <div className="table-responsive">
+        <table class="table">
+          <thead className="border-0" >
+            <tr className="border-0 ">
+              {tabelHeade.map((e) => (
+                <TabelHead data={e} />
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {costomer
+              && costomer.map((da, key) => (
+                <TabelData key={key} no={key} data={da} />
+              ))}
+          </tbody>
+        </table>
+      </div>
+      {/* <div className="container-fluide col-sm-12">
         <div class="card">
-          {/* <!-- /.card-header --> */}
               <div className="card-header">
 
               <h3 class="card-title">Costomer Database</h3>
               </div>
           <div class="card-body">
-            <div className="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    {tabelHeade.map((e) => (
-                      <TabelHead data={e} />
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {costomer
-                    ? costomer.map((da, key) => (
-                        <TabelData key={key} no={key} data={da} />
-                      ))
-                    : null}
-                </tbody>
-              </table>
-            </div>
+           
           </div>
-          {/* <!-- /.card-body --> */}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
 
 export default CustomerSegment;
 
-const action=(id)=>alert(`perform action this ${id}`)
+const action = (id) => alert(`perform action this ${id}`)
 
 const TabelHead = ({ key, data }) => <th>{data}</th>;
 
 const TabelData = ({ no, data }) => {
-  const cetEguryFilter=(id,arr)=>arr.filter((arry)=>arry.id==id)
+  const cetEguryFilter = (id, arr) => arr.filter((arry) => arry.id == id)
   const serviceCategury = useSelector((state) => state.categury.costomerCetegury)
   // console.log();
-  const supers=cetEguryFilter(data.costocateguryid,serviceCategury)
-  const datct=supers ? cetEguryFilter(data.costocateguryid,serviceCategury)[0].name : "No Data Found"
+  const supers = cetEguryFilter(data.costocateguryid, serviceCategury)
+  const datct = supers ? cetEguryFilter(data.costocateguryid, serviceCategury)[0].name : "No Data Found"
 
   return (
     <>
@@ -136,9 +138,9 @@ const TabelData = ({ no, data }) => {
               <BsTelephone className="text-blue" size={20} />
             </IconButton> */}
             <a href={`tel:${data.mobaile}`}>
-            {data.mobaile.replace(/.(?=.{4})/g, '*')}
+              {data.mobaile.replace(/.(?=.{4})/g, '*')}
             </a>
-            <IconButton  
+            <IconButton
               variant="contained"
               color="success"
               href={`https://wa.me/+91${data.mobaile}`}
@@ -149,7 +151,7 @@ const TabelData = ({ no, data }) => {
         </td>
         <td>23 Mar, 20</td>
         <td>
-        <Statusbtn status={data.status} onClick={()=>action(data.id)} />
+          <Statusbtn status={data.status} onClick={() => action(data.id)} />
           {/* <button className={"btn btn-"+data.status ? 'success' : 'danger'+" btn-sm"}>{data.status ? 'Active' : 'Deactivate'}</button> */}
         </td>
         <td>{
@@ -167,7 +169,7 @@ const TabelData = ({ no, data }) => {
   );
 };
 
-const Statusbtn=({status,id,...props})=>status ? <button {...props} className="btn btn-success btn-sm">Active</button> : <button {...props} className="btn btn-danger btn-sm">DeActive</button>
+const Statusbtn = ({ status, id, ...props }) => status ? <button {...props} className="btn btn-success btn-sm">Active</button> : <button {...props} className="btn btn-danger btn-sm">DeActive</button>
 
 // M
 

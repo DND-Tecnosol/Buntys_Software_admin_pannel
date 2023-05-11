@@ -1,5 +1,5 @@
 import React from 'react'
-import { version } from '../config'
+import { version } from '../Constants/config'
 
 export default function Footer() {
 

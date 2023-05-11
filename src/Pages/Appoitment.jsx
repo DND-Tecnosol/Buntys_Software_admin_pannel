@@ -104,7 +104,7 @@ function Resource({ localizer, onSelectEvent, onSelectSlot }) {
   const serviceName = (id) => service.filter((e) => e.id == id)[0].name
 
   const staffs = useCallback(() => {
-    const data = staff.map(e => ({ resourceId: e.id, resourceTitle: e.name }));
+    const data = staff.map(e => ({ resourceId: e.id, resourceTitle: e.firstname }));
     return data;
   }, [staff])
 

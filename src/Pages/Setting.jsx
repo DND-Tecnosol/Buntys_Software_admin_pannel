@@ -39,9 +39,9 @@ export default function Setting({ header }) {
             <LinkComponents title={'Staff Manager'} to={`/${routes.StuffManger}`} info={'Add staff , Manage staff Detail'} />
             <LinkComponents title={'User Manager'} to={`/${routes.UserManger}`} info={'Add User , Manage User Detail'} />
             <LinkComponents title={'Invoice Manager'} to={`/${routes.InvoiceManger}`} info={'Change Invoice Setting'} />
-            <LinkComponents title={'Vaoucher Manager'} to={`/${routes.Vaoucher}`} info={'Create New Vaoucher, Manage Old Vaoucher'} />
+            {/* <LinkComponents title={'Vaoucher Manager'} to={`/${routes.Vaoucher}`} info={'Create New Vaoucher, Manage Old Vaoucher'} /> */}
             <LinkComponents title={'Reward Points Manager'} to={`/${routes.RewardPointManager}`} info={'Change Reward Points Setting, & Detail of Reward Points'} />
-            <LinkComponents title={'Offers Manager'} to={`/${routes.Offers}`} info={'Create New Offers, Manage Old Offers'} />
+            {/* <LinkComponents title={'Offers Manager'} to={`/${routes.Offers}`} info={'Create New Offers, Manage Old Offers'} /> */}
             <LinkComponents title={'Membershipe Card Manager'} to={`/${routes.MembershipeManager}`} info={'Create New Membershipe Card, Manage Membershipe Card'} />
             <LinkComponents title={'Pakage Manager'} to={`/${routes.PakgeManager}`} info={'Create New Pakage, Manage Old Pakage'} />
           </div>

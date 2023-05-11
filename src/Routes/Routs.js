@@ -74,9 +74,9 @@ export default function Routs() {
                     <Route path={routes.StuffManger} element={<StaffManager />} />
                     <Route path={routes.UserManger} element={<UserManger />} />
                     <Route path={routes.InvoiceManger} element={<Invoicemanager />} />
-                    <Route path={routes.Vaoucher} element={<Vaoucher />} />
+                    {/* <Route path={routes.Vaoucher} element={<Vaoucher />} /> */}
                     <Route path={routes.RewardPointManager} element={<RewardPointManager />} />
-                    <Route path={routes.Offers} element={<Offers />} />
+                    {/* <Route path={routes.Offers} element={<Offers />} /> */}
                     <Route path={routes.MembershipeManager} element={<MembershipeManager />} />
                     <Route path={routes.PakgeManager} element={<PakgeManager />} />
                     <Route path={routes.CostomerManger} element={<CostumerManager />} />

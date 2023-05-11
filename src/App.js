@@ -1,5 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
 import AuthRouts from './Routes/AuthRouts';
 import { store } from './Store'
 import Routs from './Routes/Routs';

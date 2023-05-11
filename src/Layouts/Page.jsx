@@ -21,15 +21,7 @@ import Pusher from 'pusher-js';
 import { requestForToken } from '../Constants/firebase';
 // import { OneSignal } from '../Constants/oneSignal';
 import OneSignal from 'react-onesignal';
-
-
-
-
-
-
-
-// const firebaseMassage=  
-
+  
 const echo = new Echo({
     key: "621acca9abe83bd9e178",
     // broadcaster: 'pusher',
@@ -121,45 +113,3 @@ export default function Page({ children, header }) {
         </>
     )
 }
-
-/*
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getTokens, requestForToken } from './../Constants/firebase';
-import { useDispatch } from 'react-redux';
-import { fetchProduct } from './../Store/Slice/All/productSlice';
-import OneSignal from './../Constants/oneSignal';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAbMsDCISg2KmwR26Q8uvKfX8dBGv_niwE",
-  authDomain: "buntys-app.firebaseapp.com",
-  projectId: "buntys-app",
-  storageBucket: "buntys-app.appspot.com",
-  messagingSenderId: "324796960410",
-  appId: "1:324796960410:web:5f46a352ad420b14421923",
-  measurementId: "G-J8PS7J88CC"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-BIMV-2cBQyJlpLNfewn7IE-hQOE1dcp2Jd1ZtmYJN29rswVV2tAkBrZzKYdg5tfi58sNZus21Ni759tn0A8rQaw
-
-    useEffect(()=>{
-        const msg = firebaseapp.messaging();//getMessaging();
-        msg.requestPermission().then(()=>{
-           return msg.getToken()
-        }).then((e)=>{
-            console.log("token",e);
-            msg.onMessage(payload => {
-                console.log('received',payload);
-              });
-        })
-    },[])
-*/

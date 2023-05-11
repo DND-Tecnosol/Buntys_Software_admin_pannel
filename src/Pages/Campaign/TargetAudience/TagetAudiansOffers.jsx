@@ -1,6 +1,6 @@
 import { FormControl, Grid, InputLabel, Paper, TextField, Select, MenuItem, Autocomplete, Stack, Button } from '@mui/material'
 import React, { useCallback, useState } from 'react'
-import apiRoutes, { appAxios } from './../../../../Constants/apiRoutes';
+import apiRoutes, { appAxios } from '../../../Constants/apiRoutes';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 function Index() {
@@ -47,7 +47,7 @@ function Index() {
   }
   return (
     <div>
-      <Paper elevation={3} sx={{ width: '100%', borderBottomRadius: 2, padding: 2.5 }}>
+      <>
         <Grid container>
           <Grid item sm={6} xs={12} md={6} height="100%" p={{ xs: 0, sm: 2.5, md: 2.5, xl: 2.5 }} py={{ xs: 2.5 }} >
             <Grid container spacing={3}>
@@ -165,7 +165,7 @@ function Index() {
             </Stack>
           </Grid>
         </Grid>
-      </Paper>
+      </>
     </div>
   )
 }
