@@ -19,22 +19,7 @@ export const fetchserviceCetegury = createAsyncThunk(
       return response
     }
   )
-//   export const fetchinvoiceCetegury = createAsyncThunk(
-//     'invoiceCetegury/',
-//     async () => {
-//       const response = await axios(apiRoutes.).then((e)=>e.data)
-//       console.log(response);
-//       return response
-//     }
-//   )
-//   export const fetchproductCetegury = createAsyncThunk(
-//     'productCetegury/',
-//     async () => {
-//       const response = await axios(apiRoutes.).then((e)=>e.data)
-//       console.log(response);
-//       return response
-//     }
-//   )
+
   export const fetchstuffCetegury = createAsyncThunk(
     'stuffCetegury/',
     async () => {

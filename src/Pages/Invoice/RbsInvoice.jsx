@@ -10,13 +10,15 @@ import { MdRestoreFromTrash } from "react-icons/md";
 
 import apiRoutes, { appAxios as axios } from '../../Constants/apiRoutes';
 import { BsPlus } from "react-icons/bs";
+import { Offers, RewordPoints, Vaucher, WishOffers } from "./Components";
 // var [totles,setTotale]=useState(0)
 export default function RbsInvoice() {
   const [costomerSelected, setCostomerSelected] = useState(false);
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState(false);
+  const [gst, setGst] = useState(false);
   const dispatch = useDispatch();
-
-  const { data: { service, totale, miNtotale, product } } = useSelector((stae) => stae.invoiceItems);
+  
+  const { data: { service, totale, miNtotale, product, Offers_is ,Offers_amount ,Vaoucher_is ,Vaoucher_amount ,Reward_is ,Reward_amount ,Wish_is ,Wish_amount ,Discount_is ,Discount_amount , serviceTotale } } = useSelector((stae) => stae.invoiceItems);
   const costomerData = useSelector((stae) => stae.costomer.costomer) || [];
   const costomerOption = costomerData.map((data) => ({ id: data.id, label: `${data.name} ${data.mobaile}`, }));
   const costomerfind = (id) => {
@@ -48,7 +50,7 @@ export default function RbsInvoice() {
       vaocher: "0",
       vaocher_code: "0",
       vaocher_amount: "0",
-      gst: "0",
+      gst: gst,
       gst_amount: "0",
       paid: true,
       service: service
@@ -121,7 +123,7 @@ export default function RbsInvoice() {
                   <table>
                     <tr>
                       <td><label htmlFor="name" class="form-label">GST :</label></td>
-                      <td><Switch /></td>
+                      <td><Switch onChange={() => setGst(!gst)} /></td>
                     </tr>
                     <tr>
                       <td><label htmlFor="name" class="form-label">Appointment :</label></td>
@@ -183,21 +185,26 @@ export default function RbsInvoice() {
                           id="demo-simple-select"
                           value={benifits}
                           label="Age"
+                          disabled={(((Offers_is === Vaoucher_is) === (Reward_is === Wish_is)) === Discount_is)}
                           onChange={(e) => setbenifits(e.target.value)}
                         >
-                          <MenuItem value={1}>Discount</MenuItem>
+                          <MenuItem value={1}>Offers</MenuItem>
                           <MenuItem value={2}>Vaoucher</MenuItem>
                           <MenuItem value={3}>Reward</MenuItem>
+                          <MenuItem value={4}>Wish</MenuItem>
+                          <MenuItem value={5}>Discount</MenuItem>
                         </Select>
                       </FormControl>
                       {benifits === 1 ? (
-                        <>
-                          <Discount onChange={(e) => (totale - totale * (e.target.value / 100)) >= miNtotale ? setDiscount(e.target.value) : setDiscount(0)} value={discount} />
-                        </>
+                        <><Offers /></>
                       ) : null || benifits === 2 ? (
-                        "Vaoucher"
+                        <><Vaucher /></>
                       ) : null || benifits === 3 ? (
-                        "Reward Points"
+                        <><RewordPoints /></>
+                      ) : null || benifits === 4 ? (
+                        <><WishOffers /></>
+                      ) : null || benifits === 5 ? (
+                        <><Discount onChange={(e) => (totale - totale * (e.target.value / 100)) >= miNtotale ? setDiscount(e.target.value) : setDiscount(0)} value={discount} /></>
                       ) : null}
                     </div>
                     <div className="card-footer"></div>
@@ -216,32 +223,67 @@ export default function RbsInvoice() {
                     <div className="card-body">
                       <table class="table">
                         <tbody>
-                          <tr>
-                            <td>{"Sub Total Amount:"}</td>
-                            <td>{totale}</td>
-                          </tr>
-                          <tr>
-                            <td>{"GST:"}</td>
-                            <td>{totale}</td>
-                          </tr>
-                          <tr>
-                            <td>{"Discount:"}</td>
-                            <td>{discount}</td>
-                          </tr>
-                          <tr>
-                            <td>{"Discounted Price:"}</td>
-                            <td>{totale * (discount / 100)}</td>
-                          </tr>
+
+                          {
+                            gst &&
+                            <>
+                              <tr>
+                                <td>{"GST ( 18% ):"}</td>
+                                <td>{serviceTotale * (18 / 100)}/- Rs</td>
+                              </tr>
+                            </>
+                          }
+                          {Offers_is && (
+                            <>
+                              <tr>
+                                <td>Offers Benifits:</td>
+                                <td>{Offers_amount}/- Rs</td>
+                              </tr>
+                            </>
+                          )}
+                          {
+                            Vaoucher_is && (
+                              <>
+                                <tr>
+                                  <td>Voucher Benifits:</td>
+                                  <td>{Vaoucher_amount}/- Rs</td>
+                                </tr>
+                              </>
+                            )}
+                          {Reward_is && (
+                            <>
+                              <tr>
+                                <td>Reward Points Benifits:</td>
+                                <td>{Reward_amount}/- Rs</td>
+                              </tr>
+                            </>
+                          )}
+                          {Wish_is && (
+                            <>
+                              <tr>
+                                <td>Wish Offers Benifits:</td>
+                                <td>{Wish_amount}/- Rs</td>
+                              </tr>
+                            </>
+                          )}
+                          {Discount_is && (
+                            <>
+                              <tr>
+                                <td>Discount:</td>
+                                <td>{Discount_amount}/- Rs</td>
+                              </tr>
+                            </>
+                          )}
                           <tr>
                             {getTotle()}
                             <td>{"Total:"}</td>
                             {/* <td>{getTotle()}</td> */}
-                            <td>{totale - totale * (discount / 100)}</td>
+                            <td>{totale - totale * (discount / 100)}/- Rs</td>
                           </tr>
                           <tr>
                             <td>{"Sub Total Amount:"}</td>
                             {/* <td>{getTotle()}</td> */}
-                            <td>{totale - totale * (discount / 100)}</td>
+                            <td>{((totale - totale * (discount / 100)) + (gst && serviceTotale * (18 / 100)))}/- Rs</td>
                           </tr>
                         </tbody>
                       </table>

@@ -25,10 +25,7 @@ export const requestForToken = async () => {
       console.log("role", userRole);
 
       // Perform any other neccessary action with the token
-      if (userRole == "masteradmin") {
-        // console.log("me chala store karane");
-        appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e => console.log(e));
-      }
+      appAxios.put(apiRoutes.updateToken, { token: currentToken }).then(e => console.log(e));
       onMessage(messaging, (payload) => {
         console.log('Message received. ', payload);
         // ...

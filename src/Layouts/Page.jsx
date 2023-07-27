@@ -21,6 +21,7 @@ import Pusher from 'pusher-js';
 import { requestForToken } from '../Constants/firebase';
 // import { OneSignal } from '../Constants/oneSignal';
 import OneSignal from 'react-onesignal';
+import { fetchCampign } from '../Store/Slice/Campign';
   
 const echo = new Echo({
     key: "621acca9abe83bd9e178",
@@ -33,15 +34,8 @@ const echo = new Echo({
     disableStats: true,
 });
 
-async function runOneSignal() {
-    await OneSignal.init({ appId: 'fee71504-b5c5-40cc-ba8f-f67b1cda387f', allowLocalhostAsSecureOrigin: true });
-    OneSignal.getUserId().then(userId => {
-        console.log('OneSignal User ID:', userId);
-    });
-}
-
 export default function Page({ children, header }) {
-    document.title = "Bunty's studio || " + header;
+    document.title = "Bunty's studio ";
     const dispatch = useDispatch()
     const state = useSelector(state => state)
     useEffect(() => {
@@ -77,6 +71,7 @@ export default function Page({ children, header }) {
         dispatch(fetchStorenotificationcatygury())
         dispatch(fetchStoretime())
         dispatch(fetchStoreclosingdate())
+        dispatch(fetchCampign())
     }, [])
     return (
         <>

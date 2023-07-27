@@ -22,6 +22,8 @@ function Index() {
   const [whatsappTemp, setWhatsappTemp] = useState("")
   const [emailTemp, setEmailTemp] = useState("")
   const [textTemp, setTextTemp] = useState("")
+  const [resouce, setResouce] = useState([])
+  const { service: { service }, product: { product, hairweg, hairextention, hairPatch } } = useSelector(state => state)
 
   const data = {
     name: name,
@@ -38,9 +40,10 @@ function Index() {
     applicableService: selectServiceSegment,
     selectServices: selectService,
     selectServiceategures: selectServicecategury,
-    whatsapp:whatsappTemp,
-    email:emailTemp,
-    sms:textTemp,
+    whatsapp: whatsappTemp,
+    email: emailTemp,
+    sms: textTemp,
+    resouce: resouce,
   }
   const submit = () => {
     console.log(`data: ${JSON.stringify(data)}`);
@@ -78,7 +81,7 @@ function Index() {
                   </div>
                   <input type="number" value={benifits} onChange={e => setBenifits(e.target.value)} className="form-control" placeholder="Discount Or Amount" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                   <div className="input-group-append">
-                    <span className="input-group-text" id="basic-addon2"><b>{(benifitsType=='disc') ? "%" : "₹ " }</b>{" "}  Off</span>
+                    <span className="input-group-text" id="basic-addon2"><b>{(benifitsType == 'disc') ? "%" : "₹ "}</b>{" "}  Off</span>
                   </div>
                 </div>
               </Grid>
@@ -109,19 +112,13 @@ function Index() {
                   value={targetAudiance}
 
                 >
-                  <MenuItem value={"all"}>All Costomer</MenuItem>
-                  <MenuItem value={"SaleviceCostomer"}>Salevice Costomer</MenuItem>
-                  <MenuItem value={"ServiceviceCostumer"}>Servicevice Costumer</MenuItem>
-                  <MenuItem value={"CateguryviseCostumer"}>Categuryvise Costumer</MenuItem>
+                  <MenuItem value={"Birthday"}>Birth Day</MenuItem>
+                  <MenuItem value={"Anniversuryday"}>Anniversury</MenuItem>
+                  {/* <MenuItem value={"product"}>Selected product </MenuItem> */}
                   {/* <MenuItem value={"case"}>Hair Produt Salevise Costumer</MenuItem> */}
                   {/* <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item sm={12} xs={12} md={12}>
-              {(targetAudiance == "SaleviceCostomer") && <SaleviceCostomer setcostomerMaxsale={setcostomerMaxsale} costomerMaxsale={costomerMaxsale} costomerMinsale={costomerMinsale} setcostomerMinsale={setcostomerMinsale} />}
-              {(targetAudiance == "ServiceviceCostumer") && <ServiceviceCostumer selectcostomerservice={selectcostomerservice} setSelectcostomerservice={setSelectcostomerservice} />}
-              {(targetAudiance == "CateguryviseCostumer") && <CateguryviseCostumer selectcostomercategury={selectcostomercategury} setSelectcostomercategury={setSelectcostomercategury} />}
             </Grid>
             <Grid item sm={12} xs={12} md={12} mt={7}>
               <InputLabel id="demo-simple-select-label">Select Applicable Service</InputLabel>
@@ -134,16 +131,22 @@ function Index() {
                   sx={{ width: { xs: '100%', sm: '50%', md: '50%', xl: '50%' } }} size="small"
                 >
                   <MenuItem value={"all"}>All</MenuItem>
-                  <MenuItem value={"selectedService"}>Selected Service</MenuItem>
-                  <MenuItem value={"selectedServiceCategury"}>Selected Service Categury</MenuItem>
+                  <MenuItem value={"service"}>Selected service</MenuItem>
+                  <MenuItem value={"product"}>Selected product </MenuItem>
+                  <MenuItem value={"weg"}>Selected weg </MenuItem>
+                  <MenuItem value={"extention"}>Selected extention </MenuItem>
+                  <MenuItem value={"patch"}>Selected patch </MenuItem>
                   {/* <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
               </FormControl>
             </Grid>
             <Grid item sm={12} xs={12} md={12} mt={4}>
 
-              {(selectServiceSegment == "selectedService") && <ServiceSearchSelect selectService={selectService} setSelectService={setSelectService} />}
-              {(selectServiceSegment == "selectedServiceCategury") && <ServiceCategurySearchSelect selectServicecategury={selectServicecategury} setSelectServicecategury={setSelectServicecategury} />}
+              {(selectServiceSegment == "service") && <ResorceComponent label="Select service" resouce={resouce} setResouce={setResouce} resouceData={service} />}
+              {(selectServiceSegment == "product") && <ResorceComponent label="Select product" resouce={resouce} setResouce={setResouce} resouceData={product} />}
+              {(selectServiceSegment == "weg") && <ResorceComponent label="Select weg" resouce={resouce} setResouce={setResouce} resouceData={hairweg} />}
+              {(selectServiceSegment == "patch") && <ResorceComponent label="Select patch" resouce={resouce} setResouce={setResouce} resouceData={hairPatch} />}
+              {(selectServiceSegment == "extention") && <ResorceComponent label="Select extention" resouce={resouce} setResouce={setResouce} resouceData={hairextention} />}
             </Grid>
           </Grid>
           <Grid container spacing={3} p={{ xs: 0, sm: 2.5, md: 2.5, xl: 2.5 }} py={{ xs: 2.5 }} >
@@ -172,9 +175,9 @@ function Index() {
 
 export default Index
 
-const ServiceSearchSelect = ({ selectService, setSelectService }) => {
-  const service = useSelector(state => state.service.service)
-  const serviceData = service ? service.map(val => ({ id: val.id, title: val.name })) : []
+const ResorceComponent = ({ resouce, setResouce, resouceData, label }) => {
+  // const service = useSelector(state => state.service.service)
+  const serviceData = resouceData ? resouceData.map(val => ({ id: val.id, title: val.name })) : []
 
   return (
     <>
@@ -183,126 +186,21 @@ const ServiceSearchSelect = ({ selectService, setSelectService }) => {
         id="tags-outlined"
         options={serviceData}
         getOptionLabel={(option) => option.title}
-        // defaultValue={selectService}
+        defaultValue={resouce}
         onChange={(event, newValue) => {
-          console.log(`InputValue : ${JSON.stringify(newValue)}`);
-          setSelectService(newValue);
+          // console.log(`InputValue : ${JSON.stringify(newValue)}`);
+          setResouce(newValue);
         }}
         size='small'
         renderInput={(params) => (
           <TextField
+            multiline
             {...params}
-            label="Select Service"
-            placeholder="Select Service"
+            label={label}
+          // placeholder="Select Service"
           />
         )}
       />
-    </>
-  )
-}
-const ServiceCategurySearchSelect = ({ selectServicecategury, setSelectServicecategury }) => {
-  const service = useSelector(state => state.categury.serviceCetegury)
-  const serviceData = service ? service.map(val => ({ id: val.id, title: val.name })) : []
-  return (
-    <>
-      <Autocomplete
-        multiple
-        id="tags-outlined"
-        options={serviceData}
-        getOptionLabel={(option) => option.title}
-        // defaultValue={selectServicecategury}
-        onChange={(event, newValue) => {
-          console.log(`InputValue : ${JSON.stringify(newValue)}`);
-          setSelectServicecategury(newValue);
-        }}
-        size='small'
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            size='small'
-            label="Select Service Categury"
-            placeholder="Select Service Categury"
-          />
-        )}
-      />
-    </>
-  )
-}
-
-const SaleviceCostomer = ({ costomerMinsale, setcostomerMinsale, costomerMaxsale, setcostomerMaxsale }) => {
-  return (
-    <>
-      <Grid container spacing={3} marginTop={1}>
-        <Grid item xs={12} sm={6} md={6} xl={6}>
-          <TextField value={costomerMaxsale} onChange={e => setcostomerMaxsale(e.target.value)} label="Max Sale" fullWidth size='small' />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} xl={6}>
-          <TextField value={costomerMinsale} onChange={e => setcostomerMinsale(e.target.value)} label="Min Sale" fullWidth size='small' />
-        </Grid>
-      </Grid>
-    </>
-  )
-}
-const ServiceviceCostumer = ({ selectcostomerservice, setSelectcostomerservice }) => {
-  const service = useSelector(state => state.service.service)
-  const serviceData = service ? service.map(val => ({ id: val.id, title: val.name })) : []
-  return (
-    <>
-      <Grid container spacing={3} marginTop={1} >
-        <Grid item xs={12} sm={12} md={12} xl={12}  >
-          <Autocomplete
-            multiple
-            id="tags-outlined"
-            options={serviceData}
-            getOptionLabel={(option) => option.title}
-            // defaultValue={selectcostomerservice}
-            onChange={(event, newValue) => {
-              // console.log(`InputValue : ${JSON.stringify(newValue)}`);
-              setSelectcostomerservice(newValue);
-            }}
-            size='small'
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                size='small'
-                label="Select Service"
-                placeholder="Select Service"
-              />
-            )}
-          />
-        </Grid>
-      </Grid>
-    </>
-  )
-}
-const CateguryviseCostumer = ({ selectcostomercategury, setSelectcostomercategury }) => {
-  const service = useSelector(state => state.categury.costomerCetegury)
-  const serviceData = service ? service.map(val => ({ id: val.id, title: val.name })) : []
-  return (
-    <>
-      <Grid container spacing={3} marginTop={1} >
-        <Grid item xs={12} sm={12} md={12} xl={12}  >
-          <Autocomplete
-            multiple
-            id="tags-outlined"
-            options={serviceData}
-            getOptionLabel={(option) => option.title}
-            // defaultValue={selectcostomercategury}
-            onChange={(event, newValue) => {
-              setSelectcostomercategury(newValue);
-            }}
-            size='small'
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                size='small'
-                label="Select Costomer Categury"
-                placeholder="Select Costomer Categury"
-              />
-            )}
-          />
-        </Grid>
-      </Grid>
     </>
   )
 }

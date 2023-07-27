@@ -11,14 +11,9 @@ import { authLogout } from "../Store/Slice/Auth/authSlice";
 import { red } from '@mui/material/colors';
 import { FormControl, InputLabel, Select, MenuItem, Paper } from '@mui/material'
 import apiRoutes, { appAxios as axios } from "../Constants/apiRoutes";
-import { Edit, Inventory } from "@mui/icons-material";
-import { fetchAppoitment } from './../Store/Slice/All/appointmentSlice';
-import { fetchInvoice } from './../Store/Slice/All/invoiceSlice';
-import { fetchStore } from './../Store/Slice/All/storeSlice';
-import { fetchStaff } from "../Store/Slice/All/staffSlice";
-import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
-import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
-import { fetchServices } from './../Store/Slice/All/serviceSlice';
+import Lottie from 'react-lottie';
+import * as animationData from '../assets/loader.json'
+
 import { Box, Stack } from "@mui/system";
 const reds = red[500];
 export default function Dashbord({ header }) {
@@ -218,15 +213,26 @@ const AppoitmentModel = () => {
 }
 
 const OnlineAppoitmentLoader = () => {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true, 
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
+
   return (
     <>
       <div className="col-12 border-0" >
         <div className="card-header" >
           <center><h4>Online Appointment</h4></center>
         </div>
-        <div className="card-body d-flex justify-content-center align-items-center border-0" >
-          <iframe height={300} width={300} style={{ backgroundColor: 'transparent', border: 0 }} src="https://lottie.host/?file=cb3c42ec-adb3-43a8-a605-60d0f17524bf/jPXqjPwRwi.json"></iframe>
-        </div>
+        <Lottie 
+      options={defaultOptions}
+              height={340}
+              width={340}
+              />
       </div>
     </>
   )

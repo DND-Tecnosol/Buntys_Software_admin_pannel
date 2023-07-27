@@ -42,15 +42,9 @@ import {
 import { fetchServices } from '../Store/Slice/All/serviceSlice';
 import { fetchStore } from '../Store/Slice/All/storeSlice';
 import Page from './../Layouts/Page';
+import { Offerdetaild, Targetaudiancedetaild, Voucherdetaild, Wishdetaild } from '../Pages/Campaign/profile';
 
 export default function Routs() {
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(fetchStore());
-        dispatch(fetchServices());
-    }, [])
-
     return (
         <>
             <BrowserRouter>
@@ -91,9 +85,12 @@ export default function Routs() {
                     <Route path={routes.WhatsappServices} element={<WhatsappServices />} />
                     <Route path={routes.DailySoftwareTask} element={<DailySoftwareTask />} />
 
-
-                    <Route path={'costomer/:id'} element={<CostomerProfile />} />
-                    <Route path={'staff/:id'} element={<StaffProfile />} />
+                    <Route path={`${routes.costomer}/:id`} element={<CostomerProfile />} />
+                    <Route path={`${routes.staffProfile}/:id`} element={<StaffProfile />} />
+                    <Route path={`${routes.wish}/:id`} element={<Wishdetaild />} />
+                    <Route path={`${routes.targetaudience}/:id`} element={<Targetaudiancedetaild />} />
+                    <Route path={`${routes.voucher}/:id`} element={<Voucherdetaild />} />
+                    <Route path={`${routes.offers}/:id`} element={<Offerdetaild />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

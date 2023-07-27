@@ -1,9 +1,9 @@
 import React from 'react'
 import { Tabs, Tab, Typography, Accordion, AccordionSummary, AccordionDetails, Paper } from '@mui/material';
-import { Voucher, TagetAudiansOffers, Offers, TagetAudiansVoucher, UpcomingWishes } from './Campaign';
+import { Voucher, TagetAudiansOffers, Offers, UpcomingWishes, TargetAudianceData, VoucherData, WeboffersData, WishData, } from './Campaign';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { OffersData } from './Campaign/Offers';
-
+// import { OffersData } from './Campaign';
+ 
 const Campigns = () => {
     const [value, setValue] = React.useState(0);
 
@@ -35,7 +35,7 @@ const Campigns = () => {
                         </AccordionDetails>
                     </Accordion>
                     <div className='mt-4'>
-                        <OffersData />
+                        <WeboffersData />
                     </div>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
@@ -51,9 +51,13 @@ const Campigns = () => {
                             <Voucher />
                         </AccordionDetails>
                     </Accordion>
+                    <div className='mt-4'>
+                        <VoucherData />
+                    </div>
+
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <Accordion sx={{ marginY: "10px" }} >
+                    <Accordion >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -65,20 +69,12 @@ const Campigns = () => {
                             <TagetAudiansOffers />
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion sx={{ marginY: "10px" }}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography>Create New Taget Audians Voucher</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <TagetAudiansVoucher />
-                        </AccordionDetails>
-                    </Accordion>
+                    <div className='mt-4'>
+                        <TargetAudianceData />
+                    </div>
+
                 </TabPanel>
-  
+
                 <TabPanel value={value} index={3}>
                     <Accordion>
                         <AccordionSummary
@@ -92,6 +88,10 @@ const Campigns = () => {
                             <UpcomingWishes />
                         </AccordionDetails>
                     </Accordion>
+                    <div className='mt-4'>
+                        <WishData />
+                    </div>
+
                 </TabPanel>
             </div>
         </>

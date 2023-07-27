@@ -18,6 +18,13 @@ export const routes = {
     settings: '/settings',
     ticket: '/ticket',
     feedback: '/feedback',
+    staffProfile: '/staffProfile',
+
+    //Campin Detail Page 
+    offers: '/offers',
+    voucher: '/voucher',
+    targetaudience: '/targetaudience',
+    wish: '/wish',
 
     // Setting //Business Settings
     Storemanager: 'Storemanager',
@@ -35,9 +42,7 @@ export const routes = {
     UserManger: "UserManger",
     ProductManger: "productManager",
     ServiceManger: "SericeManager",
-    Vaoucher: "Vaoucher",
     RewardPointManager: "RewardPointManager",
-    Offers: "Offers",
     MembershipeManager: "MembershipeManager",
     PakgeManager: "PakgeManager",
 
@@ -69,5 +74,5 @@ export default [
     { path: routes.report, tag: 'Report', element: (e) => <Report header={e} />, icon: <Air color={"gray"} size={20} style={{ marginRight: 10 }} /> },
     { path: routes.settings, tag: 'Settings', element: (e) => <Setting header={e} />, icon: <Ais color={"gray"} size={20} style={{ marginRight: 10 }} /> },
     { path: routes.ticket, tag: 'Ticket', element: (e) => <Ticket header={e} />, icon: <AirplaneTicket color={"gray"} size={20} style={{ marginRight: 10 }} /> },
-    { path: routes.ticket, tag: 'Feedback', element: (e) => <Feedback header={e} />, icon: <Hicbd color={"gray"} size={20} style={{ marginRight: 10 }} /> },
+    { path: routes.feedback, tag: 'Feedback', element: (e) => <Feedback header={e} />, icon: <Hicbd color={"gray"} size={20} style={{ marginRight: 10 }} /> },
 ];
