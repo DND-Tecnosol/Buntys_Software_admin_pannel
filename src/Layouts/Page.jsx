@@ -15,6 +15,7 @@ import { fetchStaff } from "../Store/Slice/All/staffSlice";
 import { fetchCostomer } from "../Store/Slice/Costomer/costumerSlice";
 import { fetchcostomerCetegury, fetchserviceCetegury, fetchstuffCetegury } from './../Store/Slice/types/allCetegurytypesSlice';
 import { fetchServices } from './../Store/Slice/All/serviceSlice';
+
 import { fetchProduct, fetchProductBrand, fetchProductCategury,fetchHairWegtype,fetchHairWeg,fetchHairExtention,fetchHairExtentionType,fetchHairPatch,fetchHairPatchtype } from './../Store/Slice/All/productSlice';
 import Echo from "laravel-echo";
 import Pusher from 'pusher-js';
@@ -22,7 +23,7 @@ import { requestForToken } from '../Constants/firebase';
 // import { OneSignal } from '../Constants/oneSignal';
 import OneSignal from 'react-onesignal';
 import { fetchCampign } from '../Store/Slice/Campign';
-  
+import { fetchSmsTemp } from '../Store/Slice/All/smsTemplateSlice';  
 const echo = new Echo({
     key: "621acca9abe83bd9e178",
     // broadcaster: 'pusher',
@@ -72,6 +73,7 @@ export default function Page({ children, header }) {
         dispatch(fetchStoretime())
         dispatch(fetchStoreclosingdate())
         dispatch(fetchCampign())
+        dispatch(fetchSmsTemp())
     }, [])
     return (
         <>

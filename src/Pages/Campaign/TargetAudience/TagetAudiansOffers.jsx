@@ -1,10 +1,32 @@
-import { FormControl, Grid, InputLabel, Paper, tableCellClasses, TextField, TableCell, Select, MenuItem, Autocomplete, Stack, styled, Button, TableContainer, Table, TableHead, TableRow, TableBody, Switch, Card, CardHeader, CardContent, } from '@mui/material'
+import { FormControl, Grid, InputLabel, Paper, tableCellClasses, TextField, TableCell, Select, MenuItem, Autocomplete, Stack, styled, Button, TableContainer, Table, TableHead, TableRow, TableBody, Switch, Card, CardHeader, Box, Modal } from '@mui/material'
 import React, { useCallback, useState } from 'react'
 import apiRoutes, { appAxios } from '../../../Constants/apiRoutes';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { fetchCampign } from '../../../Store/Slice/Campign';
+import { Link } from 'react-router-dom';
+import { routes } from '../../../Constants/routesconst';
+import { apiDomain } from './../../../Constants/apiRoutes';
+
+const smsObj={
+  temp: "Hello",
+  sendOption: "",
+  time: '',
+  onedate: ''
+}
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: { xs: "95%", xl: '65%', md: '80%' },
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2
+};
 function Index() {
   // appAxios.get(apiRoutes)
   const [selectServiceSegment, setSelectServiceSegment] = useState("all")
@@ -37,9 +59,14 @@ function Index() {
   const [moreThen, setmoreThen] = useState("")
   const [selecet_start_date, setselecet_start_date] = useState("")
   const [selecet_end_date, setselecet_end_date] = useState("")
+  const [open, setOpen] = useState(false)
+  const [smsService, setSmsService] = useState(smsObj)
+
+  const dataFromRedux = useSelector(s => s.store.store)
+
   const { service: { service }, product: { product, hairweg, hairextention, hairPatch } } = useSelector(state => state)
   const dispatch = useDispatch()
-
+  const storeDetaild = dataFromRedux.filter(s => s.id == localStorage.getItem('store'))[0];
   const data = {
     name: name,
     customertype: targetAudiance,
@@ -63,6 +90,7 @@ function Index() {
     moreThen: moreThen,
     selecet_start_date: selecet_start_date,
     selecet_end_date: selecet_end_date,
+    smsService: smsService,
   }
   const submit = () => {
     console.log(`data: ${JSON.stringify(data)}`);
@@ -73,6 +101,10 @@ function Index() {
       toast.success(e.data.msg)
     })
   }
+
+  const smsFindText = { "costomer_name": 'Mr', "offer_code": '123456', "validitystart": `${moment(data.start_date).format('Do MMM')}`, "validityend": `${moment(data.end_date).format('Do MMM')}`, "offer_type": data.selectServiceSegment, "offer_amount": `${data.benifit} ${(benifitsType == 'disc') ? "%" : "₹ "}`, "appointment_booking_link":storeDetaild?.appointment_booking_link, "appointment_booking_no":storeDetaild?.mobaile, "store_location":storeDetaild?.city, "store_contact_no":storeDetaild?.mobaile}
+
+
   return (
     <div>
       <>
@@ -181,24 +213,6 @@ function Index() {
               </Grid>}
             </Grid>
             <Grid item sm={12} xs={12} md={12} mt={7}>
-              <InputLabel id="demo-simple-select-label">Select Applicable Service</InputLabel>
-              <FormControl fullWidth>
-                <Select
-                  onChange={(e) => setSelectServiceSegment(e.target.value)}
-                  value={selectServiceSegment}
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  sx={{ width: { xs: '100%', sm: '50%', md: '50%', xl: '50%' } }} size="small"
-                >
-                  <MenuItem value={"all"}>All</MenuItem>
-                  <MenuItem value={"service"}>Selected service</MenuItem>
-                  <MenuItem value={"product"}>Selected product </MenuItem>
-                  <MenuItem value={"weg"}>Selected weg </MenuItem>
-                  <MenuItem value={"extention"}>Selected extention </MenuItem>
-                  <MenuItem value={"patch"}>Selected patch </MenuItem>
-                  {/* <MenuItem value={30}>Thirty</MenuItem> */}
-                </Select>
-              </FormControl>
             </Grid>
             <Grid item sm={12} xs={12} md={12} mt={4}>
 
@@ -209,69 +223,20 @@ function Index() {
               {(selectServiceSegment == "extention") && <ResorceComponent label="Select extention" resouce={resouce} setResouce={setResouce} resouceData={hairextention} />}
             </Grid>
           </Grid>
-          <Card sx={{ width: '100%' }} >
-            <div className="col-12 my-2">
-              <center>Templets Keyword</center>
-            </div>
-            <CardContent>
-              <div className="row">
-                <div className="col-md-6 col-sm-12">
-                  <ul>
-                    <li>Costomer Name : costomer_name</li>
-                    <li>Code Name : offer_code</li>
-                    <li>offer Velidity Start Date : offer_start_date</li>
-                    <li>offer Velidity End Date : offer_end_date</li>
-                  </ul>
-                </div>
-                <div className="col-md-6 col-sm-12">
-                  <ul>
-                    <li>Store Name : store_name</li>
-                    <li>Store Cotact No. : store_contact_no</li>
-                    <li>City Name : city_name</li>
-                    <li>Store Address : store_add</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
           <Grid container spacing={3} p={{ xs: 0, sm: 2.5, md: 2.5, xl: 2.5 }} py={{ xs: 2.5 }} >
             <Stack direction={'row'} alignItems={"center"} justifyContent={"center"} >
-              <Switch onChange={() => setText(!text)} /> Text Sms
+              {/* <Switch onChange={() => setText(!text)} /> Text Sms */}
+              <Button onClick={() => setText(!text)}>Set Text Sms Notification</Button>
             </Stack>
-            {text && <Grid item sm={12} xs={12}>
-              <Grid item sm={6} xs={6} md={6} mt={7}>
-                <InputLabel id="demo-simple-select-label">Select Applicable Service</InputLabel>
-                <FormControl fullWidth>
-                  <Select
-                    onChange={(e) => setSelectServiceSegment(e.target.value)}
-                    value={selectServiceSegment}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    sx={{ width: { xs: '100%', sm: '50%', md: '50%', xl: '50%' } }} size="small"
-                  >
-                    <MenuItem value={"all"}>When Offer Created</MenuItem>
-                    <MenuItem value={"service"}>Twice Day</MenuItem>
-                    <MenuItem value={"product"}>Every Weekend</MenuItem>
-                    <MenuItem value={"weg"}>Every Weekstart</MenuItem>
-                    <MenuItem value={"extention"}>Selected Date</MenuItem>
-                    <MenuItem value={"patch"}>Selected Day</MenuItem>
-                    {/* <MenuItem value={30}>Thirty</MenuItem> */}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <TextField multiline label="Text Sms Template" value={textTemp} onChange={e => setTextTemp(e.target.value)} sx={{ marginY: [{ xs: 1 }, 1] }} fullWidth rows={4} />
-            </Grid>}
             <Stack direction={'row'} alignItems={"center"} justifyContent={"center"} >
-              <Switch onChange={() => setWhatsapp(!whatsapp)} /> Whatsapp
-            </Stack>
-            {whatsapp && <Grid item sm={12} xs={12}>
-              <TextField multiline label="Whatsapp Sms Template" value={whatsappTemp} onChange={e => setWhatsappTemp(e.target.value)} sx={{ marginY: [{ xs: 1 }, 1] }} fullWidth rows={4} />
-            </Grid>}
-            <Stack direction={'row'} alignItems={"center"} justifyContent={"center"} >
-              <Switch onChange={() => setEmail(!email)} /> Email
+              {/* <Switch onChange={() => setEmail(!email)} /> Email */}
+              <Button onClick={() => setText(!text)}>Set Email Notification</Button>
             </Stack>
             {email && <Grid item sm={12} xs={12}>
               <TextField multiline label="Email Template" value={emailTemp} onChange={e => setEmailTemp(e.target.value)} sx={{ marginY: [{ xs: 1 }, 0] }} fullWidth rows={4} />
+            </Grid>}
+            {smsService.temp?.temp && <Grid item sm={12} xs={12}>
+              <TextField multiline value={replaceKeywords(data.smsService.temp?.temp, smsFindText)} sx={{ marginY: [{ xs: 1 }, 0] }} fullWidth rows={4} />
             </Grid>}
           </Grid>
         </Grid>
@@ -283,6 +248,7 @@ function Index() {
           </Grid>
         </Grid>
       </>
+      <SmsModel open={text} handleClose={() => setText(!text)} data={smsService} setData={setSmsService} />
     </div>
   )
 }
@@ -423,10 +389,103 @@ const SelectByViseteddaterange = ({ count, setCount, startDate, setStartDate, en
   )
 }
 
+const SmsModel = ({ open, handleClose, data, setData }) => {
+  const sms = useSelector(s => s.smsTemp.smsTemp)
+  console.log(sms.filter(e => e.type == "campign").length);
+  return (
+    <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6 col-lg-6 col-sm-12 mb-3">
+                <InputLabel id="demo-simple-select-label">Select Sms Sending Option</InputLabel>
+                <Select
+                  fullWidth
+                  onChange={(e) => setData({ ...data, sendOption: e.target.value })}
+                  value={data.sendOption}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // sx={{ width: { xs: '100%', sm: '50%', md: '50%', xl: '50%' } }} 
+                  size="small"
+                >
+                  <MenuItem value={"DailySend"}>Daily Send</MenuItem>
+                  <MenuItem value={"OneTime"}>One Time</MenuItem>
+                  <MenuItem value={"ManullySend"}>Manully Send</MenuItem>
+                  <MenuItem value={"TwiceDay"}>Twice Day</MenuItem>
+                  <MenuItem value={"WeekStart"}>Week Start</MenuItem>
+                  <MenuItem value={"WeekEnd"}>Week End</MenuItem>
+                </Select>
+              </div>
+              {
+                data.sendOption == "OneTime"
+                  ?
+                  (
+                    <>
+                      <div className="col-sm-6 col-6 row">
+                        <div className="col-md-5 col-lg-5 col-sm-12 mb-3">
+                          <InputLabel id="demo-simple-select-label">Select Sms Sending Date</InputLabel>
+                          <TextField onChange={(e) => setData({ ...data, onedate: e.target.value })} value={data.onedate} type='date' fullWidth size='small' />
+                        </div>
+                        <div className="col-md-5 col-lg-5 col-sm-12 mb-3">
+                          <InputLabel id="demo-simple-select-label">Select Sms Sending Time</InputLabel>
+                          <TextField onChange={(e) => setData({ ...data, time: e.target.value })} value={data.time} type='time' fullWidth size='small' />
+                        </div>
+                      </div>
 
+                    </>
+                  )
+                  :
+                  (
+                    <div className="col-md-6 col-lg-6 col-sm-12 mb-3 row">
+                      <InputLabel id="demo-simple-select-label">Select Sms Time</InputLabel>
+                      <TextField onChange={(e) => setData({ ...data, time: e.target.value })} value={data.time} type='time' fullWidth size='small' />
+                    </div>
+                  )
+              }
+              <div className="col-md-6 col-sm-12 mb-3"></div>
+              <div className="col-12 mb-3">
+                {(sms.filter(e => e.type == "campign").length >= 0) && sms.filter(e => e.type == "campign")?.map((e) => {
+                  return (
+                    <>
+                      <button onClick={() => setData({ ...data, temp: e })} className='my-2' style={{ width: '100%', backgroundColor: '#dfdfdf', borderRadius: 10, borderWidth: (data.temp?.id == e.id) ? 2 : 0, borderColor: '#3768de', padding: 20 }}>
+                        {e.temp}
+                      </button>
+                    </>
+                  )
+                }) ||
+                  <center>No Campign Sms Register.<Link to={`/${routes.SmsServices}`}>Create New Sms Template</Link></center>
+                }
+              </div>
+            </div>
+          </div>
+          <Stack direction={'row'} justifyContent={'flex-end'} spacing={3} px={3} >
+            <Button onClick={() => setData(smsObj)}>Save</Button>
+            <Button onClick={() => handleClose()} color='error' >Clear</Button>
+          </Stack>
+          <center>Please register your template by clicking <Link to={`/${routes.SmsServices}`}>"Register Template"</Link> here.</center>
+        </Box>
+      </Modal>
+    </>
+  )
 
+}
 
+function replaceKeywords(inputString="Hello", keywordsToReplace) {
 
+  console.log(inputString);
+  // Create a regular expression pattern that matches any of the keywords
+  const keywordPattern = new RegExp(Object.keys(keywordsToReplace).join('|'), 'gi');
 
+  // Use the replace method with the regular expression to replace all occurrences of the keywords
+  const replacedString = inputString.replace(keywordPattern, matchedKeyword => {
+    return keywordsToReplace[matchedKeyword.toLowerCase()] || matchedKeyword;
+  });
 
-
+  return replacedString;
+}

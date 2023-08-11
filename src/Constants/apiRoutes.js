@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiDomain = "http://192.168.29.208:8000"
+export const apiDomain = "http://192.168.29.208:8000"
 
 const store = localStorage.getItem('store');
 const userRole = localStorage.getItem('userType');
@@ -58,6 +58,7 @@ const apiRoutes = {
   "CampignData": 'campign/',
   "voucherCode": 'voucher/',
   "voucherCoderemoved": 'voucher/removed/',
+  "SmsTemp": 'smsservice/',
 }
 
 export default apiRoutes;
