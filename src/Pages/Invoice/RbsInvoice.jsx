@@ -139,14 +139,6 @@ export default function RbsInvoice() {
               </Button>
               {service.map((e, k) => <InvoiceService key={k} serviceReduxid={k} />)}
               {product.map((e, k) => <InvoiceProduct key={k} serviceReduxid={k} />)}
-
-              {/* 
-              <InvoicePkg/>
-              <InvoiceVoucher/>
-              <InvoiceWeg/>
-              <InvoiceExtention/>
-              <InvoiceWegRepair/> */}
-              {/* <InvoiceServiceSection /> */}
             </div>
             <div className="container my-3">
               <div className="row">

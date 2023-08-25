@@ -43,7 +43,6 @@ const ProductManger = () => {
                 <TabPanel value={value} index={3}>
                     <HairPatchInventory />
                 </TabPanel>
-
             </div>
         </>
     );

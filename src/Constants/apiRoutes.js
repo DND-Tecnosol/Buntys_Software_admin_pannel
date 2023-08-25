@@ -59,6 +59,8 @@ const apiRoutes = {
   "voucherCode": 'voucher/',
   "voucherCoderemoved": 'voucher/removed/',
   "SmsTemp": 'smsservice/',
+  "points": 'point/',
+  "feedback": 'feedback/',
 }
 
 export default apiRoutes;

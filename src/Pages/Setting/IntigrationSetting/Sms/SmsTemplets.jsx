@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Box, Button, Select, MenuItem, Modal, TextField, Stack, Switch, IconButton, Card, CardContent } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
@@ -19,7 +19,9 @@ function SmsTemplets() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const tamp = useSelector(state => state.smsTemp.smsTemp) || []
-    console.log(tamp);
+    const Compo=useCallback(()=>{
+        return (tamp && tamp.map((data, key) => <SmsTemplates datas={data} ind={key} key={key} />))
+    },[tamp])
     return (
         <>
             <Stack direction={'row'} justifyContent={'flex-end'} spacing={3} px={3} >
@@ -31,7 +33,7 @@ function SmsTemplets() {
                     <MenuItem value="alert">Alert</MenuItem>
                 </Select>
             </Stack>
-            {tamp && tamp.map((data, key) => <SmsTemplates datas={data} ind={key} key={key} />)}
+            {<Compo/>}
             <SmsModel open={open} handleClose={handleClose} />
         </>
     )
@@ -201,7 +203,7 @@ const SmsTemplates = ({ ind, datas }) => {
 
     const statusChange = async (status, id) => {
         setData({ ...data, status: status })
-        await appAxios.put(apiRoutes.SmsTemp + 'status/' + id, data).then(e => {
+        appAxios.put(apiRoutes.SmsTemp + 'status/' + id, data).then(e => {
             if ((e.data.code == 1) || (e.data.code == 3)) {
                 dispatch(fetchSmsTemp())
 
@@ -217,7 +219,7 @@ const SmsTemplates = ({ ind, datas }) => {
         })
     }
     const upadetData = async (id) => {
-        await appAxios.put(apiRoutes.SmsTemp + id, data).then(e => {
+        appAxios.put(apiRoutes.SmsTemp + id, data).then(e => {
             if (e.data.code == 1) {
                 dispatch(fetchSmsTemp())
                 toast.success(e.data.msg)
@@ -230,12 +232,13 @@ const SmsTemplates = ({ ind, datas }) => {
     const deleteData = async (id) => {
         console.log(`id`, id);
         // return
-        await appAxios.delete(apiRoutes.SmsTemp + id).then(e => {
+        appAxios.delete(apiRoutes.SmsTemp + id).then(e => {
             if (e.data.code == 1) {
                 dispatch(fetchSmsTemp())
                 toast.success(e.data.msg)
                 return 0
             }
+            dispatch(fetchSmsTemp())
             toast.error(e.data.msg)
             return 0
         })
@@ -353,92 +356,6 @@ const CampignSmsTemp = () => {
                     </AccordionDetails>
                 </Accordion>
             </div>
-
-            {/* <div className="mb-2">
-                <Accordion expanded={expanded === `panel2`} onChange={handleChange(`panel2`)}>
-                    <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Stack direction="row"
-                            width={"100%"}
-                            justifyContent="space-between"
-                            alignItems="center"
-                            spacing={2}>
-                            <div className='px-2'>
-                                <Typography># Target Audiance Offer</Typography>
-                            </div>
-                        </Stack>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Card sx={{ width: '100%' }} >
-                            <div className="col-12 my-2">
-                                <center>Templets Keyword</center>
-                            </div>
-                            <CardContent>
-                                <div className="row">
-                                    <div className="col-md-6 col-sm-12">
-                                        <ul>
-                                            <li>Costomer Name : costomer_name</li>
-                                            <li>Code Name : offer_code</li>
-                                            <li>offer Velidity Start Date : offer_start_date</li>
-                                            <li>offer Velidity End Date : offer_end_date</li>
-                                        </ul>
-                                    </div>
-                                    <div className="col-md-6 col-sm-12">
-                                        <ul>
-                                            <li>Store Name : store_name</li>
-                                            <li>Store Cotact No. : store_contact_no</li>
-                                            <li>City Name : city_name</li>
-                                            <li>Store Address : store_add</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </AccordionDetails>
-                </Accordion>
-            </div>
-
-            <div className="mb-2">
-                <Accordion expanded={expanded === `panel3`} onChange={handleChange(`panel3`)}>
-                    <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Stack direction="row"
-                            width={"100%"}
-                            justifyContent="space-between"
-                            alignItems="center"
-                            spacing={2}>
-                            <div className='px-2'>
-                                <Typography># Wish Offer</Typography>
-                            </div>
-                        </Stack>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Card sx={{ width: '100%' }} >
-                            <div className="col-12 my-2">
-                                <center>Templets Keyword</center>
-                            </div>
-                            <CardContent>
-                                <div className="row">
-                                    <div className="col-md-6 col-sm-12">
-                                        <ul>
-                                            <li>Costomer Name : costomer_name</li>
-                                            <li>Code Name : offer_code</li>
-                                            <li>offer Velidity Start Date : offer_start_date</li>
-                                            <li>offer Velidity End Date : offer_end_date</li>
-                                        </ul>
-                                    </div>
-                                    <div className="col-md-6 col-sm-12">
-                                        <ul>
-                                            <li>Store Name : store_name</li>
-                                            <li>Store Cotact No. : store_contact_no</li>
-                                            <li>City Name : city_name</li>
-                                            <li>Store Address : store_add</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </AccordionDetails>
-                </Accordion>
-            </div> */}
         </>
     )
 }

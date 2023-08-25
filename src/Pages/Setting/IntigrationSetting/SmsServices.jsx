@@ -15,16 +15,12 @@ function SmsServices() {
         <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="basic tabs example">
           <Tab label="Accounts Detaild" {...a11yProps(0)} />
           <Tab label="Sms Templets" {...a11yProps(1)} />
-          <Tab label={"Sms Hader"} {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
           <SmsServiceProvider />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <SmsTemplets />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <SmsHeders />
         </TabPanel>
       </Paper>
     </>

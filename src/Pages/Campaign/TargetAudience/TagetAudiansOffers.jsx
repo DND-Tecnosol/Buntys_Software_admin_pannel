@@ -1,5 +1,5 @@
 import { FormControl, Grid, InputLabel, Paper, tableCellClasses, TextField, TableCell, Select, MenuItem, Autocomplete, Stack, styled, Button, TableContainer, Table, TableHead, TableRow, TableBody, Switch, Card, CardHeader, Box, Modal } from '@mui/material'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import apiRoutes, { appAxios } from '../../../Constants/apiRoutes';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -8,8 +8,10 @@ import { fetchCampign } from '../../../Store/Slice/Campign';
 import { Link } from 'react-router-dom';
 import { routes } from '../../../Constants/routesconst';
 import { apiDomain } from './../../../Constants/apiRoutes';
+import { LocalizationProvider, TimePicker, } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
-const smsObj={
+const smsObj = {
   temp: "Hello",
   sendOption: "",
   time: '',
@@ -102,7 +104,7 @@ function Index() {
     })
   }
 
-  const smsFindText = { "costomer_name": 'Mr', "offer_code": '123456', "validitystart": `${moment(data.start_date).format('Do MMM')}`, "validityend": `${moment(data.end_date).format('Do MMM')}`, "offer_type": data.selectServiceSegment, "offer_amount": `${data.benifit} ${(benifitsType == 'disc') ? "%" : "₹ "}`, "appointment_booking_link":storeDetaild?.appointment_booking_link, "appointment_booking_no":storeDetaild?.mobaile, "store_location":storeDetaild?.city, "store_contact_no":storeDetaild?.mobaile}
+  const smsFindText = { "costomer_name": 'Mr', "offer_code": '123456', "validitystart": `${moment(data.start_date).format('Do MMM')}`, "validityend": `${moment(data.end_date).format('Do MMM')}`, "offer_type": data.selectServiceSegment, "offer_amount": `${data.benifit} ${(benifitsType == 'disc') ? "%" : "₹ "}`, "appointment_booking_link": storeDetaild?.appointment_booking_link, "appointment_booking_no": storeDetaild?.mobaile, "store_location": storeDetaild?.city, "store_contact_no": storeDetaild?.mobaile }
 
 
   return (
@@ -186,7 +188,8 @@ function Index() {
               {(targetAudiance == "NewCustomer") && <NewCustomer startDate={startTime} setStartDate={setstartTime} endDate={endTime} setEndDate={setendTime} />}
               {(targetAudiance == "SelectByViseteddaterange") && <SelectByViseteddaterange startDate={startTime} setStartDate={setstartTime} endDate={endTime} setEndDate={setendTime} />}
               {(targetAudiance == "SelectByservice") && <ResorceComponent label="Select service" resouce={products} setResouce={setproducts} resouceData={service} />}
-              {(targetAudiance == "SelectByProduct") && <Grid item sm={12} xs={12} md={12} mt={2}>
+              {(targetAudiance == "SelectByProduct") && 
+              <Grid item sm={12} xs={12} md={12} mt={2}>
                 <InputLabel id="demo-simple-select-label">Select Product</InputLabel>
                 <FormControl fullWidth>
 
@@ -283,6 +286,7 @@ const ResorceComponent = ({ resouce, setResouce, resouceData, label }) => {
     </>
   )
 }
+
 const ReturningCostomer = ({ count, setCount, startDate, setStartDate, endDate, setEndDate, label }) => {
   return (
     <>
@@ -392,6 +396,14 @@ const SelectByViseteddaterange = ({ count, setCount, startDate, setStartDate, en
 const SmsModel = ({ open, handleClose, data, setData }) => {
   const sms = useSelector(s => s.smsTemp.smsTemp)
   console.log(sms.filter(e => e.type == "campign").length);
+
+  useEffect(()=>{
+    if (data.time <= "10:00" || data.time >= "20:46") {
+       console.log(data.time);
+       setData({...data,time:"00:00"})
+     }
+  },[data.time])
+
   return (
     <>
       <Modal
@@ -430,21 +442,22 @@ const SmsModel = ({ open, handleClose, data, setData }) => {
                       <div className="col-sm-6 col-6 row">
                         <div className="col-md-5 col-lg-5 col-sm-12 mb-3">
                           <InputLabel id="demo-simple-select-label">Select Sms Sending Date</InputLabel>
-                          <TextField onChange={(e) => setData({ ...data, onedate: e.target.value })} value={data.onedate} type='date' fullWidth size='small' />
+                          <TextField onChange={(e) => setData({ ...data, onedate: e.target.value })} inputProps={{ min: '9:00', max: '16:00' }} value={data.onedate} type='date' fullWidth size='small' />
                         </div>
                         <div className="col-md-5 col-lg-5 col-sm-12 mb-3">
                           <InputLabel id="demo-simple-select-label">Select Sms Sending Time</InputLabel>
-                          <TextField onChange={(e) => setData({ ...data, time: e.target.value })} value={data.time} type='time' fullWidth size='small' />
+                          <p style={{fontSize:1,color:'red'}} >Messages can only be sent between 10am to 8:45pm as restricted by TRAI NCCP regulation</p>
+                          <TextField onChange={(e) => setData({ ...data, time: e.target.value })} value={data.time} type='time' min="09:00" max="18:00" />
                         </div>
                       </div>
-
                     </>
                   )
                   :
                   (
                     <div className="col-md-6 col-lg-6 col-sm-12 mb-3 row">
                       <InputLabel id="demo-simple-select-label">Select Sms Time</InputLabel>
-                      <TextField onChange={(e) => setData({ ...data, time: e.target.value })} value={data.time} type='time' fullWidth size='small' />
+                      <TextField onChange={(e) => setData({ ...data, time: e.target.value })}  value={data.time} type='time' minTime={"09:00"} max="18:00" fullWidth size='small' />
+                      <span style={{fontSize:12,color:'red',marginTop:5}} >Messages can only be sent between 10am to 8:45pm as restricted by TRAI NCCP regulation</span>
                     </div>
                   )
               }
@@ -476,7 +489,7 @@ const SmsModel = ({ open, handleClose, data, setData }) => {
 
 }
 
-function replaceKeywords(inputString="Hello", keywordsToReplace) {
+function replaceKeywords(inputString = "Hello", keywordsToReplace) {
 
   console.log(inputString);
   // Create a regular expression pattern that matches any of the keywords

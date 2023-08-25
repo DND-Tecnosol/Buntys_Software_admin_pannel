@@ -45,9 +45,6 @@ export default function Dashbord({ header }) {
   }
   return (
     <>
-      <Button
-        onClick={() => dispatch(authLogout())}
-      >Logout</Button>
       {/* <div class="alert alert-success" role="alert">
         One Appoitment Coming Soon
       </div> */}
