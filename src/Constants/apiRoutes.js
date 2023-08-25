@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const apiDomain = "http://192.168.29.208:8000"
+export const apiDomain = "https://api.buntyshairstudio.com"
 
 const store = localStorage.getItem('store');
 const userRole = localStorage.getItem('userType');
