@@ -10,9 +10,10 @@ import { authLogout } from "../Store/Slice/Auth/authSlice";
 // import { fetchServices } from "../Store/Slice/All/serviceSlice";
 import { red } from '@mui/material/colors';
 import { FormControl, InputLabel, Select, MenuItem, Paper } from '@mui/material'
-import apiRoutes, { appAxios as axios } from "../Constants/apiRoutes";
+// import apiRoutes, { appAxios as axios } from "../Constants/apiRoutes";
 import Lottie from 'react-lottie';
 import * as animationData from '../assets/loader.json'
+import axios from "axios";
 
 import { Box, Stack } from "@mui/system";
 const reds = red[500];
@@ -20,17 +21,21 @@ export default function Dashbord({ header }) {
   const [model, setModel] = useState(false);
   const { invoice: { invoice, invoiceTotle }, appointment: { appoitment }, costomer: { costomer }, stuff: { staff } } = useSelector((state) => state)
   const dispatch = useDispatch()
-  //   useEffect(() => {
-  //     dispatch(fetchserviceCetegury())
-  //     dispatch(fetchStaff())
-  //     dispatch(fetchcostomerCetegury())
-  //     dispatch(fetchstuffCetegury())
-  //     dispatch(fetchServices())
-  //     dispatch(fetchCostomer())
-  //     dispatch(fetchStore())
-  //     dispatch(fetchInvoice())
-  //     dispatch(fetchAppoitment())
-  // }, [])
+  useEffect(() => {
+    //     dispatch(fetchserviceCetegury())
+    //     dispatch(fetchStaff())
+    //     dispatch(fetchcostomerCetegury())
+    //     dispatch(fetchstuffCetegury())
+    //     dispatch(fetchServices())
+    //     dispatch(fetchCostomer())
+    //     dispatch(fetchStore())
+    //     dispatch(fetchInvoice())
+    //     dispatch(fetchAppoitment())
+    axios.post('http://api.buntyshairstudio.com/api/costomer', {
+      "email": "9023551662",
+      "password": "@Bhautik1432g"
+    }).then(e => console.log(e)).catch((e) => console.log(e));
+  }, [])
 
 
   const costomerName = (id) => costomer ? costomer.filter((e) => e.id == id)[0].name : []
@@ -212,7 +217,7 @@ const AppoitmentModel = () => {
 const OnlineAppoitmentLoader = () => {
   const defaultOptions = {
     loop: true,
-    autoplay: true, 
+    autoplay: true,
     animationData: animationData,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice'
@@ -225,11 +230,11 @@ const OnlineAppoitmentLoader = () => {
         <div className="card-header" >
           <center><h4>Online Appointment</h4></center>
         </div>
-        <Lottie 
-      options={defaultOptions}
-              height={340}
-              width={340}
-              />
+        <Lottie
+          options={defaultOptions}
+          height={340}
+          width={340}
+        />
       </div>
     </>
   )

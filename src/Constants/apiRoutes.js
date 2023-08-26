@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const apiDomain = "https://api.buntyshairstudio.com"
+export const apiDomain = "http://62.72.30.42:5000"
 
 const store = localStorage.getItem('store');
 const userRole = localStorage.getItem('userType');
@@ -15,7 +15,11 @@ export const appAxios = axios.create({
     'Tocken': tocken,
     'sessionid': sessionid,
     'Userid': Userid,
-  }
+    'Content-Type':'application/json',
+    // 'User-Agent':'Thunder Client (https://www.thunderclient.com)',
+    // 'Accept':'*'
+  },
+  
 });
 
 const apiRoutes = {
